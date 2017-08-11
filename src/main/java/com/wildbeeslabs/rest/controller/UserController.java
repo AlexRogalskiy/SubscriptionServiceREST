@@ -1,8 +1,10 @@
 package com.wildbeeslabs.rest.controller;
 
-import com.wildbeeslabs.rest.service.UserService;
+import com.wildbeeslabs.rest.service.interfaces.UserService;
 import com.wildbeeslabs.rest.model.User;
+import com.wildbeeslabs.rest.exception.ServiceException;
 import java.util.List;
+import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-
-import java.util.Objects;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,25 +30,25 @@ import org.springframework.web.util.UriComponentsBuilder;
  */
 @RestController
 @RequestMapping("/api/user")
-public class UserRestController {
+public class UserController {
 
     /**
      * Default Logger instance
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserRestController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
-    private UserService userService;
+    private UserService<User> userService;
 
     /**
-     * Get list of users entities
+     * Get list of user entities
      *
      * @return list of users entities
      */
     @RequestMapping(value = "/user/", method = RequestMethod.GET)
     public ResponseEntity<List<User>> getAllUsers() {
         LOGGER.info("Fetching all users");
-        List<User> userList = userService.findAllUsers();
+        List<User> userList = userService.findAll();
         if (userList.isEmpty()) {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
             // You many decide to return HttpStatus.NOT_FOUND
@@ -69,7 +69,7 @@ public class UserRestController {
         if (Objects.isNull(user)) {
             String errorMessage = String.format("ERROR: user with id={%d} is not found", id);
             LOGGER.error(errorMessage);
-            return new ResponseEntity(new CustomErrorType(errorMessage), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
@@ -84,12 +84,12 @@ public class UserRestController {
     @RequestMapping(value = "/user/", method = RequestMethod.POST)
     public ResponseEntity<String> createUser(@RequestBody User user, UriComponentsBuilder ucBuilder) {
         LOGGER.info("Creating user : {}", user);
-        if (userService.isUserExist(user)) {
-            String errorMessage = String.format("ERROR: user with login={%s} already exist", user.getName());
+        if (userService.isExist(user)) {
+            String errorMessage = String.format("ERROR: user with login={%s} already exist", user.getLogin());
             LOGGER.error(errorMessage);
-            return new ResponseEntity(new CustomErrorType(errorMessage), HttpStatus.CONFLICT);
+            return new ResponseEntity(new ServiceException(errorMessage), HttpStatus.CONFLICT);
         }
-        userService.saveUser(user);
+        userService.save(user);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/api/user/{id}").buildAndExpand(user.getId()).toUri());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
@@ -109,12 +109,12 @@ public class UserRestController {
         if (Objects.isNull(currentUser)) {
             String errorMessage = String.format("ERROR: user with id={%d} is not found", id);
             LOGGER.error(errorMessage);
-            return new ResponseEntity(new CustomErrorType(errorMessage), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
         }
-        currentUser.setName(user.getName());
+        currentUser.setLogin(user.getLogin());
         currentUser.setAge(user.getAge());
-        currentUser.setSalary(user.getSalary());
-        userService.updateUser(currentUser);
+        currentUser.setRating(user.getRating());
+        userService.update(currentUser);
         return new ResponseEntity<>(currentUser, HttpStatus.OK);
     }
 
@@ -127,27 +127,25 @@ public class UserRestController {
     @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<User> deleteUser(@PathVariable("id") long id) {
         LOGGER.info("Deleting user by id {}", id);
-
         User user = userService.findById(id);
         if (Objects.isNull(user)) {
             String errorMessage = String.format("ERROR: user with id={%d} is not found", id);
             LOGGER.error(errorMessage);
-            return new ResponseEntity(new CustomErrorType(errorMessage), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
         }
-        userService.deleteUserById(id);
+        userService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     /**
-     * Delete all users entities
+     * Delete all user entities
      *
      * @return response status code
      */
     @RequestMapping(value = "/user/", method = RequestMethod.DELETE)
     public ResponseEntity<User> deleteAllUsers() {
         LOGGER.info("Deleting all users");
-
-        userService.deleteAllUsers();
+        userService.deleteAll();
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

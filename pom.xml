@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.wildbeeslabs.api.rest</groupId>
     <artifactId>newsletter-subscription</artifactId>
-    <version>1.0-RELEASE</version>
+    <version>1.0.0-RELEASE</version>
     <packaging>war</packaging>
     <name>rest-api-newsletter-subscription</name>
     <url>http://maven.apache.org</url>

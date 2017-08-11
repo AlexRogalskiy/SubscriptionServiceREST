@@ -1,4 +1,4 @@
-package com.wildbeeslabs.rest.subscription;
+package com.wildbeeslabs.rest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
