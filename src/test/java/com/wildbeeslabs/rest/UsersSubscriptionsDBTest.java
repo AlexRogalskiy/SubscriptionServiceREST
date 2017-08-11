@@ -3,7 +3,9 @@ package com.wildbeeslabs.rest;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.UserSubOrder;
+
 import java.util.Date;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -18,7 +20,7 @@ import org.hibernate.service.ServiceRegistryBuilder;
  * @version 1.0.0
  * @since 2017-08-08
  */
-public class UsersSubscriptionsTest {
+public class UsersSubscriptionsDBTest {
 
     public static void main(String[] args) {
         // loads configuration and mappings
@@ -30,7 +32,6 @@ public class UsersSubscriptionsTest {
         // builds a session factory from the service registry
         SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 
-        // obtains the session
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
@@ -86,6 +87,5 @@ public class UsersSubscriptionsTest {
         session.save(groupGuest);
 
         session.getTransaction().commit();
-        session.close();
     }
 }
