@@ -1,6 +1,7 @@
 package com.wildbeeslabs.rest.repositories;
 
 import com.wildbeeslabs.rest.model.Subscription;
+import com.wildbeeslabs.rest.model.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -22,9 +23,10 @@ import org.springframework.data.repository.query.Param;
 public interface SubscriptionRepository<T extends Subscription> extends JpaRepository<T, Long> {
 
     /**
-     * Default find_by_user_id select query
+     * Default query to find subscriptions by user id
      */
-    public final static String FIND_BY_USERID_QUERY = "SELECT sub FROM Subscription sub INNER JOIN p.userOrders order WHERE order.user.id = :userId";
+    //SELECT s FROM Subscription s INNER JOIN s.userOrders o INNER JOIN o.user u WHERE u.id = :userId
+    public final static String FIND_BY_USERID_QUERY = "SELECT s FROM Subscription s INNER JOIN s.userOrders o WHERE o.user.id = :userId";
 
     /**
      * Get subscription entity by name
@@ -48,15 +50,14 @@ public interface SubscriptionRepository<T extends Subscription> extends JpaRepos
      * @param userId - user identifier
      * @return list of subscription entities
      */
-    List<T> findByUserId(final Long userId);
+    @Query(FIND_BY_USERID_QUERY)
+    List<T> findByUserId(@Param("userId") final Long userId);
 
     /**
-     * Get list of subscription entities by user ID
+     * Get list of subscription entities by user
      *
-     * @param userId - user identifier
+     * @param user - user entity
      * @return list of subscription entities
      */
-    @Query(FIND_BY_USERID_QUERY)
-    public List<T> findByUser(@Param("userId") final Long userId);
-
+    List<T> findByUser(final User user);
 }
