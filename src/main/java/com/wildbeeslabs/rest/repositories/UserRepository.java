@@ -65,7 +65,7 @@ public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
      * @param subType - subscription type
      * @return list of user entities
      */
-    @Query(FIND_BY_SUB_TYPE_AND_DATE_AFTER_QUERY)
+    @Query(FIND_BY_SUB_TYPE_AND_DATE_BEFORE_QUERY)
     List<T> findBySubscriptionTypeAndDateBefore(@Param("subDate") final Date subDate, @Param("subType") final Subscription.SubscriptionType subType);
 
     /**
@@ -76,7 +76,7 @@ public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
      * @param subType - subscription type
      * @return list of user entities
      */
-    @Query(FIND_BY_SUB_TYPE_AND_DATE_BEFORE_QUERY)
+    @Query(FIND_BY_SUB_TYPE_AND_DATE_AFTER_QUERY)
     List<T> findBySubscriptionTypeAndDateAfter(@Param("subDate") final Date subDate, @Param("subType") final Subscription.SubscriptionType subType);
 
     /**
@@ -85,7 +85,7 @@ public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
      * @param subDate - request date
      * @return list of user entities
      */
-    @Query(FIND_BY_DATE_AFTER_QUERY)
+    @Query(FIND_BY_DATE_BEFORE_QUERY)
     List<T> findByDateBefore(@Param("subDate") final Date subDate);
 
     /**
@@ -94,6 +94,6 @@ public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
      * @param subDate - request date
      * @return list of user entities
      */
-    @Query(FIND_BY_DATE_BEFORE_QUERY)
+    @Query(FIND_BY_DATE_AFTER_QUERY)
     List<T> findByDateAfter(@Param("subDate") final Date subDate);
 }
