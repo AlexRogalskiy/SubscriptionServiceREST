@@ -63,11 +63,6 @@ public class SubscriptionServiceImpl<T extends Subscription> implements Subscrip
     }
 
     @Override
-    public List<T> findByUserId(final Long userId) {
-        return subscriptionRepository.findByUserId(userId);
-    }
-
-    @Override
     public List<T> findByName(final String pattern) {
         return subscriptionRepository.findByNameLike(pattern);
     }

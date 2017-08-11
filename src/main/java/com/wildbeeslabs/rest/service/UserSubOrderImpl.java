@@ -73,4 +73,9 @@ public class UserSubOrderImpl<T extends UserSubOrder> implements UserSubOrderSer
     public List<T> findBySubscription(final Subscription subscription) {
         return userSubOrderRepository.findBySubscription(subscription);
     }
+
+    @Override
+    public List<T> findByUserId(final Long userId) {
+        return userSubOrderRepository.findByUserId(userId);
+    }
 }

@@ -31,4 +31,12 @@ public interface UserSubOrderService<T extends UserSubOrder> extends BaseService
      * @return list of subscription orders
      */
     List<T> findBySubscription(final Subscription subscription);
+
+    /**
+     * Get list of subscription entities by user ID
+     *
+     * @param userId - user identifier
+     * @return list of subscription entities
+     */
+    List<T> findByUserId(final Long userId);
 }

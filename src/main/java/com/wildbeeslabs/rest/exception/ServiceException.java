@@ -2,7 +2,7 @@ package com.wildbeeslabs.rest.exception;
 
 /**
  *
- * Service REST Application Exception
+ * Service REST Application exception
  *
  * @author Alex
  * @version 1.0.0
