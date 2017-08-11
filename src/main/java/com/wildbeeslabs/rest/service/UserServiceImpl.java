@@ -38,7 +38,7 @@ public class UserServiceImpl<T extends User> implements UserService<T> {
     }
 
     @Override
-    public T findByName(final String name) {
+    public T findByLogin(final String name) {
         return userRepository.findByLogin(name);
     }
 
@@ -59,7 +59,7 @@ public class UserServiceImpl<T extends User> implements UserService<T> {
 
     @Override
     public boolean isExist(final T user) {
-        return Objects.nonNull(findByName(user.getLogin()));
+        return Objects.nonNull(findByLogin(user.getLogin()));
     }
 
     @Override

@@ -45,6 +45,14 @@ public interface SubscriptionRepository<T extends Subscription> extends JpaRepos
     List<T> findByNameLike(final String name);
 
     /**
+     * Get list of subscription entities by type
+     *
+     * @param type - subscription type
+     * @return list of subscription entities
+     */
+    List<T> findByType(final Subscription.SubscriptionType type);
+
+    /**
      * Get list of subscription entities by user ID
      *
      * @param userId - user identifier

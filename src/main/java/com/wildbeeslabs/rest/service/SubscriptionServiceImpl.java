@@ -38,11 +38,6 @@ public class SubscriptionServiceImpl<T extends Subscription> implements Subscrip
     }
 
     @Override
-    public T findByName(final String name) {
-        return subscriptionRepository.findByName(name);
-    }
-
-    @Override
     public void save(final T subscription) {
         subscriptionRepository.save(subscription);
     }
@@ -73,7 +68,12 @@ public class SubscriptionServiceImpl<T extends Subscription> implements Subscrip
     }
 
     @Override
-    public List<T> findByNamePattern(final String pattern) {
+    public List<T> findByName(final String pattern) {
         return subscriptionRepository.findByNameLike(pattern);
+    }
+
+    @Override
+    public List<T> findByType(final Subscription.SubscriptionType type) {
+        return subscriptionRepository.findByType(type);
     }
 }

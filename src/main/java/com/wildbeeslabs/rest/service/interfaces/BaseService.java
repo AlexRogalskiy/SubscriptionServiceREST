@@ -15,8 +15,6 @@ public interface BaseService<T> {
 
     T findById(final Long id);
 
-    T findByName(final String name);
-
     void save(final T item);
 
     void update(final T item);

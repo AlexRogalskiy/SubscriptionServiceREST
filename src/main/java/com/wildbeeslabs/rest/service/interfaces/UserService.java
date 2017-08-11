@@ -14,7 +14,10 @@ import com.wildbeeslabs.rest.model.User;
 public interface UserService<T extends User> extends BaseService<T> {
 
     /**
-     * Custom user service declarations
+     * Get user entity by login
      *
+     * @param login - user login
+     * @return user entity
      */
+    T findByLogin(final String login);
 }
