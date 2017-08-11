@@ -4,12 +4,14 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -31,7 +33,7 @@ public class User implements Serializable {
     private Long id;
 
     @NotEmpty
-    @Column(name = "Login", nullable = false)
+    @Column(name = "login", nullable = false)
     private String login;
 
     @Column(name = "age", nullable = false)
@@ -47,11 +49,15 @@ public class User implements Serializable {
         ACTIVE, BLOCKED, UNVERIFIED
     }
 
-    @ManyToMany(mappedBy = "users")
-    private Set<Subscription> subscriptions = new HashSet<>();
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private Set<UserSubOrder> subOrders = new HashSet<>();
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getLogin() {
@@ -86,19 +92,19 @@ public class User implements Serializable {
         this.status = status;
     }
 
-    public Set<Subscription> getSubscriptions() {
-        return subscriptions;
+    public Set<UserSubOrder> getSubOrders() {
+        return subOrders;
     }
 
-    public void setSubscriptions(final Set<Subscription> subscriptions) {
-        this.subscriptions = subscriptions;
+    public void setSubOrders(final Set<UserSubOrder> subOrders) {
+        this.subOrders = subOrders;
     }
 
-    public void addSubscription(Subscription subscription) {
-        if (null == subscriptions) {
-            this.subscriptions = new HashSet<>();
+    public void addSubscription(final UserSubOrder subOrder) {
+        if (Objects.isNull(subOrders)) {
+            this.subOrders = new HashSet<>();
         }
-        this.subscriptions.add(subscription);
+        this.subOrders.add(subOrder);
     }
 
     @Override
@@ -110,9 +116,6 @@ public class User implements Serializable {
             return false;
         }
         final User other = (User) obj;
-        if (this.id != other.id) {
-            return false;
-        }
         if (this.age != other.age) {
             return false;
         }
@@ -122,26 +125,29 @@ public class User implements Serializable {
         if (!Objects.equals(this.login, other.login)) {
             return false;
         }
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
         if (this.status != other.status) {
             return false;
         }
-        return Objects.equals(this.subscriptions, other.subscriptions);
+        return Objects.equals(this.subOrders, other.subOrders);
     }
 
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 89 * hash + (int) (this.id ^ (this.id >>> 32));
-        hash = 89 * hash + Objects.hashCode(this.login);
-        hash = 89 * hash + this.age;
-        hash = 89 * hash + (int) (Double.doubleToLongBits(this.rating) ^ (Double.doubleToLongBits(this.rating) >>> 32));
-        hash = 89 * hash + Objects.hashCode(this.status);
-        hash = 89 * hash + Objects.hashCode(this.subscriptions);
+        hash = 83 * hash + Objects.hashCode(this.id);
+        hash = 83 * hash + Objects.hashCode(this.login);
+        hash = 83 * hash + this.age;
+        hash = 83 * hash + (int) (Double.doubleToLongBits(this.rating) ^ (Double.doubleToLongBits(this.rating) >>> 32));
+        hash = 83 * hash + Objects.hashCode(this.status);
+        hash = 83 * hash + Objects.hashCode(this.subOrders);
         return hash;
     }
 
     @Override
     public String toString() {
-        return String.format("User {id: %d, login: %s, age: %d, rating: %f, status: %s, subscriptions: %s}", this.id, this.login, this.age, this.rating, this.status, this.subscriptions);
+        return String.format("User {id: %d, login: %s, age: %d, rating: %f, status: %s, subscriptions: %s}", this.id, this.login, this.age, this.rating, this.status, this.subOrders);
     }
 }

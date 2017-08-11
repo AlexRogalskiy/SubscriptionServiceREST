@@ -8,12 +8,11 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -39,7 +38,7 @@ public class Subscription implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "expire", nullable = true)
+    @Column(name = "expired_at", nullable = true)
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date expireAt;
 
@@ -50,16 +49,15 @@ public class Subscription implements Serializable {
         PREMIUM, STANDARD, ADVANCED
     }
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "users_subscriptions",
-            joinColumns = @JoinColumn(name = "subscription_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private Set<User> users = new HashSet<User>();
+    @OneToMany(mappedBy = "subscriptionId", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private Set<UserSubOrder> userOrders = new HashSet<>();
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -86,19 +84,19 @@ public class Subscription implements Serializable {
         this.type = type;
     }
 
-    public Set<User> getUsers() {
-        return users;
+    public Set<UserSubOrder> getUserOrders() {
+        return userOrders;
     }
 
-    public void setUsers(final Set<User> users) {
-        this.users = users;
+    public void setUserOrders(final Set<UserSubOrder> userOrders) {
+        this.userOrders = userOrders;
     }
 
-    public void addUser(User user) {
-        if (null == users) {
-            this.users = new HashSet<>();
+    public void addUserOrder(final UserSubOrder userOrder) {
+        if (Objects.isNull(userOrders)) {
+            this.userOrders = new HashSet<>();
         }
-        this.users.add(user);
+        this.userOrders.add(userOrder);
     }
 
     @Override
@@ -110,10 +108,10 @@ public class Subscription implements Serializable {
             return false;
         }
         final Subscription other = (Subscription) obj;
-        if (this.id != other.id) {
+        if (!Objects.equals(this.name, other.name)) {
             return false;
         }
-        if (!Objects.equals(this.name, other.name)) {
+        if (!Objects.equals(this.id, other.id)) {
             return false;
         }
         if (!Objects.equals(this.expireAt, other.expireAt)) {
@@ -122,22 +120,22 @@ public class Subscription implements Serializable {
         if (this.type != other.type) {
             return false;
         }
-        return Objects.equals(this.users, other.users);
+        return Objects.equals(this.userOrders, other.userOrders);
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 41 * hash + (int) (this.id ^ (this.id >>> 32));
-        hash = 41 * hash + Objects.hashCode(this.name);
-        hash = 41 * hash + Objects.hashCode(this.expireAt);
-        hash = 41 * hash + Objects.hashCode(this.type);
-        hash = 41 * hash + Objects.hashCode(this.users);
+        int hash = 5;
+        hash = 79 * hash + Objects.hashCode(this.id);
+        hash = 79 * hash + Objects.hashCode(this.name);
+        hash = 79 * hash + Objects.hashCode(this.expireAt);
+        hash = 79 * hash + Objects.hashCode(this.type);
+        hash = 79 * hash + Objects.hashCode(this.userOrders);
         return hash;
     }
 
     @Override
     public String toString() {
-        return String.format("Subscription {id: %d, name: %s, expireAt: %s, type: %s, users: %s}", this.id, this.name, this.expireAt, this.type, this.users);
+        return String.format("Subscription {id: %d, name: %s, expireAt: %s, type: %s, users: %s}", this.id, this.name, this.expireAt, this.type, this.userOrders);
     }
 }
