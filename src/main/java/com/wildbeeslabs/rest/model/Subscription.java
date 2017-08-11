@@ -33,7 +33,7 @@ public class Subscription implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "subscription_id")
-    private long id;
+    private Long id;
 
     @NotEmpty
     @Column(name = "name", nullable = false)
@@ -58,7 +58,7 @@ public class Subscription implements Serializable {
     )
     private Set<User> users = new HashSet<User>();
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

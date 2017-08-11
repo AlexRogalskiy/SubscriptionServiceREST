@@ -28,7 +28,7 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private long id;
+    private Long id;
 
     @NotEmpty
     @Column(name = "Login", nullable = false)
@@ -50,7 +50,7 @@ public class User implements Serializable {
     @ManyToMany(mappedBy = "users")
     private Set<Subscription> subscriptions = new HashSet<>();
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
