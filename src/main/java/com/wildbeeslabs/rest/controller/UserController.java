@@ -29,7 +29,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  * @since 2017-08-08
  */
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api")
 public class UserController {
 
     /**

@@ -1,12 +1,15 @@
 package com.wildbeeslabs.rest.service;
 
 import com.wildbeeslabs.rest.model.User;
+import com.wildbeeslabs.rest.repositories.UserRepository;
 import com.wildbeeslabs.rest.service.interfaces.UserService;
-import java.util.Iterator;
+
 import java.util.List;
 import java.util.Objects;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -15,65 +18,52 @@ import org.springframework.stereotype.Service;
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
+ * @param <T>
  */
 @Service("userService")
-public class UserServiceImpl implements UserService<User> {
+@Transactional
+public class UserServiceImpl<T extends User> implements UserService<T> {
 
-    private List<User> users;
+    @Autowired
+    private UserRepository<T> userRepository;
 
     @Override
-    public List<User> findAll() {
-        return users;
+    public List<T> findAll() {
+        return userRepository.findAll();
     }
 
     @Override
-    public User findById(long id) {
-        for (User user : users) {
-            if (Objects.equals(user.getId(), id)) {
-                return user;
-            }
-        }
-        return null;
+    public T findById(final Long id) {
+        return userRepository.findOne(id);
     }
 
     @Override
-    public User findByName(String name) {
-        for (User user : users) {
-            if (user.getLogin().equalsIgnoreCase(name)) {
-                return user;
-            }
-        }
-        return null;
+    public T findByName(final String name) {
+        return userRepository.findByLogin(name);
     }
 
     @Override
-    public void save(User user) {
-        users.add(user);
+    public void save(final T user) {
+        userRepository.save(user);
     }
 
     @Override
-    public void update(User user) {
-        int index = users.indexOf(user);
-        users.set(index, user);
+    public void update(final T user) {
+        save(user);
     }
 
     @Override
-    public void deleteById(long id) {
-        for (Iterator<User> iterator = users.iterator(); iterator.hasNext();) {
-            User user = iterator.next();
-            if (Objects.equals(user.getId(), id)) {
-                iterator.remove();
-            }
-        }
+    public void deleteById(final Long id) {
+        userRepository.delete(id);
     }
 
     @Override
-    public boolean isExist(User user) {
+    public boolean isExist(final T user) {
         return Objects.nonNull(findByName(user.getLogin()));
     }
 
     @Override
     public void deleteAll() {
-        users.clear();
+        userRepository.deleteAll();
     }
 }

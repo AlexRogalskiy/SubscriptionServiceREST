@@ -12,5 +12,9 @@ import com.wildbeeslabs.rest.model.User;
  * @param <T>
  */
 public interface UserService<T extends User> extends BaseService<T> {
-    //Custom user service declarations
+
+    /**
+     * Custom user service declarations
+     *
+     */
 }

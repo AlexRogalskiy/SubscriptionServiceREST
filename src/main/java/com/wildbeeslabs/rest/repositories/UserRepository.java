@@ -1,6 +1,7 @@
 package com.wildbeeslabs.rest.repositories;
 
 import com.wildbeeslabs.rest.model.User;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +17,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
 
-    T findByName(final String name);
+    /**
+     * Get user entity by login
+     *
+     * @param name - user login
+     * @return user entity
+     */
+    T findByLogin(final String name);
 
 }

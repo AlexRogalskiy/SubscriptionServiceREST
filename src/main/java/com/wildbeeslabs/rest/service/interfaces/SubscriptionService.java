@@ -14,5 +14,19 @@ import java.util.List;
  */
 public interface SubscriptionService<T extends Subscription> extends BaseService<T> {
 
-    public List<T> findByUserId(long userId);
+    /**
+     * Get list of subscription entities by name pattern;
+     *
+     * @param pattern
+     * @return list of subscription entities
+     */
+    List<T> findByNamePattern(final String pattern);
+
+    /**
+     * Get list of subscription entities by user ID
+     *
+     * @param userId - user identifier
+     * @return list of subscription entities
+     */
+    List<T> findByUserId(final Long userId);
 }

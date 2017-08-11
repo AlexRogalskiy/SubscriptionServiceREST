@@ -1,11 +1,15 @@
 package com.wildbeeslabs.rest.service;
 
 import com.wildbeeslabs.rest.model.Subscription;
+import com.wildbeeslabs.rest.repositories.SubscriptionRepository;
 import com.wildbeeslabs.rest.service.interfaces.SubscriptionService;
-import java.util.Iterator;
+
 import java.util.List;
 import java.util.Objects;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -14,70 +18,62 @@ import org.springframework.stereotype.Service;
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
+ * @param <T>
  */
 @Service("subscriptionService")
-public class SubscriptionServiceImpl implements SubscriptionService<Subscription> {
+@Transactional
+public class SubscriptionServiceImpl<T extends Subscription> implements SubscriptionService<T> {
 
-    private List<Subscription> subscriptions;
+    @Autowired
+    private SubscriptionRepository<T> subscriptionRepository;
 
     @Override
-    public List<Subscription> findAll() {
-        return subscriptions;
+    public List<T> findAll() {
+        return subscriptionRepository.findAll();
     }
 
     @Override
-    public Subscription findById(long id) {
-        for (Subscription subscription : subscriptions) {
-            if (Objects.equals(subscription.getId(), id)) {
-                return subscription;
-            }
-        }
-        return null;
+    public T findById(final Long id) {
+        return subscriptionRepository.findOne(id);
     }
 
     @Override
-    public Subscription findByName(String name) {
-        for (Subscription subscription : subscriptions) {
-            if (subscription.getName().equalsIgnoreCase(name)) {
-                return subscription;
-            }
-        }
-        return null;
+    public T findByName(final String name) {
+        return subscriptionRepository.findByName(name);
     }
 
     @Override
-    public void save(Subscription subscription) {
-        subscriptions.add(subscription);
+    public void save(final T subscription) {
+        subscriptionRepository.save(subscription);
     }
 
     @Override
-    public void update(Subscription subscription) {
-        int index = subscriptions.indexOf(subscription);
-        subscriptions.set(index, subscription);
+    public void update(final T subscription) {
+        save(subscription);
     }
 
     @Override
-    public void deleteById(long id) {
-        for (Iterator<Subscription> iterator = subscriptions.iterator(); iterator.hasNext();) {
-            Subscription subscription = iterator.next();
-            if (Objects.equals(subscription.getId(), id)) {
-                iterator.remove();
-            }
-        }
+    public void deleteById(final Long id) {
+        subscriptionRepository.delete(id);
     }
 
     @Override
-    public boolean isExist(Subscription subscription) {
+    public boolean isExist(final T subscription) {
         return Objects.nonNull(findByName(subscription.getName()));
     }
 
     @Override
     public void deleteAll() {
-        subscriptions.clear();
+        subscriptionRepository.deleteAll();
     }
 
     @Override
-    public List<Subscription> findByUserId(long userId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<T> findByUserId(final Long userId) {
+        return subscriptionRepository.findByUserId(userId);
+    }
+
+    @Override
+    public List<T> findByNamePattern(final String pattern) {
+        return subscriptionRepository.findByNameLike(pattern);
     }
 }

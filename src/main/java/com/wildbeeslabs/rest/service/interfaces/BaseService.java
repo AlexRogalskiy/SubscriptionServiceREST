@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface BaseService<T> {
 
-    T findById(long id);
+    T findById(final Long id);
 
     T findByName(final String name);
 
@@ -21,7 +21,7 @@ public interface BaseService<T> {
 
     void update(final T item);
 
-    void deleteById(long id);
+    void deleteById(final Long id);
 
     List<T> findAll();
 
