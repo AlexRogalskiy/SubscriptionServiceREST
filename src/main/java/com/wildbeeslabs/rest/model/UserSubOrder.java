@@ -2,15 +2,13 @@ package com.wildbeeslabs.rest.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -34,28 +32,97 @@ public class UserSubOrder implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private Long userId;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "subscription_id", nullable = false)
-    private Long subscriptionId;
+    private Subscription subscription;
 
     @Column(name = "created_at", nullable = false)
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date createdAt;
 
     @Column(name = "expired_at", nullable = true)
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date expireAt;
-
-    @ManyToMany(mappedBy = "users")
-    private Set<Subscription> subscriptions = new HashSet<>();
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(final User user) {
+        this.user = user;
+    }
+
+    public Subscription getSubscription() {
+        return subscription;
+    }
+
+    public void setSubscription(final Subscription subscription) {
+        this.subscription = subscription;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(final Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getExpireAt() {
+        return expireAt;
+    }
+
+    public void setExpireAt(final Date expireAt) {
+        this.expireAt = expireAt;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (null == obj || obj.getClass() != this.getClass()) {
+            return false;
+        }
+        final UserSubOrder other = (UserSubOrder) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.createdAt, other.createdAt)) {
+            return false;
+        }
+        if (!Objects.equals(this.expireAt, other.expireAt)) {
+            return false;
+        }
+        if (!Objects.equals(this.user, other.user)) {
+            return false;
+        }
+        return Objects.equals(this.subscription, other.subscription);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 23 * hash + Objects.hashCode(this.id);
+        hash = 23 * hash + Objects.hashCode(this.user);
+        hash = 23 * hash + Objects.hashCode(this.subscription);
+        hash = 23 * hash + Objects.hashCode(this.createdAt);
+        hash = 23 * hash + Objects.hashCode(this.expireAt);
+        return hash;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Subscription {id: %d, user: %s, subscription: %s, createdAt: %s, expiredAt: %s}", this.id, this.user, this.subscription, this.createdAt, this.expireAt);
     }
 }

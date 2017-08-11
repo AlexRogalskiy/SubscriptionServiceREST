@@ -1,6 +1,7 @@
 package com.wildbeeslabs.rest.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -13,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -42,6 +44,10 @@ public class User implements Serializable {
     @Column(name = "rating", nullable = false)
     private double rating;
 
+    @Column(name = "registered_at", nullable = false)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date registeredAt;
+
     @Column(name = "status", nullable = false)
     private UserStatusType status;
 
@@ -49,14 +55,14 @@ public class User implements Serializable {
         ACTIVE, BLOCKED, UNVERIFIED
     }
 
-    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<UserSubOrder> subOrders = new HashSet<>();
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -82,6 +88,14 @@ public class User implements Serializable {
 
     public void setRating(double rating) {
         this.rating = rating;
+    }
+
+    public Date getRegisteredAt() {
+        return registeredAt;
+    }
+
+    public void setRegisteredAt(final Date registeredAt) {
+        this.registeredAt = registeredAt;
     }
 
     public UserStatusType getStatus() {
@@ -119,6 +133,9 @@ public class User implements Serializable {
         if (this.age != other.age) {
             return false;
         }
+        if (this.status != other.status) {
+            return false;
+        }
         if (Double.doubleToLongBits(this.rating) != Double.doubleToLongBits(other.rating)) {
             return false;
         }
@@ -128,7 +145,7 @@ public class User implements Serializable {
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (this.status != other.status) {
+        if (!Objects.equals(this.registeredAt, other.registeredAt)) {
             return false;
         }
         return Objects.equals(this.subOrders, other.subOrders);
@@ -142,12 +159,13 @@ public class User implements Serializable {
         hash = 83 * hash + this.age;
         hash = 83 * hash + (int) (Double.doubleToLongBits(this.rating) ^ (Double.doubleToLongBits(this.rating) >>> 32));
         hash = 83 * hash + Objects.hashCode(this.status);
+        hash = 83 * hash + Objects.hashCode(this.registeredAt);
         hash = 83 * hash + Objects.hashCode(this.subOrders);
         return hash;
     }
 
     @Override
     public String toString() {
-        return String.format("User {id: %d, login: %s, age: %d, rating: %f, status: %s, subscriptions: %s}", this.id, this.login, this.age, this.rating, this.status, this.subOrders);
+        return String.format("User {id: %d, login: %s, age: %d, rating: %f, status: %s, registeredAt: %s, subscriptions: %s}", this.id, this.login, this.age, this.rating, this.status, this.registeredAt, this.subOrders);
     }
 }

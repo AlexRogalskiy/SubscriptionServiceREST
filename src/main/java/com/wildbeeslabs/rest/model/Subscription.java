@@ -39,7 +39,7 @@ public class Subscription implements Serializable {
     private String name;
 
     @Column(name = "expired_at", nullable = true)
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date expireAt;
 
     @Column(name = "status", nullable = false)
@@ -49,14 +49,14 @@ public class Subscription implements Serializable {
         PREMIUM, STANDARD, ADVANCED
     }
 
-    @OneToMany(mappedBy = "subscriptionId", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "subscription", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<UserSubOrder> userOrders = new HashSet<>();
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -108,6 +108,9 @@ public class Subscription implements Serializable {
             return false;
         }
         final Subscription other = (Subscription) obj;
+        if (this.type != other.type) {
+            return false;
+        }
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
@@ -115,9 +118,6 @@ public class Subscription implements Serializable {
             return false;
         }
         if (!Objects.equals(this.expireAt, other.expireAt)) {
-            return false;
-        }
-        if (this.type != other.type) {
             return false;
         }
         return Objects.equals(this.userOrders, other.userOrders);
