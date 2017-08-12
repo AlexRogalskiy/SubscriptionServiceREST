@@ -1,9 +1,11 @@
 package com.wildbeeslabs.rest.service;
 
+import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.repositories.UserRepository;
 import com.wildbeeslabs.rest.service.interfaces.UserService;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -65,5 +67,25 @@ public class UserServiceImpl<T extends User> implements UserService<T> {
     @Override
     public void deleteAll() {
         userRepository.deleteAll();
+    }
+
+    @Override
+    public List<T> findBySubscriptionTypeAndDateBefore(final Date subDate, final Subscription.SubscriptionType subType) {
+        return userRepository.findBySubscriptionTypeAndDateBefore(subDate, subType);
+    }
+
+    @Override
+    public List<T> findBySubscriptionTypeAndDateAfter(final Date subDate, final Subscription.SubscriptionType subType) {
+        return userRepository.findBySubscriptionTypeAndDateAfter(subDate, subType);
+    }
+
+    @Override
+    public List<T> findByDateBefore(final Date subDate) {
+        return userRepository.findByDateBefore(subDate);
+    }
+
+    @Override
+    public List<T> findByDateAfter(final Date subDate) {
+        return userRepository.findByDateAfter(subDate);
     }
 }

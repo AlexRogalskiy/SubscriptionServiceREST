@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 /**
  *
@@ -18,6 +20,15 @@ import java.util.List;
  */
 @Repository
 public interface SubscriptionRepository<T extends Subscription> extends JpaRepository<T, Long> {
+
+    /**
+     * Default query to find subscriptions by user id
+     */
+    //SELECT s FROM Subscription s INNER JOIN s.userOrders o INNER JOIN o.user u WHERE u.id = :userId
+    //SELECT o.subscription FROM UserSubOrder o WHERE o.user.id = :userId
+    //SELECT s FROM Subscription s INNER JOIN s.userOrders o WHERE o.user.id = :userId
+    //SELECT o.subscription FROM UserSubOrder o INNER JOIN o.user u WHERE u.id = :userId
+    public final static String FIND_SUB_BY_USER_ID_QUERY = "SELECT o.subscription FROM UserSubOrder o INNER JOIN o.user u WHERE u.id = :userId";
 
     /**
      * Get subscription entity by name
@@ -42,4 +53,13 @@ public interface SubscriptionRepository<T extends Subscription> extends JpaRepos
      * @return list of subscription entities
      */
     List<T> findByType(final Subscription.SubscriptionType type);
+
+    /**
+     * Get list of subscription entities by user ID
+     *
+     * @param userId - user identifier
+     * @return list of subscription orders
+     */
+    @Query(FIND_SUB_BY_USER_ID_QUERY)
+    List<T> findByUserId(@Param("userId") final Long userId);
 }

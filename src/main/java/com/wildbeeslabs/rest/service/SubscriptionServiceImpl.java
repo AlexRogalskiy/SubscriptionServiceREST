@@ -71,4 +71,9 @@ public class SubscriptionServiceImpl<T extends Subscription> implements Subscrip
     public List<T> findByType(final Subscription.SubscriptionType type) {
         return subscriptionRepository.findByType(type);
     }
+
+    @Override
+    public List<T> findByUserId(Long userId) {
+        return subscriptionRepository.findByUserId(userId);
+    }
 }

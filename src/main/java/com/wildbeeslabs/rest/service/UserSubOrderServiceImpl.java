@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service("userSubOrderService")
 @Transactional
-public class UserSubOrderImpl<T extends UserSubOrder> implements UserSubOrderService<T> {
+public class UserSubOrderServiceImpl<T extends UserSubOrder> implements UserSubOrderService<T> {
 
     @Autowired
     private UserSubOrderRepository<T> userSubOrderRepository;
@@ -72,10 +72,5 @@ public class UserSubOrderImpl<T extends UserSubOrder> implements UserSubOrderSer
     @Override
     public List<T> findBySubscription(final Subscription subscription) {
         return userSubOrderRepository.findBySubscription(subscription);
-    }
-
-    @Override
-    public List<T> findByUserId(final Long userId) {
-        return userSubOrderRepository.findByUserId(userId);
     }
 }

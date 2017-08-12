@@ -1,6 +1,7 @@
 package com.wildbeeslabs.rest.service.interfaces;
 
 import com.wildbeeslabs.rest.model.Subscription;
+
 import java.util.List;
 
 /**
@@ -17,16 +18,24 @@ public interface SubscriptionService<T extends Subscription> extends BaseService
     /**
      * Get list of subscription entities by name pattern
      *
-     * @param pattern
+     * @param pattern - subscription name pattern
      * @return list of subscription entities
      */
     List<T> findByName(final String pattern);
 
     /**
-     * Get subscription entities by type
+     * Get list of subscription entities by type
      *
      * @param type - subscription type
      * @return list of subscription entities
      */
     List<T> findByType(final Subscription.SubscriptionType type);
+
+    /**
+     * Get list of subscription entities by user ID
+     *
+     * @param userId - user identifier
+     * @return list of subscription entities
+     */
+    List<T> findByUserId(final Long userId);
 }

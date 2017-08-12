@@ -4,20 +4,20 @@
                  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_2_0.xsd" 
                  version="2.0">
 
-    <named-query name="UserSubOrder.findByUserId">
+    <named-query name="Subscription.findByUserId">
         <query>SELECT o.subscription FROM UserSubOrder o INNER JOIN o.user u WHERE u.id = :userId</query>
     </named-query>
 
-    <named-query name="UserSubOrder.findBySubscriptionTypeAndDateBefore">
+    <named-query name="User.findBySubscriptionTypeAndDateBefore">
         <query>SELECT o.user FROM UserSubOrder o INNER JOIN o.subscription s WHERE s.type = :subType AND o.createdAt <= :subDate</query>
     </named-query>
-    <named-query name="UserSubOrder.findBySubscriptionTypeAndDateAfter">
+    <named-query name="User.findBySubscriptionTypeAndDateAfter">
         <query>SELECT o.user FROM UserSubOrder o INNER JOIN o.subscription s WHERE s.type = :subType AND o.createdAt > :subDate</query>
     </named-query>
-    <named-query name="UserSubOrder.findByDateBefore">
+    <named-query name="User.findByDateBefore">
         <query>SELECT o.user FROM UserSubOrder o WHERE o.createdAt <= :subDate</query>
     </named-query>
-    <named-query name="UserSubOrder.findByDateAfter">
+    <named-query name="User.findByDateAfter">
         <query>SELECT o.user FROM UserSubOrder o WHERE o.createdAt > :subDate</query>
     </named-query>
     

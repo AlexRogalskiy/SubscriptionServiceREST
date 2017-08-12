@@ -17,7 +17,7 @@ import java.util.List;
 public interface UserSubOrderService<T extends UserSubOrder> extends BaseService<T> {
 
     /**
-     * Get list of subscription orders by user
+     * Get list of subscription orders by user entity
      *
      * @param user - user entity
      * @return list of subscription orders
@@ -25,18 +25,10 @@ public interface UserSubOrderService<T extends UserSubOrder> extends BaseService
     List<T> findByUser(final User user);
 
     /**
-     * Get list of subscription orders by subscription
+     * Get list of subscription orders by subscription entity
      *
      * @param subscription - subscription entity
      * @return list of subscription orders
      */
     List<T> findBySubscription(final Subscription subscription);
-
-    /**
-     * Get list of subscription entities by user ID
-     *
-     * @param userId - user identifier
-     * @return list of subscription entities
-     */
-    List<T> findByUserId(final Long userId);
 }
