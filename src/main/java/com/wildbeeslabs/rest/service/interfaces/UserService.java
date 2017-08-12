@@ -26,24 +26,25 @@ public interface UserService<T extends User> extends BaseService<T> {
     T findByLogin(final String login);
 
     /**
-     * Get list of user entities by subscription type after (excluding)
-     * particular date
+     * Get list of user entities by subscription type and subscription date
+     * (after - excluding / before - including)
      *
-     * @param subDate - request date
+     * @param subDate - subscription date
      * @param subType - subscription type
+     * @param dateTypeOrder - date type order (before / after)
      * @return list of user entities
      */
-    List<T> findBySubscriptionTypeAndDateBefore(final Date subDate, final Subscription.SubscriptionType subType);
+    List<T> findBySubscriptionTypeAndDate(final Date subDate, final Subscription.SubscriptionType subType, final DateTypeOrder dateTypeOrder);
 
     /**
-     * Get list of user entities by subscription type before (including)
-     * particular date
+     * Get list of user entities by subscription date (after - excluding /
+     * before - including)
      *
-     * @param subDate - request date
-     * @param subType - subscription type
-     * @return list of user entities
+     * @param subDate - subscription date
+     * @param dateTypeOrder - date type order (before / after)
+     * @return - list of user entities
      */
-    List<T> findBySubscriptionTypeAndDateAfter(final Date subDate, final Subscription.SubscriptionType subType);
+    List<T> findBySubscriptionDate(final Date subDate, final DateTypeOrder dateTypeOrder);
 
     /**
      * Get list of user entities by subscription type
@@ -52,20 +53,4 @@ public interface UserService<T extends User> extends BaseService<T> {
      * @return list of user entities
      */
     List<T> findBySubscriptionType(final Subscription.SubscriptionType subType);
-
-    /**
-     * Get list of user entities after (excluding) particular date
-     *
-     * @param subDate - request date
-     * @return list of user entities
-     */
-    List<T> findByDateBefore(final Date subDate);
-
-    /**
-     * Get list of users entities before (including) particular date
-     *
-     * @param subDate - request date
-     * @return list of user entities
-     */
-    List<T> findByDateAfter(final Date subDate);
 }

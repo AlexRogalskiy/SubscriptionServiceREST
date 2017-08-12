@@ -4,6 +4,7 @@ import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.repositories.UserRepository;
 import com.wildbeeslabs.rest.service.interfaces.UserService;
+import java.util.ArrayList;
 
 import java.util.Date;
 import java.util.List;
@@ -25,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("userService")
 @Transactional
 public class UserServiceImpl<T extends User> implements UserService<T> {
-
+    
     @Autowired
     private UserRepository<T> userRepository;
 
@@ -70,23 +71,23 @@ public class UserServiceImpl<T extends User> implements UserService<T> {
     }
 
     @Override
-    public List<T> findBySubscriptionTypeAndDateBefore(final Date subDate, final Subscription.SubscriptionType subType) {
-        return userRepository.findBySubscriptionTypeAndDateBefore(subDate, subType);
+    public List<T> findBySubscriptionTypeAndDate(final Date subDate, final Subscription.SubscriptionType subType, final DateTypeOrder dateTypeOrder) {
+        if(Objects.equals(DateTypeOrder.BEFORE, dateTypeOrder)) {
+            return userRepository.findBySubscriptionTypeAndDateBefore(subDate, subType);
+        } else if(Objects.equals(DateTypeOrder.AFTER, dateTypeOrder)) {
+            return userRepository.findBySubscriptionTypeAndDateAfter(subDate, subType);
+        }
+        return new ArrayList<>();
     }
 
     @Override
-    public List<T> findBySubscriptionTypeAndDateAfter(final Date subDate, final Subscription.SubscriptionType subType) {
-        return userRepository.findBySubscriptionTypeAndDateAfter(subDate, subType);
-    }
-
-    @Override
-    public List<T> findByDateBefore(final Date subDate) {
-        return userRepository.findByDateBefore(subDate);
-    }
-
-    @Override
-    public List<T> findByDateAfter(final Date subDate) {
-        return userRepository.findByDateAfter(subDate);
+    public List<T> findBySubscriptionDate(final Date subDate, final DateTypeOrder dateTypeOrder) {
+        if(Objects.equals(DateTypeOrder.BEFORE, dateTypeOrder)) {
+            return userRepository.findByDateBefore(subDate);
+        } else if(Objects.equals(DateTypeOrder.AFTER, dateTypeOrder)) {
+            return userRepository.findByDateAfter(subDate);
+        }
+        return new ArrayList<>();
     }
 
     @Override

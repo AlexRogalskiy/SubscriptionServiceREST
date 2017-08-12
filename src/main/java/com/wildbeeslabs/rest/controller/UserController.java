@@ -4,6 +4,7 @@ import com.wildbeeslabs.rest.service.interfaces.UserService;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.exception.ServiceException;
 import com.wildbeeslabs.rest.model.Subscription;
+import com.wildbeeslabs.rest.service.interfaces.BaseService;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -63,13 +64,14 @@ public class UserController {
      *
      * @param subType - subscription type
      * @param subDate - subscription date
-     * @param subDateOrder
+     * @param subDateOrder - date order before / after date
      * @return list of user entities
      */
     @RequestMapping(value = "/user?type={type}&date={date}&order={order}", method = RequestMethod.GET)
-    public ResponseEntity<List<User>> getAllUsersBySubscriptionTypeAndDate(@PathVariable("type") Subscription.SubscriptionType subType, @PathVariable("date") Date subDate, @PathVariable("order") boolean subDateOrder) {
-        LOGGER.info("Fetching all users by subscription type {} and date {} by date order {} (1 - before, 0 - after)", subType, subDate, subDateOrder);
-        List<User> userList = userService.findBySubscriptionTypeAndDateBefore(subDate, subType);
+    public ResponseEntity<List<User>> getAllUsersBySubscriptionTypeAndDate(@PathVariable("date") Date subDate, @PathVariable("type") Subscription.SubscriptionType subType, @PathVariable("order") boolean subDateOrder) {
+        LOGGER.info("Fetching all users by subscription date {} and type {} by date order {} (1 - before, 0 - after)", subType, subDate, subDateOrder);
+        UserService.DateTypeOrder dateTypeOrder = subDateOrder ? UserService.DateTypeOrder.AFTER : UserService.DateTypeOrder.BEFORE;
+        List<User> userList = userService.findBySubscriptionTypeAndDate(subDate, subType, dateTypeOrder);
         if (userList.isEmpty()) {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }

@@ -58,12 +58,11 @@ public class SubscriptionController {
     }
 
     /**
-     * Get list of subscriptions by user ID
+     * Get list of subscription entities by user ID
      *
-     * @param userId - subscription identifier
+     * @param userId - user identifier
      * @return list of subscriptions entities
      */
-    ///subscription?userId={userId}
     @RequestMapping(value = "/user/{userId}/subscription", method = RequestMethod.GET)
     public ResponseEntity<List<Subscription>> getSubscriptionsByUserId(@PathVariable("userId") long userId) {
         LOGGER.info("Fetching subscriptions by user id {}", userId);

@@ -13,6 +13,10 @@ import java.util.List;
  */
 public interface BaseService<T> {
 
+    static enum DateTypeOrder {
+        BEFORE, AFTER;
+    }
+
     T findById(final Long id);
 
     void save(final T item);
