@@ -88,4 +88,9 @@ public class UserServiceImpl<T extends User> implements UserService<T> {
     public List<T> findByDateAfter(final Date subDate) {
         return userRepository.findByDateAfter(subDate);
     }
+
+    @Override
+    public List<T> findBySubscriptionType(final Subscription.SubscriptionType subType) {
+        return userRepository.findBySubscriptionType(subType);
+    }
 }

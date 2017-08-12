@@ -50,6 +50,12 @@ public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
     public final static String FIND_USER_BY_SUB_DATE_BEFORE_QUERY = "SELECT o.user FROM UserSubOrder o WHERE o.createdAt <= :subDate";
 
     /**
+     * Default query to find subscribed users by subscription type
+     */
+    //SELECT u FROM User u INNER JOIN u.subOrders o INNER JOIN o.subscription s WHERE s.type = :subType
+    public final static String FIND_USER_BY_SUB_TYPE_QUERY = "SELECT o.user FROM UserSubOrder o INNER JOIN o.subscription s WHERE s.type = :subType";
+
+    /**
      * Get user entity by login
      *
      * @param name - user login
@@ -58,7 +64,8 @@ public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
     T findByLogin(final String name);
 
     /**
-     * Get list of users entities by subscription type after (excluding) particular date
+     * Get list of user entities by subscription type after (excluding)
+     * particular date
      *
      * @param subDate - request date
      * @param subType - subscription type
@@ -68,7 +75,8 @@ public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
     List<T> findBySubscriptionTypeAndDateBefore(@Param("subDate") final Date subDate, @Param("subType") final Subscription.SubscriptionType subType);
 
     /**
-     * Get list of users entities by subscription type before (including) particular date
+     * Get list of user entities by subscription type before (including)
+     * particular date
      *
      * @param subDate - request date
      * @param subType - subscription type
@@ -78,7 +86,7 @@ public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
     List<T> findBySubscriptionTypeAndDateAfter(@Param("subDate") final Date subDate, @Param("subType") final Subscription.SubscriptionType subType);
 
     /**
-     * Get list of users entities after (excluding) particular date
+     * Get list of user entities after (excluding) particular date
      *
      * @param subDate - request date
      * @return list of user entities
@@ -87,11 +95,20 @@ public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
     List<T> findByDateBefore(@Param("subDate") final Date subDate);
 
     /**
-     * Get list of users entities before (including) particular date
+     * Get list of user entities before (including) particular date
      *
      * @param subDate - request date
      * @return list of user entities
      */
     @Query(FIND_USER_BY_SUB_DATE_AFTER_QUERY)
     List<T> findByDateAfter(@Param("subDate") final Date subDate);
+
+    /**
+     * Get list of user entities by subscription type
+     *
+     * @param subType - subscription type
+     * @return list of user entities
+     */
+    @Query(FIND_USER_BY_SUB_TYPE_QUERY)
+    List<T> findBySubscriptionType(@Param("subType") final Subscription.SubscriptionType subType);
 }

@@ -20,5 +20,8 @@
     <named-query name="User.findByDateAfter">
         <query>SELECT o.user FROM UserSubOrder o WHERE o.createdAt > :subDate</query>
     </named-query>
+    <named-query name="User.findBySubscriptionType">
+        <query>SELECT o.user FROM UserSubOrder o INNER JOIN o.subscription s WHERE s.type = :subType</query>
+    </named-query>
     
 </entity-mappings>

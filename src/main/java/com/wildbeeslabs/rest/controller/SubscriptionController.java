@@ -9,6 +9,7 @@ import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -62,7 +63,8 @@ public class SubscriptionController {
      * @param userId - subscription identifier
      * @return list of subscriptions entities
      */
-    @RequestMapping(value = "/subscription/{userId}", method = RequestMethod.GET)
+    ///subscription?userId={userId}
+    @RequestMapping(value = "/user/{userId}/subscription", method = RequestMethod.GET)
     public ResponseEntity<List<Subscription>> getSubscriptionsByUserId(@PathVariable("userId") long userId) {
         LOGGER.info("Fetching subscriptions by user id {}", userId);
         List<Subscription> subscriptions = subscriptionService.findByUserId(userId);

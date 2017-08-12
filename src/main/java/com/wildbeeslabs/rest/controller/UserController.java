@@ -3,11 +3,14 @@ package com.wildbeeslabs.rest.controller;
 import com.wildbeeslabs.rest.service.interfaces.UserService;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.exception.ServiceException;
+import com.wildbeeslabs.rest.model.Subscription;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +46,7 @@ public class UserController {
     /**
      * Get list of user entities
      *
-     * @return list of users entities
+     * @return list of user entities
      */
     @RequestMapping(value = "/user/", method = RequestMethod.GET)
     public ResponseEntity<List<User>> getAllUsers() {
@@ -51,7 +54,24 @@ public class UserController {
         List<User> userList = userService.findAll();
         if (userList.isEmpty()) {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
-            // You many decide to return HttpStatus.NOT_FOUND
+        }
+        return new ResponseEntity<>(userList, HttpStatus.OK);
+    }
+
+    /**
+     * Get list of user entities by subscription type and date
+     *
+     * @param subType - subscription type
+     * @param subDate - subscription date
+     * @param subDateOrder
+     * @return list of user entities
+     */
+    @RequestMapping(value = "/user?type={type}&date={date}&order={order}", method = RequestMethod.GET)
+    public ResponseEntity<List<User>> getAllUsersBySubscriptionTypeAndDate(@PathVariable("type") Subscription.SubscriptionType subType, @PathVariable("date") Date subDate, @PathVariable("order") boolean subDateOrder) {
+        LOGGER.info("Fetching all users by subscription type {} and date {} by date order {} (1 - before, 0 - after)", subType, subDate, subDateOrder);
+        List<User> userList = userService.findBySubscriptionTypeAndDateBefore(subDate, subType);
+        if (userList.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(userList, HttpStatus.OK);
     }

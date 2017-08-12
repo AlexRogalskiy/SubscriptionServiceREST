@@ -26,7 +26,7 @@ public interface UserService<T extends User> extends BaseService<T> {
     T findByLogin(final String login);
 
     /**
-     * Get list of users entities by subscription type after (excluding)
+     * Get list of user entities by subscription type after (excluding)
      * particular date
      *
      * @param subDate - request date
@@ -36,7 +36,7 @@ public interface UserService<T extends User> extends BaseService<T> {
     List<T> findBySubscriptionTypeAndDateBefore(final Date subDate, final Subscription.SubscriptionType subType);
 
     /**
-     * Get list of users entities by subscription type before (including)
+     * Get list of user entities by subscription type before (including)
      * particular date
      *
      * @param subDate - request date
@@ -46,7 +46,15 @@ public interface UserService<T extends User> extends BaseService<T> {
     List<T> findBySubscriptionTypeAndDateAfter(final Date subDate, final Subscription.SubscriptionType subType);
 
     /**
-     * Get list of users entities after (excluding) particular date
+     * Get list of user entities by subscription type
+     *
+     * @param subType - subscription type
+     * @return list of user entities
+     */
+    List<T> findBySubscriptionType(final Subscription.SubscriptionType subType);
+
+    /**
+     * Get list of user entities after (excluding) particular date
      *
      * @param subDate - request date
      * @return list of user entities
