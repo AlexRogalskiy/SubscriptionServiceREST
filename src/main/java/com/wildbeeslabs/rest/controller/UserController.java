@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
@@ -49,11 +51,12 @@ public class UserController {
      * @return list of user entities
      */
     @RequestMapping(value = "/user/", method = RequestMethod.GET)
-    public ResponseEntity<List<User>> getAllUsers() {
+    @ResponseBody
+    public ResponseEntity<?> getAllUsers() {
         LOGGER.info("Fetching all users");
         List<User> userList = userService.findAll();
         if (userList.isEmpty()) {
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(userList, HttpStatus.OK);
     }
@@ -67,12 +70,13 @@ public class UserController {
      * @return list of user entities
      */
     @RequestMapping(value = "/user?type={type}&date={date}&order={order}", method = RequestMethod.GET)
-    public ResponseEntity<List<User>> getAllUsersBySubscriptionTypeAndDate(@PathVariable("date") Date subDate, @PathVariable("type") Subscription.SubscriptionType subType, @PathVariable("order") boolean subDateOrder) {
+    @ResponseBody
+    public ResponseEntity<?> getAllUsersBySubscriptionTypeAndDate(@PathVariable("date") Date subDate, @PathVariable("type") Subscription.SubscriptionType subType, @PathVariable("order") boolean subDateOrder) {
         LOGGER.info("Fetching all users by subscription date {} and type {} by date order {} (1 - before, 0 - after)", subType, subDate, subDateOrder);
         UserService.DateTypeOrder dateTypeOrder = subDateOrder ? UserService.DateTypeOrder.AFTER : UserService.DateTypeOrder.BEFORE;
         List<User> userList = userService.findBySubscriptionTypeAndDate(subDate, subType, dateTypeOrder);
         if (userList.isEmpty()) {
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(userList, HttpStatus.OK);
     }
@@ -84,13 +88,14 @@ public class UserController {
      * @return user entity
      */
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
-    public ResponseEntity<User> getUserById(@PathVariable("id") long id) {
+    @ResponseBody
+    public ResponseEntity<?> getUserById(@PathVariable("id") long id) {
         LOGGER.info("Fetching user by id {}", id);
         User user = userService.findById(id);
         if (Objects.isNull(user)) {
             String errorMessage = String.format("ERROR: user with id={%d} is not found", id);
             LOGGER.error(errorMessage);
-            return new ResponseEntity(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
@@ -103,12 +108,13 @@ public class UserController {
      * @return response status code
      */
     @RequestMapping(value = "/user/", method = RequestMethod.POST)
-    public ResponseEntity<String> createUser(@RequestBody User user, UriComponentsBuilder ucBuilder) {
+    @ResponseBody
+    public ResponseEntity<?> createUser(@RequestBody User user, UriComponentsBuilder ucBuilder) {
         LOGGER.info("Creating user : {}", user);
         if (userService.isExist(user)) {
             String errorMessage = String.format("ERROR: user with login={%s} already exist", user.getLogin());
             LOGGER.error(errorMessage);
-            return new ResponseEntity(new ServiceException(errorMessage), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.CONFLICT);
         }
         userService.save(user);
         HttpHeaders headers = new HttpHeaders();
@@ -124,13 +130,14 @@ public class UserController {
      * @return updated user entity
      */
     @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User user) {
+    @ResponseBody
+    public ResponseEntity<?> updateUser(@PathVariable("id") long id, @RequestBody User user) {
         LOGGER.info("Updating user by id {}", id);
         User currentUser = userService.findById(id);
         if (Objects.isNull(currentUser)) {
             String errorMessage = String.format("ERROR: user with id={%d} is not found", id);
             LOGGER.error(errorMessage);
-            return new ResponseEntity(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
         }
         currentUser.setLogin(user.getLogin());
         currentUser.setAge(user.getAge());
@@ -146,13 +153,14 @@ public class UserController {
      * @return response status code
      */
     @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<User> deleteUser(@PathVariable("id") long id) {
+    @ResponseBody
+    public ResponseEntity<?> deleteUser(@PathVariable("id") long id) {
         LOGGER.info("Deleting user by id {}", id);
         User user = userService.findById(id);
         if (Objects.isNull(user)) {
             String errorMessage = String.format("ERROR: user with id={%d} is not found", id);
             LOGGER.error(errorMessage);
-            return new ResponseEntity(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
         }
         userService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -164,7 +172,9 @@ public class UserController {
      * @return response status code
      */
     @RequestMapping(value = "/user/", method = RequestMethod.DELETE)
-    public ResponseEntity<User> deleteAllUsers() {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public ResponseEntity<?> deleteAllUsers() {
         LOGGER.info("Deleting all users");
         userService.deleteAll();
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -3,6 +3,7 @@ package com.wildbeeslabs.rest.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,7 +24,7 @@ import javax.persistence.Temporal;
  */
 @Entity
 @Table(name = "user_sub_orders")
-public class UserSubOrder implements Serializable {
+public class UserSubOrder extends BaseEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,9 +39,9 @@ public class UserSubOrder implements Serializable {
     @JoinColumn(name = "subscription_id", nullable = false)
     private Subscription subscription;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "subscribed_at", nullable = false)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date createdAt;
+    private Date subscribedAt;
 
     @Column(name = "expired_at", nullable = true)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
@@ -70,12 +71,12 @@ public class UserSubOrder implements Serializable {
         this.subscription = subscription;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public Date getSubscribedAt() {
+        return subscribedAt;
     }
 
-    public void setCreatedAt(final Date createdAt) {
-        this.createdAt = createdAt;
+    public void setSubscribedAt(final Date subscribedAt) {
+        this.subscribedAt = subscribedAt;
     }
 
     public Date getExpireAt() {
@@ -98,7 +99,7 @@ public class UserSubOrder implements Serializable {
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (!Objects.equals(this.createdAt, other.createdAt)) {
+        if (!Objects.equals(this.subscribedAt, other.subscribedAt)) {
             return false;
         }
         if (!Objects.equals(this.expireAt, other.expireAt)) {
@@ -116,13 +117,13 @@ public class UserSubOrder implements Serializable {
         hash = 23 * hash + Objects.hashCode(this.id);
         hash = 23 * hash + Objects.hashCode(this.user);
         hash = 23 * hash + Objects.hashCode(this.subscription);
-        hash = 23 * hash + Objects.hashCode(this.createdAt);
+        hash = 23 * hash + Objects.hashCode(this.subscribedAt);
         hash = 23 * hash + Objects.hashCode(this.expireAt);
         return hash;
     }
 
     @Override
     public String toString() {
-        return String.format("Subscription {id: %d, user: %s, subscription: %s, createdAt: %s, expiredAt: %s}", this.id, this.user, this.subscription, this.createdAt, this.expireAt);
+        return String.format("Subscription {id: %d, user: %s, subscription: %s, subscribedAt: %s, expiredAt: %s}", this.id, this.user, this.subscription, this.subscribedAt, this.expireAt);
     }
 }

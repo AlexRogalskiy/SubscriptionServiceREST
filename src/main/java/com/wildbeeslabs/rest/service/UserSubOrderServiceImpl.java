@@ -5,6 +5,7 @@ import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.UserSubOrder;
 import com.wildbeeslabs.rest.repositories.UserSubOrderRepository;
 import com.wildbeeslabs.rest.service.interfaces.UserSubOrderService;
+import java.util.Date;
 
 import java.util.List;
 import java.util.Objects;
@@ -72,5 +73,14 @@ public class UserSubOrderServiceImpl<T extends UserSubOrder> implements UserSubO
     @Override
     public List<T> findBySubscription(final Subscription subscription) {
         return userSubOrderRepository.findBySubscription(subscription);
+    }
+
+    @Override
+    public void merge(T itemTo, T itemFrom) {
+        itemTo.setExpireAt(itemFrom.getExpireAt());
+        itemTo.setModifiedAt(new Date());
+        itemTo.setSubscription(itemFrom.getSubscription());
+        itemTo.setUser(itemFrom.getUser());
+        update(itemTo);
     }
 }

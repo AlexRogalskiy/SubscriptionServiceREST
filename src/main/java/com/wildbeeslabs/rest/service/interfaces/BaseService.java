@@ -26,6 +26,8 @@ public interface BaseService<T> {
     void save(final T item);
 
     void update(final T item);
+    
+    void merge(final T itemTo, final T itemFrom);
 
     void deleteById(final Long id);
 

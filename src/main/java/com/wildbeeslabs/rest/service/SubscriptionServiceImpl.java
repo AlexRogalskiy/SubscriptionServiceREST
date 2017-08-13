@@ -3,6 +3,7 @@ package com.wildbeeslabs.rest.service;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.repositories.SubscriptionRepository;
 import com.wildbeeslabs.rest.service.interfaces.SubscriptionService;
+import java.util.Date;
 
 import java.util.List;
 import java.util.Objects;
@@ -75,5 +76,15 @@ public class SubscriptionServiceImpl<T extends Subscription> implements Subscrip
     @Override
     public List<T> findByUserId(Long userId) {
         return subscriptionRepository.findByUserId(userId);
+    }
+
+    @Override
+    public void merge(T itemTo, T itemFrom) {
+        itemTo.setExpireAt(itemFrom.getExpireAt());
+        itemTo.setModifiedAt(new Date());
+        itemTo.setName(itemFrom.getName());
+        itemTo.setType(itemFrom.getType());
+        itemTo.setUserOrders(itemFrom.getUserOrders());
+        update(itemTo);
     }
 }

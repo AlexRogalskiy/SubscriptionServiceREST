@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("userService")
 @Transactional
 public class UserServiceImpl<T extends User> implements UserService<T> {
-    
+
     @Autowired
     private UserRepository<T> userRepository;
 
@@ -72,9 +72,9 @@ public class UserServiceImpl<T extends User> implements UserService<T> {
 
     @Override
     public List<T> findBySubscriptionTypeAndDate(final Date subDate, final Subscription.SubscriptionType subType, final DateTypeOrder dateTypeOrder) {
-        if(Objects.equals(DateTypeOrder.BEFORE, dateTypeOrder)) {
+        if (Objects.equals(DateTypeOrder.BEFORE, dateTypeOrder)) {
             return userRepository.findBySubscriptionTypeAndDateBefore(subDate, subType);
-        } else if(Objects.equals(DateTypeOrder.AFTER, dateTypeOrder)) {
+        } else if (Objects.equals(DateTypeOrder.AFTER, dateTypeOrder)) {
             return userRepository.findBySubscriptionTypeAndDateAfter(subDate, subType);
         }
         return new ArrayList<>();
@@ -82,9 +82,9 @@ public class UserServiceImpl<T extends User> implements UserService<T> {
 
     @Override
     public List<T> findBySubscriptionDate(final Date subDate, final DateTypeOrder dateTypeOrder) {
-        if(Objects.equals(DateTypeOrder.BEFORE, dateTypeOrder)) {
+        if (Objects.equals(DateTypeOrder.BEFORE, dateTypeOrder)) {
             return userRepository.findByDateBefore(subDate);
-        } else if(Objects.equals(DateTypeOrder.AFTER, dateTypeOrder)) {
+        } else if (Objects.equals(DateTypeOrder.AFTER, dateTypeOrder)) {
             return userRepository.findByDateAfter(subDate);
         }
         return new ArrayList<>();
@@ -93,5 +93,15 @@ public class UserServiceImpl<T extends User> implements UserService<T> {
     @Override
     public List<T> findBySubscriptionType(final Subscription.SubscriptionType subType) {
         return userRepository.findBySubscriptionType(subType);
+    }
+
+    @Override
+    public void merge(T itemTo, T itemFrom) {
+        itemTo.setAge(itemFrom.getAge());
+        itemTo.setModifiedAt(new Date());
+        itemTo.setRating(itemFrom.getRating());
+        itemTo.setStatus(itemFrom.getStatus());
+        itemTo.setSubOrders(itemFrom.getSubOrders());
+        update(itemTo);
     }
 }
