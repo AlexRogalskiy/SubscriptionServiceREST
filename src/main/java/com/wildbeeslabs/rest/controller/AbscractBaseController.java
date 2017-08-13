@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 
 /**
  *
- * Abstract Base REST Application Controller implementation
+ * Abstract Base REST Controller implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -27,7 +27,7 @@ public abstract class AbscractBaseController<T extends BaseEntity> implements IB
     /**
      * Default logger instance
      */
-    protected static final Logger LOGGER = LoggerFactory.getLogger(AbscractBaseController.class);
+    protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @Override
     public ResponseEntity<?> getAll() {

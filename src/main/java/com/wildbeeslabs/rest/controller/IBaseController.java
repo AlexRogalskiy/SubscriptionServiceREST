@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 
 /**
  *
- * Base REST Application Controller declaration
+ * Base REST Controller declaration
  *
  * @author Alex
  * @version 1.0.0

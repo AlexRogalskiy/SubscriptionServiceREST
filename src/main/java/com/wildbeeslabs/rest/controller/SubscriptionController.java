@@ -1,17 +1,12 @@
 package com.wildbeeslabs.rest.controller;
 
 import com.wildbeeslabs.rest.service.interfaces.SubscriptionService;
-import com.wildbeeslabs.rest.exception.ServiceException;
 import com.wildbeeslabs.rest.model.Subscription;
+import com.wildbeeslabs.rest.service.interfaces.BaseService;
 
 import java.util.List;
-import java.util.Objects;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,23 +20,19 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  *
- * Subscription REST Application Controller
+ * Subscription REST Controller implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
+ * @param <T>
  */
 @RestController
 @RequestMapping("/api")
-public class SubscriptionController {
-
-    /**
-     * Default logger instance
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(SubscriptionController.class);
+public class SubscriptionController<T extends Subscription> extends AbscractBaseController<T> {
 
     @Autowired
-    private SubscriptionService<Subscription> subscriptionService;
+    private SubscriptionService<T> subscriptionService;
 
     /**
      * Get list of subscription entities
@@ -51,12 +42,7 @@ public class SubscriptionController {
     @RequestMapping(value = "/subscription/", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> getAllSubscriptions() {
-        LOGGER.info("Fetching all subscriptions");
-        List<Subscription> subscriptions = subscriptionService.findAll();
-        if (subscriptions.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(subscriptions, HttpStatus.OK);
+        return super.getAll();
     }
 
     /**
@@ -69,7 +55,7 @@ public class SubscriptionController {
     @ResponseBody
     public ResponseEntity<?> getSubscriptionsByUserId(@PathVariable("userId") long userId) {
         LOGGER.info("Fetching subscriptions by user id {}", userId);
-        List<Subscription> subscriptions = subscriptionService.findByUserId(userId);
+        List<T> subscriptions = subscriptionService.findByUserId(userId);
         if (subscriptions.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -85,14 +71,7 @@ public class SubscriptionController {
     @RequestMapping(value = "/subscription/{id}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> getSubscriptionById(@PathVariable("id") long id) {
-        LOGGER.info("Fetching subscription by id {}", id);
-        Subscription subscription = subscriptionService.findById(id);
-        if (Objects.isNull(subscription)) {
-            String errorMessage = String.format("ERROR: subscription with id={%d} is not found", id);
-            LOGGER.error(errorMessage);
-            return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(subscription, HttpStatus.OK);
+        return super.getById(id);
     }
 
     /**
@@ -104,18 +83,10 @@ public class SubscriptionController {
      */
     @RequestMapping(value = "/subscription/", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<?> createSubscription(@RequestBody Subscription subscription, UriComponentsBuilder ucBuilder) {
-        LOGGER.info("Creating subscription : {}", subscription);
-        if (subscriptionService.isExist(subscription)) {
-            String errorMessage = String.format("ERROR: subscription with bane={%s} already exist", subscription.getName());
-            LOGGER.error(errorMessage);
-            return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.CONFLICT);
-        }
-        subscriptionService.save(subscription);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/api/subscription/{id}").buildAndExpand(subscription.getId()).toUri());
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+    public ResponseEntity<?> createSubscription(@RequestBody T subscription, UriComponentsBuilder ucBuilder) {
+        ResponseEntity<?> response = super.create(subscription);
+        response.getHeaders().setLocation(ucBuilder.path("/api/subscription/{id}").buildAndExpand(subscription.getId()).toUri());
+        return response;
     }
 
     /**
@@ -127,17 +98,8 @@ public class SubscriptionController {
      */
     @RequestMapping(value = "/subscription/{id}", method = RequestMethod.PUT)
     @ResponseBody
-    public ResponseEntity<?> updateUser(@PathVariable("id") long id, @RequestBody Subscription subscription) {
-        LOGGER.info("Updating subscription by id {}", id);
-        Subscription currentSubscription = subscriptionService.findById(id);
-        if (Objects.isNull(currentSubscription)) {
-            String errorMessage = String.format("ERROR: subscription with id={%d} is not found", id);
-            LOGGER.error(errorMessage);
-            return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
-        }
-        currentSubscription.setName(subscription.getName());
-        subscriptionService.update(currentSubscription);
-        return new ResponseEntity<>(currentSubscription, HttpStatus.OK);
+    public ResponseEntity<?> updateUser(@PathVariable("id") long id, @RequestBody T subscription) {
+        return super.update(id, subscription);
     }
 
     /**
@@ -149,15 +111,7 @@ public class SubscriptionController {
     @RequestMapping(value = "/subscription/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseEntity<?> deleteUser(@PathVariable("id") long id) {
-        LOGGER.info("Deleting subscription by id {}", id);
-        Subscription subscription = subscriptionService.findById(id);
-        if (Objects.isNull(subscription)) {
-            String errorMessage = String.format("ERROR: subscription with id={%d} is not found", id);
-            LOGGER.error(errorMessage);
-            return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
-        }
-        subscriptionService.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return super.delete(id);
     }
 
     /**
@@ -169,8 +123,11 @@ public class SubscriptionController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public ResponseEntity<?> deleteAllUsers() {
-        LOGGER.info("Deleting all subscriptions");
-        subscriptionService.deleteAll();
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return super.deleteAll();
+    }
+
+    @Override
+    protected BaseService<T> getService() {
+        return subscriptionService;
     }
 }
