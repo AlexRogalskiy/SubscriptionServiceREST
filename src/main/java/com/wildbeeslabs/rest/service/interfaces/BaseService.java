@@ -17,6 +17,10 @@ public interface BaseService<T> {
         BEFORE, AFTER;
     }
 
+    static enum SortTypeOrder {
+        ASC, DESC;
+    }
+
     T findById(final Long id);
 
     void save(final T item);

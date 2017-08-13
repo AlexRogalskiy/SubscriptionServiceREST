@@ -1,24 +1,24 @@
 package com.wildbeeslabs.rest;
 
-import com.wildbeeslabs.rest.controller.SubscriptionController;
-import com.wildbeeslabs.rest.model.Subscription;
-import com.wildbeeslabs.rest.service.interfaces.SubscriptionService;
+import com.wildbeeslabs.rest.controller.UserController;
+import com.wildbeeslabs.rest.model.User;
+import com.wildbeeslabs.rest.service.interfaces.UserService;
 
 import java.util.ArrayList;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.mockito.BDDMockito.given;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-
-import static org.mockito.BDDMockito.*;
-
-import org.springframework.http.MediaType;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  *
@@ -29,24 +29,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @since 2017-08-08
  */
 @RunWith(SpringRunner.class)
-@WebMvcTest(SubscriptionController.class)
-public class SubscriptionRestApiTest {
+@WebMvcTest(UserController.class)
+public class UserRestApiTest {
 
     @Autowired
     private MockMvc mvc;
 
     @Autowired
-    private SubscriptionService subscriptionService;
+    private UserService usernService;
 
     @Test
-    public void testGetAllSubscriptions() throws Exception {
-        given(this.subscriptionService.findAll()).willReturn(new ArrayList<>());
+    public void testGetAllUsers() throws Exception {
+        given(this.usernService.findAll()).willReturn(new ArrayList<>());
         this.mvc.perform(get("/sboot/vehicle").accept(MediaType.TEXT_PLAIN)).andExpect(status().isOk()).andExpect(content().string("Honda Civic"));
     }
 
     @Test
-    public void testGetSubscriptionById() throws Exception {
-        given(this.subscriptionService.findById(new Long(1))).willReturn(new Subscription());
+    public void testGetUserById() throws Exception {
+        given(this.usernService.findById(new Long(1))).willReturn(new User());
         this.mvc.perform(get("/sboot/vehicle").accept(MediaType.TEXT_PLAIN)).andExpect(status().isOk()).andExpect(content().string("Honda Civic"));
     }
 }

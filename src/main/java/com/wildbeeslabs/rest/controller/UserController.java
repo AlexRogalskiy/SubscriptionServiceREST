@@ -4,7 +4,7 @@ import com.wildbeeslabs.rest.service.interfaces.UserService;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.exception.ServiceException;
 import com.wildbeeslabs.rest.model.Subscription;
-import com.wildbeeslabs.rest.service.interfaces.BaseService;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -18,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
