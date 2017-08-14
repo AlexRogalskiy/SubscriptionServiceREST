@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.Basic;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -37,16 +38,17 @@ public class User extends BaseEntity implements Serializable {
     private Long id;
 
     @NotEmpty
-    @Column(name = "login", nullable = false)
+    @Column(name = "login", nullable = false, unique = true, updatable = false)
     private String login;
 
-    @Column(name = "age", nullable = false)
-    private int age;
+    @Column(name = "age", nullable = true)
+    private Integer age;
 
-    @Column(name = "rating", nullable = false)
-    private double rating;
+    @Column(name = "rating", columnDefinition = "Decimal(10,2) default '1.00'", nullable = false)
+    private Double rating;
 
-    @Column(name = "registered_at", nullable = false)
+    @Basic(optional = false)
+    @Column(name = "registered_at", nullable = false, insertable = false, updatable = false)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date registeredAt;
 
@@ -76,19 +78,19 @@ public class User extends BaseEntity implements Serializable {
         this.login = login;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(final Integer age) {
         this.age = age;
     }
 
-    public double getRating() {
+    public Double getRating() {
         return rating;
     }
 
-    public void setRating(double rating) {
+    public void setRating(final Double rating) {
         this.rating = rating;
     }
 
@@ -128,26 +130,29 @@ public class User extends BaseEntity implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (null == obj || obj.getClass() != this.getClass()) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
             return false;
         }
         final User other = (User) obj;
-        if (this.age != other.age) {
-            return false;
-        }
-        if (this.status != other.status) {
-            return false;
-        }
-        if (Double.doubleToLongBits(this.rating) != Double.doubleToLongBits(other.rating)) {
-            return false;
-        }
         if (!Objects.equals(this.login, other.login)) {
             return false;
         }
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
+        if (!Objects.equals(this.age, other.age)) {
+            return false;
+        }
+        if (!Objects.equals(this.rating, other.rating)) {
+            return false;
+        }
         if (!Objects.equals(this.registeredAt, other.registeredAt)) {
+            return false;
+        }
+        if (this.status != other.status) {
             return false;
         }
         return Objects.equals(this.subOrders, other.subOrders);
@@ -155,14 +160,14 @@ public class User extends BaseEntity implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 83 * hash + Objects.hashCode(this.id);
-        hash = 83 * hash + Objects.hashCode(this.login);
-        hash = 83 * hash + this.age;
-        hash = 83 * hash + (int) (Double.doubleToLongBits(this.rating) ^ (Double.doubleToLongBits(this.rating) >>> 32));
-        hash = 83 * hash + Objects.hashCode(this.status);
-        hash = 83 * hash + Objects.hashCode(this.registeredAt);
-        hash = 83 * hash + Objects.hashCode(this.subOrders);
+        int hash = 5;
+        hash = 29 * hash + Objects.hashCode(this.id);
+        hash = 29 * hash + Objects.hashCode(this.login);
+        hash = 29 * hash + Objects.hashCode(this.age);
+        hash = 29 * hash + Objects.hashCode(this.rating);
+        hash = 29 * hash + Objects.hashCode(this.registeredAt);
+        hash = 29 * hash + Objects.hashCode(this.status);
+        hash = 29 * hash + Objects.hashCode(this.subOrders);
         return hash;
     }
 

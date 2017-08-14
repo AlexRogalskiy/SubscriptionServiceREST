@@ -2,6 +2,8 @@ package com.wildbeeslabs.rest.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
+import javax.persistence.Basic;
 
 import javax.persistence.Column;
 import javax.persistence.Temporal;
@@ -16,11 +18,12 @@ import javax.persistence.Temporal;
  */
 public abstract class BaseEntity implements Serializable {
 
-    @Column(name = "created_at", nullable = false)
+    @Basic(optional = false)
+    @Column(name = "created_at", nullable = false, insertable = false, updatable = false)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date createdAt;
 
-    @Column(name = "modified_at", nullable = false)
+    @Column(name = "modified_at", nullable = true)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date modifiedAt;
 
@@ -38,5 +41,36 @@ public abstract class BaseEntity implements Serializable {
 
     public void setModifiedAt(final Date modifiedAt) {
         this.modifiedAt = modifiedAt;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final BaseEntity other = (BaseEntity) obj;
+        if (!Objects.equals(this.createdAt, other.createdAt)) {
+            return false;
+        }
+        return Objects.equals(this.modifiedAt, other.modifiedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 97 * hash + Objects.hashCode(this.createdAt);
+        hash = 97 * hash + Objects.hashCode(this.modifiedAt);
+        return hash;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("BaseEntity {createdAt: %s, createdAt: %s}", this.createdAt, this.modifiedAt);
     }
 }

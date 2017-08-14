@@ -66,7 +66,6 @@ public class SubscriptionRestTestClient {
         User user = new User();
         user.setAge(32);
         user.setLogin("Tomy");
-        user.setRating(33);
         user.setStatus(User.UserStatusType.ACTIVE);
 
         restTemplate.put(REST_SERVICE_URI + "/user/1", user);

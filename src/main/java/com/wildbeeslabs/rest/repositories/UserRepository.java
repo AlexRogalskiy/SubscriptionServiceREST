@@ -72,7 +72,7 @@ public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
      * @return list of user entities
      */
     @Query(FIND_USER_BY_SUB_TYPE_AND_SUB_DATE_BEFORE_QUERY)
-    List<T> findBySubscriptionTypeAndDateBefore(@Param("subDate") final Date subDate, @Param("subType") final Subscription.SubscriptionType subType);
+    List<T> findBySubscriptionTypeAndDateBefore(@Param("subDate") final Date subDate, @Param("subType") final Subscription.SubscriptionStatusType subType);
 
     /**
      * Get list of user entities by subscription type before (including)
@@ -83,7 +83,7 @@ public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
      * @return list of user entities
      */
     @Query(FIND_USER_BY_SUB_TYPE_AND_SUB_DATE_AFTER_QUERY)
-    List<T> findBySubscriptionTypeAndDateAfter(@Param("subDate") final Date subDate, @Param("subType") final Subscription.SubscriptionType subType);
+    List<T> findBySubscriptionTypeAndDateAfter(@Param("subDate") final Date subDate, @Param("subType") final Subscription.SubscriptionStatusType subType);
 
     /**
      * Get list of user entities after (excluding) particular date
@@ -110,5 +110,5 @@ public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
      * @return list of user entities
      */
     @Query(FIND_USER_BY_SUB_TYPE_QUERY)
-    List<T> findBySubscriptionType(@Param("subType") final Subscription.SubscriptionType subType);
+    List<T> findBySubscriptionType(@Param("subType") final Subscription.SubscriptionStatusType subType);
 }

@@ -45,9 +45,9 @@ public class Subscription extends BaseEntity implements Serializable {
     private Date expireAt;
 
     @Column(name = "status", nullable = false)
-    private SubscriptionType type;
+    private SubscriptionStatusType type;
 
-    public static enum SubscriptionType {
+    public static enum SubscriptionStatusType {
         PREMIUM, STANDARD, ADVANCED
     }
 
@@ -78,11 +78,11 @@ public class Subscription extends BaseEntity implements Serializable {
         this.expireAt = expireAt;
     }
 
-    public SubscriptionType getType() {
+    public SubscriptionStatusType getType() {
         return type;
     }
 
-    public void setType(final SubscriptionType type) {
+    public void setType(final SubscriptionStatusType type) {
         this.type = type;
     }
 

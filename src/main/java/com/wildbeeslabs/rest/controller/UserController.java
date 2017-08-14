@@ -7,6 +7,7 @@ import com.wildbeeslabs.rest.service.interfaces.BaseService;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,15 +52,19 @@ public class UserController<T extends User> extends AbscractBaseController<T> {
     /**
      * Get list of user entities by subscription type and date
      *
+     * @param id
      * @param subType - subscription type
      * @param subDate - subscription date
      * @param subDateOrder - date order before / after date
      * @return list of user entities
      */
-    @RequestMapping(params = {"type", "date", "order"}, value = "/users/", method = RequestMethod.GET, consumes = {"application/xml", "application/json"})
+    @RequestMapping(params = {"type", "date", "order"}, value = {"/users/", "/user/{id}"}, method = RequestMethod.GET, consumes = {"application/xml", "application/json"})
     @ResponseBody
-    public ResponseEntity<?> getAllUsersBySubscriptionTypeAndDate(@RequestParam(name = "date", required = false) Date subDate, @RequestParam(name = "type", required = false) Subscription.SubscriptionType subType, @RequestParam(name = "order", required = false, defaultValue = "false") Boolean subDateOrder) {
+    public ResponseEntity<?> getAllUsersBySubscriptionTypeAndDate(@PathVariable Optional<Long> id, @RequestParam(name = "date", required = false) Date subDate, @RequestParam(name = "type", required = false) Subscription.SubscriptionStatusType subType, @RequestParam(name = "order", required = false, defaultValue = "false") Boolean subDateOrder) {
         LOGGER.info("Fetching all users by subscription date {} and type {} by date order {} (1 - before, 0 - after)", subType, subDate, subDateOrder);
+        if (id.isPresent()) {
+            id.get();
+        }
         UserService.DateTypeOrder dateTypeOrder = subDateOrder ? UserService.DateTypeOrder.AFTER : UserService.DateTypeOrder.BEFORE;
         List<T> userList = userService.findBySubscriptionTypeAndDate(subDate, subType, dateTypeOrder);
         if (userList.isEmpty()) {

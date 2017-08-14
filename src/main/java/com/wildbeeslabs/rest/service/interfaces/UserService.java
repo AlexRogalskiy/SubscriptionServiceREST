@@ -34,7 +34,7 @@ public interface UserService<T extends User> extends BaseService<T> {
      * @param dateTypeOrder - date type order (before / after)
      * @return list of user entities
      */
-    List<T> findBySubscriptionTypeAndDate(final Date subDate, final Subscription.SubscriptionType subType, final DateTypeOrder dateTypeOrder);
+    List<T> findBySubscriptionTypeAndDate(final Date subDate, final Subscription.SubscriptionStatusType subType, final DateTypeOrder dateTypeOrder);
 
     /**
      * Get list of user entities by subscription date (after - excluding /
@@ -52,5 +52,5 @@ public interface UserService<T extends User> extends BaseService<T> {
      * @param subType - subscription type
      * @return list of user entities
      */
-    List<T> findBySubscriptionType(final Subscription.SubscriptionType subType);
+    List<T> findBySubscriptionType(final Subscription.SubscriptionStatusType subType);
 }

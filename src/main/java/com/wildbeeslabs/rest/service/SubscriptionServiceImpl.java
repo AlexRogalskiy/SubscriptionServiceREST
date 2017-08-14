@@ -73,7 +73,7 @@ public class SubscriptionServiceImpl<T extends Subscription> implements Subscrip
     }
 
     @Override
-    public List<T> findByType(final Subscription.SubscriptionType type) {
+    public List<T> findByType(final Subscription.SubscriptionStatusType type) {
         return subscriptionRepository.findByType(type);
     }
 

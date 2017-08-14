@@ -38,12 +38,12 @@ public class UsersSubscriptionsDBTest {
         Subscription groupAdmin = new Subscription();
         groupAdmin.setExpireAt(new Date());
         groupAdmin.setName("Administrator Group");
-        groupAdmin.setType(Subscription.SubscriptionType.PREMIUM);
+        groupAdmin.setType(Subscription.SubscriptionStatusType.PREMIUM);
 
         Subscription groupGuest = new Subscription();
         groupGuest.setExpireAt(new Date());
         groupGuest.setName("Guest Group");
-        groupGuest.setType(Subscription.SubscriptionType.STANDARD);
+        groupGuest.setType(Subscription.SubscriptionStatusType.STANDARD);
 
         User user1 = new User();
         user1.setAge(56);
