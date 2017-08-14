@@ -25,6 +25,8 @@
         <springsecurity.version>4.2.3.RELEASE</springsecurity.version>
         <hibernate.version>4.2.7.SP1</hibernate.version>
         <apache.commons.version>3.5</apache.commons.version>
+        
+        <docker.image.prefix>rest-api</docker.image.prefix>
     </properties>
     
     <build>
@@ -35,10 +37,26 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
-        <plugins>   
+        <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>1.3.4</version>
+                <configuration>
+                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                    <dockerDirectory>/</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.war</include>
+                        </resource>
+                    </resources>
+                </configuration>
             </plugin>
         </plugins>
     </build>
