@@ -94,6 +94,6 @@ public class UserSubOrderServiceImpl<T extends UserSubOrder> implements UserSubO
 
     @Override
     public List<T> findSubscribedAtBetween(final Date dateFrom, final Date dateTo) {
-        return userSubOrderRepository.findSubscribedAtBetween(dateFrom, dateTo);
+        return userSubOrderRepository.findBySubscribedAtBetween(dateFrom, dateTo);
     }
 }

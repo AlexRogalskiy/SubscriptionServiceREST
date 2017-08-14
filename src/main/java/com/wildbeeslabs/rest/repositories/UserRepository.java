@@ -6,7 +6,6 @@ import com.wildbeeslabs.rest.model.User;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -21,7 +20,7 @@ import org.springframework.stereotype.Repository;
  * @param <T>
  */
 @Repository
-public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
+public interface UserRepository<T extends User> extends BaseRepository<T> {
 
     /**
      * Default query to find subscribed users by subscription type and date
@@ -56,12 +55,12 @@ public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
     public final static String FIND_USER_BY_SUB_TYPE_QUERY = "SELECT o.user FROM UserSubOrder o INNER JOIN o.subscription s WHERE s.type = :subType";
 
     /**
-     * Get user entity by login
+     * Get user entity by login (case insensitive)
      *
      * @param name - user login
      * @return user entity
      */
-    T findByLogin(final String name);
+    T findByLoginIgnoreCase(final String name);
 
     /**
      * Get list of user entities by subscription type after (excluding)

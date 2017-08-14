@@ -10,10 +10,14 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -29,8 +33,9 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @version 1.0.0
  * @since 2017-08-08
  */
-@Entity
+@Entity(name = "User")
 @Table(name = "users")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User extends BaseEntity implements Serializable {
 
     @Id
@@ -55,6 +60,7 @@ public class User extends BaseEntity implements Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date registeredAt;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private UserStatusType status;
 

@@ -44,7 +44,7 @@ public class UserServiceImpl<T extends User> implements UserService<T> {
 
     @Override
     public T findByLogin(final String name) {
-        return userRepository.findByLogin(name);
+        return userRepository.findByLoginIgnoreCase(name);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class UserServiceImpl<T extends User> implements UserService<T> {
     }
 
     @Override
-    public List<T> findBySubscriptionTypeAndDate(final Date subDate, final Subscription.SubscriptionStatusType subType, final DateTypeOrder dateTypeOrder) {
+    public List<T> findAllBySubscriptionTypeAndDate(final Date subDate, final Subscription.SubscriptionStatusType subType, final DateTypeOrder dateTypeOrder) {
         if (Objects.nonNull(subDate) && Objects.nonNull(subType)) {
             if (Objects.equals(dateTypeOrder, DateTypeOrder.BEFORE)) {
                 return userRepository.findBySubscriptionTypeAndDateBefore(subDate, subType);
@@ -90,16 +90,16 @@ public class UserServiceImpl<T extends User> implements UserService<T> {
             }
         } else {
             if (Objects.nonNull(subDate)) {
-                return this.findBySubscriptionDate(subDate, dateTypeOrder);
+                return this.findAllBySubscriptionDate(subDate, dateTypeOrder);
             } else if (Objects.nonNull(subType)) {
-                return this.findBySubscriptionType(subType);
+                return this.findAllBySubscriptionType(subType);
             }
         }
-        return new ArrayList<>();
+        return this.findAll();
     }
 
     @Override
-    public List<T> findBySubscriptionDate(final Date subDate, final DateTypeOrder dateTypeOrder) {
+    public List<T> findAllBySubscriptionDate(final Date subDate, final DateTypeOrder dateTypeOrder) {
         if (Objects.equals(dateTypeOrder, DateTypeOrder.BEFORE)) {
             return userRepository.findByDateBefore(subDate);
         } else if (Objects.equals(dateTypeOrder, DateTypeOrder.AFTER)) {
@@ -109,7 +109,7 @@ public class UserServiceImpl<T extends User> implements UserService<T> {
     }
 
     @Override
-    public List<T> findBySubscriptionType(final Subscription.SubscriptionStatusType subType) {
+    public List<T> findAllBySubscriptionType(final Subscription.SubscriptionStatusType subType) {
         return userRepository.findBySubscriptionType(subType);
     }
 

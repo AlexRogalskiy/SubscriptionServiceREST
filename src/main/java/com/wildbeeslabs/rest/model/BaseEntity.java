@@ -6,6 +6,7 @@ import java.util.Objects;
 import javax.persistence.Basic;
 
 import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 
 /**
@@ -16,6 +17,7 @@ import javax.persistence.Temporal;
  * @version 1.0.0
  * @since 2017-08-08
  */
+@MappedSuperclass
 public abstract class BaseEntity implements Serializable {
 
     @Basic(optional = false)

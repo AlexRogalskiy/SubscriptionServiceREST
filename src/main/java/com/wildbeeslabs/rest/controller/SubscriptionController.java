@@ -37,7 +37,7 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
     /**
      * Get list of subscription entities
      *
-     * @return list of subscriptions entities
+     * @return list of subscription entities
      */
     @RequestMapping(value = "/subscriptions/", method = RequestMethod.GET, consumes = {"application/xml", "application/json"})
     @ResponseBody
@@ -49,7 +49,7 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
      * Get list of subscription entities by user ID
      *
      * @param userId - user identifier
-     * @return list of subscriptions entities
+     * @return list of subscription entities
      */
     @RequestMapping(value = "/user/{userId}/subscription", method = RequestMethod.GET, consumes = {"application/xml", "application/json"})
     @ResponseBody

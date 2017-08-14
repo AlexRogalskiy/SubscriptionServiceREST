@@ -7,7 +7,6 @@ import java.util.Date;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -20,7 +19,7 @@ import org.springframework.stereotype.Repository;
  * @param <T>
  */
 @Repository
-public interface UserSubOrderRepository<T extends UserSubOrder> extends JpaRepository<T, Long> {
+public interface UserSubOrderRepository<T extends UserSubOrder> extends BaseRepository<T> {
 
     /**
      * Get list of subscription orders by user
@@ -43,9 +42,9 @@ public interface UserSubOrderRepository<T extends UserSubOrder> extends JpaRepos
      *
      * @param dateFrom - start date of range
      * @param dateTo - end date of range
-     * @return list of subscription orders
+     * @return list of subscription ordersF
      */
-    List<T> findSubscribedAtBetween(final Date dateFrom, final Date dateTo);
+    List<T> findBySubscribedAtBetween(final Date dateFrom, final Date dateTo);
 
     /**
      * Get list of subscription orders before (including) particular date
@@ -53,7 +52,7 @@ public interface UserSubOrderRepository<T extends UserSubOrder> extends JpaRepos
      * @param date - request date
      * @return list of subscription orders
      */
-    List<T> findSubscribedAtLessThanEqual(final Date date);
+    List<T> findBySubscribedAtLessThanEqual(final Date date);
 
     /**
      * Get list of subscription orders after (excluding) particular date
@@ -61,5 +60,5 @@ public interface UserSubOrderRepository<T extends UserSubOrder> extends JpaRepos
      * @param date - request date
      * @return list of subscription orders
      */
-    List<T> findSubscribedAtGreaterThan(final Date date);
+    List<T> findBySubscribedAtGreaterThan(final Date date);
 }

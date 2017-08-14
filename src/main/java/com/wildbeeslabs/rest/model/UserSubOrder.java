@@ -24,7 +24,7 @@ import javax.validation.constraints.NotNull;
  * @version 1.0.0
  * @since 2017-08-08
  */
-@Entity
+@Entity(name = "UserSubOrder")
 @Table(name = "user_sub_orders")
 public class UserSubOrder extends BaseEntity implements Serializable {
 

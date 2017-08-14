@@ -40,18 +40,7 @@ public class UserController<T extends User> extends AbscractBaseController<T> {
     private UserService<T> userService;
 
     /**
-     * Get list of user entities
-     *
-     * @return list of user entities
-     */
-    @RequestMapping(value = "/users/", method = RequestMethod.GET, consumes = {"application/xml", "application/json"})
-    @ResponseBody
-    public ResponseEntity<?> getAllUsers() {
-        return super.getAll();
-    }
-
-    /**
-     * Get list of user entities by subscription type and date
+     * Get list of user entities by subscription type / date / date order
      *
      * @param subType - subscription type
      * @param subDate - subscription date
@@ -60,7 +49,7 @@ public class UserController<T extends User> extends AbscractBaseController<T> {
      */
     @RequestMapping(params = {"type", "date", "order"}, value = "/users/", method = RequestMethod.GET, consumes = {"application/xml", "application/json"})
     @ResponseBody
-    public ResponseEntity<?> getAllUsersBySubscriptionTypeAndDate(@RequestParam(name = "date", required = false) Optional<Date> subDate, @RequestParam(name = "type", required = false) Optional<Subscription.SubscriptionStatusType> subType, @RequestParam(name = "order", required = false, defaultValue = "false") Optional<Boolean> subDateOrder) {
+    public ResponseEntity<?> getAllUsers(@RequestParam(name = "date", required = false) Optional<Date> subDate, @RequestParam(name = "type", required = false) Optional<Subscription.SubscriptionStatusType> subType, @RequestParam(name = "order", required = false, defaultValue = "false") Optional<Boolean> subDateOrder) {
         LOGGER.info("Fetching all users by subscription date {} and type {} by date order {} (1 - before, 0 - after)", subType, subDate, subDateOrder);
 
         Date sDate = subDate.isPresent() ? subDate.get() : null;
@@ -68,7 +57,7 @@ public class UserController<T extends User> extends AbscractBaseController<T> {
         Boolean sDateOrder = subDateOrder.isPresent() ? subDateOrder.get() : null;
         UserService.DateTypeOrder dateTypeOrder = Objects.equals(sDateOrder, Boolean.TRUE) ? UserService.DateTypeOrder.AFTER : UserService.DateTypeOrder.BEFORE;
 
-        List<T> userList = userService.findBySubscriptionTypeAndDate(sDate, sType, dateTypeOrder);
+        List<T> userList = userService.findAllBySubscriptionTypeAndDate(sDate, sType, dateTypeOrder);
         if (userList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
