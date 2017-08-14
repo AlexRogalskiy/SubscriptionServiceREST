@@ -15,13 +15,13 @@ public interface IBaseController<T> {
 
     ResponseEntity<?> getAll();
 
-    ResponseEntity<?> getById(long id);
+    ResponseEntity<?> getById(final Long id);
 
     ResponseEntity<?> create(final T item);
 
-    ResponseEntity<?> update(long id, final T item);
+    ResponseEntity<?> update(final Long id, final T item);
 
-    ResponseEntity<?> delete(long id);
+    ResponseEntity<?> delete(final Long id);
 
     ResponseEntity<?> deleteAll();
 }

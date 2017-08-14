@@ -40,7 +40,7 @@ public abstract class AbscractBaseController<T extends BaseEntity> implements IB
     }
 
     @Override
-    public ResponseEntity<?> getById(long id) {
+    public ResponseEntity<?> getById(final Long id) {
         LOGGER.info("Fetching item by id {}", id);
         T item = getService().findById(id);
         if (Objects.isNull(item)) {
@@ -64,7 +64,7 @@ public abstract class AbscractBaseController<T extends BaseEntity> implements IB
     }
 
     @Override
-    public ResponseEntity<?> update(long id, final T item) {
+    public ResponseEntity<?> update(final Long id, final T item) {
         LOGGER.info("Updating item by id {}", id);
         T currentItem = getService().findById(id);
         if (Objects.isNull(currentItem)) {
@@ -77,7 +77,7 @@ public abstract class AbscractBaseController<T extends BaseEntity> implements IB
     }
 
     @Override
-    public ResponseEntity<?> delete(long id) {
+    public ResponseEntity<?> delete(final Long id) {
         LOGGER.info("Deleting item by id {}", id);
         T item = getService().findById(id);
         if (Objects.isNull(item)) {

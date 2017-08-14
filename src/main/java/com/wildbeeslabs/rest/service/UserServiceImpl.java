@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +32,7 @@ public class UserServiceImpl<T extends User> implements UserService<T> {
     private UserRepository<T> userRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<T> findAll() {
         return userRepository.findAll();
     }
@@ -56,6 +58,13 @@ public class UserServiceImpl<T extends User> implements UserService<T> {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN') AND hasRole('DBA')")
+    public void delete(final T user) {
+        userRepository.delete(user);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN') AND hasRole('DBA')")
     public void deleteById(final Long id) {
         userRepository.delete(id);
     }
@@ -66,6 +75,7 @@ public class UserServiceImpl<T extends User> implements UserService<T> {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN') AND hasRole('DBA')")
     public void deleteAll() {
         userRepository.deleteAll();
     }
@@ -96,7 +106,7 @@ public class UserServiceImpl<T extends User> implements UserService<T> {
     }
 
     @Override
-    public void merge(T itemTo, T itemFrom) {
+    public void merge(final T itemTo, final T itemFrom) {
         itemTo.setAge(itemFrom.getAge());
         itemTo.setModifiedAt(new Date());
         itemTo.setRating(itemFrom.getRating());

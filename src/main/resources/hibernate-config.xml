@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>       
+    <session-factory>
+        <!-- Database connection settings -->
+        <property name="datasource.subscriptionapp.driverClassName">com.mysql.jdbc.Driver</property>
+        <property name="datasource.subscriptionapp.url">jdbc:mysql://localhost:3306/subscriptiondb</property>
+        <property name="datasource.subscriptionapp.username">root</property>
+        <property name="datasource.subscriptionapp.password">toor</property>
+        <property name="datasource.subscriptionapp.hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="datasource.subscriptionapp.hibernate.hbm2ddl.method">create-drop</property>
+        <property name="datasource.subscriptionapp.hibernate.show_sql">true</property>
+        <property name="datasource.subscriptionapp.hibernate.format_sql">true</property>
+        <property name="datasource.subscriptionapp.defaultSchema"></property>
+        <property name="datasource.subscriptionapp.hibernate.globally_quoted_identifiers">true</property>
+     
+        <mapping class="com.wildbeeslabs.rest.model.User"/>
+        <mapping class="com.wildbeeslabs.rest.model.Subscription"/>
+        <mapping class="com.wildbeeslabs.rest.model.UserSubOrder"/>
+       
+    </session-factory>
+</hibernate-configuration>

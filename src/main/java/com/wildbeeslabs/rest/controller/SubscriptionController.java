@@ -39,7 +39,7 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
      *
      * @return list of subscriptions entities
      */
-    @RequestMapping(value = "/subscription/", method = RequestMethod.GET)
+    @RequestMapping(value = "/subscriptions/", method = RequestMethod.GET, consumes = {"application/xml", "application/json"})
     @ResponseBody
     public ResponseEntity<?> getAllSubscriptions() {
         return super.getAll();
@@ -51,9 +51,9 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
      * @param userId - user identifier
      * @return list of subscriptions entities
      */
-    @RequestMapping(value = "/user/{userId}/subscription", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/{userId}/subscription", method = RequestMethod.GET, consumes = {"application/xml", "application/json"})
     @ResponseBody
-    public ResponseEntity<?> getSubscriptionsByUserId(@PathVariable("userId") long userId) {
+    public ResponseEntity<?> getSubscriptionsByUserId(@PathVariable("userId") Long userId) {
         LOGGER.info("Fetching subscriptions by user id {}", userId);
         List<T> subscriptions = subscriptionService.findByUserId(userId);
         if (subscriptions.isEmpty()) {
@@ -68,9 +68,9 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
      * @param id - subscription identifier
      * @return subscription entity
      */
-    @RequestMapping(value = "/subscription/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/subscription/{id}", method = RequestMethod.GET, consumes = {"application/xml", "application/json"})
     @ResponseBody
-    public ResponseEntity<?> getSubscriptionById(@PathVariable("id") long id) {
+    public ResponseEntity<?> getSubscriptionById(@PathVariable("id") Long id) {
         return super.getById(id);
     }
 
@@ -81,7 +81,7 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
      * @param ucBuilder
      * @return request status code
      */
-    @RequestMapping(value = "/subscription/", method = RequestMethod.POST)
+    @RequestMapping(value = "/subscription/", method = RequestMethod.POST, consumes = {"application/xml", "application/json"})
     @ResponseBody
     public ResponseEntity<?> createSubscription(@RequestBody T subscription, UriComponentsBuilder ucBuilder) {
         ResponseEntity<?> response = super.create(subscription);
@@ -96,9 +96,9 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
      * @param subscription - subscription entity
      * @return updated subscription entity
      */
-    @RequestMapping(value = "/subscription/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/subscription/{id}", method = RequestMethod.PUT, consumes = {"application/xml", "application/json"})
     @ResponseBody
-    public ResponseEntity<?> updateUser(@PathVariable("id") long id, @RequestBody T subscription) {
+    public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @RequestBody T subscription) {
         return super.update(id, subscription);
     }
 
@@ -108,9 +108,9 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
      * @param id - subscription identifier
      * @return response status code
      */
-    @RequestMapping(value = "/subscription/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/subscription/{id}", method = RequestMethod.DELETE, consumes = {"application/xml", "application/json"})
     @ResponseBody
-    public ResponseEntity<?> deleteUser(@PathVariable("id") long id) {
+    public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
         return super.delete(id);
     }
 
@@ -119,7 +119,7 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
      *
      * @return response status code
      */
-    @RequestMapping(value = "/subscription/", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/subscription/", method = RequestMethod.DELETE, consumes = {"application/xml", "application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public ResponseEntity<?> deleteAllUsers() {

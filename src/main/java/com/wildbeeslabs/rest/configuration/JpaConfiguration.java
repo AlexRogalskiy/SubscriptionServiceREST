@@ -30,18 +30,20 @@ import com.zaxxer.hikari.HikariDataSource;
 @EnableJpaRepositories(basePackages = "com.wildbeeslabs.rest.repositories",
         entityManagerFactoryRef = "entityManagerFactory",
         transactionManagerRef = "transactionManager")
+//@ImportResource("classpath:hibernate-config.xml")
+//@PropertySource({"classpath:application.yml"})
 @EnableTransactionManagement
 public class JpaConfiguration {
 
     @Autowired
     private Environment environment;
 
-    @Value("${datasource.sampleapp.maxPoolSize:10}")
+    @Value("${datasource.subscriptionapp.maxPoolSize:10}")
     private int maxPoolSize;
 
     @Bean
     @Primary
-    @ConfigurationProperties(prefix = "datasource.sampleapp")
+    @ConfigurationProperties(prefix = "datasource.subscriptionapp")
     public DataSourceProperties dataSourceProperties() {
         return new DataSourceProperties();
     }
@@ -71,7 +73,7 @@ public class JpaConfiguration {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws NamingException {
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setDataSource(dataSource());
-        factoryBean.setPackagesToScan(new String[]{"com.websystique.springboot.model"});
+        factoryBean.setPackagesToScan(new String[]{"com.wildbeeslabs.rest.model"});
         factoryBean.setJpaVendorAdapter(jpaVendorAdapter());
         factoryBean.setJpaProperties(jpaProperties());
         return factoryBean;
@@ -87,16 +89,19 @@ public class JpaConfiguration {
     }
 
     /*
-     * Map of Hibernate specific properties
+     * Set of Hibernate specific properties
      */
     private Properties jpaProperties() {
         Properties properties = new Properties();
-        properties.put("hibernate.dialect", environment.getRequiredProperty("datasource.sampleapp.hibernate.dialect"));
-        properties.put("hibernate.hbm2ddl.auto", environment.getRequiredProperty("datasource.sampleapp.hibernate.hbm2ddl.method"));
-        properties.put("hibernate.show_sql", environment.getRequiredProperty("datasource.sampleapp.hibernate.show_sql"));
-        properties.put("hibernate.format_sql", environment.getRequiredProperty("datasource.sampleapp.hibernate.format_sql"));
-        if (StringUtils.isNotEmpty(environment.getRequiredProperty("datasource.sampleapp.defaultSchema"))) {
-            properties.put("hibernate.default_schema", environment.getRequiredProperty("datasource.sampleapp.defaultSchema"));
+        properties.put("hibernate.dialect", environment.getRequiredProperty("datasource.subscriptionapp.hibernate.dialect"));
+        properties.put("hibernate.hbm2ddl.auto", environment.getRequiredProperty("datasource.subscriptionapp.hibernate.hbm2ddl.method"));
+        properties.put("hibernate.show_sql", environment.getRequiredProperty("datasource.subscriptionapp.hibernate.show_sql"));
+        properties.put("hibernate.format_sql", environment.getRequiredProperty("datasource.subscriptionapp.hibernate.format_sql"));
+        if (StringUtils.isNotEmpty(environment.getRequiredProperty("datasource.subscriptionapp.defaultSchema"))) {
+            properties.put("hibernate.default_schema", environment.getRequiredProperty("datasource.subscriptionapp.defaultSchema"));
+        }
+        if (StringUtils.isNotEmpty(environment.getRequiredProperty("datasource.subscriptionapp.hibernate.globally_quoted_identifiers"))) {
+            properties.put("hibernate.globally_quoted_identifiers", environment.getRequiredProperty("datasource.subscriptionapp.hibernate.globally_quoted_identifiers"));
         }
         return properties;
     }

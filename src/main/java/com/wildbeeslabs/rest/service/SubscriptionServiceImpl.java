@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,7 @@ public class SubscriptionServiceImpl<T extends Subscription> implements Subscrip
     private SubscriptionRepository<T> subscriptionRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<T> findAll() {
         return subscriptionRepository.findAll();
     }
@@ -49,6 +51,7 @@ public class SubscriptionServiceImpl<T extends Subscription> implements Subscrip
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN') AND hasRole('DBA')")
     public void deleteById(final Long id) {
         subscriptionRepository.delete(id);
     }
@@ -59,6 +62,7 @@ public class SubscriptionServiceImpl<T extends Subscription> implements Subscrip
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN') AND hasRole('DBA')")
     public void deleteAll() {
         subscriptionRepository.deleteAll();
     }
@@ -79,12 +83,18 @@ public class SubscriptionServiceImpl<T extends Subscription> implements Subscrip
     }
 
     @Override
-    public void merge(T itemTo, T itemFrom) {
+    public void merge(final T itemTo, final T itemFrom) {
         itemTo.setExpireAt(itemFrom.getExpireAt());
         itemTo.setModifiedAt(new Date());
         itemTo.setName(itemFrom.getName());
         itemTo.setType(itemFrom.getType());
         itemTo.setUserOrders(itemFrom.getUserOrders());
         update(itemTo);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN') AND hasRole('DBA')")
+    public void delete(final T item) {
+        subscriptionRepository.delete(item);
     }
 }

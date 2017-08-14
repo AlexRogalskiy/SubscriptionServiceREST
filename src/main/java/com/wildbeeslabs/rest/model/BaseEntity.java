@@ -1,6 +1,8 @@
 package com.wildbeeslabs.rest.model;
 
+import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Temporal;
 
@@ -12,7 +14,7 @@ import javax.persistence.Temporal;
  * @version 1.0.0
  * @since 2017-08-08
  */
-public abstract class BaseEntity {
+public abstract class BaseEntity implements Serializable {
 
     @Column(name = "created_at", nullable = false)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)

@@ -1,5 +1,6 @@
 package com.wildbeeslabs.rest.service.interfaces;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ import java.util.List;
  * @since 2017-08-08
  * @param <T>
  */
-public interface BaseService<T> {
+public interface BaseService<T extends Serializable> {
 
     static enum DateTypeOrder {
         BEFORE, AFTER;
@@ -26,10 +27,12 @@ public interface BaseService<T> {
     void save(final T item);
 
     void update(final T item);
-    
+
     void merge(final T itemTo, final T itemFrom);
 
     void deleteById(final Long id);
+
+    void delete(final T item);
 
     List<T> findAll();
 

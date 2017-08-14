@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,11 +52,13 @@ public class UserSubOrderServiceImpl<T extends UserSubOrder> implements UserSubO
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<T> findAll() {
         return userSubOrderRepository.findAll();
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN') AND hasRole('DBA')")
     public void deleteAll() {
         userSubOrderRepository.deleteAll();
     }
@@ -76,11 +79,16 @@ public class UserSubOrderServiceImpl<T extends UserSubOrder> implements UserSubO
     }
 
     @Override
-    public void merge(T itemTo, T itemFrom) {
+    public void merge(final T itemTo, final T itemFrom) {
         itemTo.setExpireAt(itemFrom.getExpireAt());
         itemTo.setModifiedAt(new Date());
         itemTo.setSubscription(itemFrom.getSubscription());
         itemTo.setUser(itemFrom.getUser());
         update(itemTo);
+    }
+
+    @Override
+    public void delete(final T item) {
+        userSubOrderRepository.delete(item);
     }
 }

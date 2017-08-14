@@ -1,0 +1,36 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+    http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+      
+    <http auto-config="true" >
+        <intercept-url pattern="/api/" access="hasRole('USER') or hasRole('ADMIN') and hasRole('DBA')" />
+        <http-basic/>
+        <csrf disabled="true"/>
+        <!--<form-login  login-page="/login"
+                     username-parameter="ssid"
+                     password-parameter="password"
+                     authentication-failure-url="/prohibited" />
+        -->
+        <!-- <access-denied-handler error-page="/error-page" /> -->
+        <access-denied-handler ref="accessDeniedServiceHandler" />
+    </http>
+     
+    <beans:bean id="accessDeniedServiceHandler" class="com.wildbeeslabs.rest.handler.AccessDeniedServiceHandler">
+        <beans:property name="errorPage" value="403" />
+    </beans:bean>
+
+    <global-method-security pre-post-annotations="enabled"/>
+ 
+    <authentication-manager>
+        <authentication-provider>
+            <user-service>
+                <user name="user"  password="user123"  authorities="ROLE_USER" />
+                <user name="admin" password="admin123" authorities="ROLE_ADMIN" />
+                <user name="dba"   password="dba123" authorities="ROLE_ADMIN,ROLE_DBA" />
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
+     
+</beans:beans>

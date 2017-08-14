@@ -41,7 +41,7 @@ public class UserController<T extends User> extends AbscractBaseController<T> {
      *
      * @return list of user entities
      */
-    @RequestMapping(value = "/user/", method = RequestMethod.GET)
+    @RequestMapping(value = "/users/", method = RequestMethod.GET, consumes = {"application/xml", "application/json"})
     @ResponseBody
     public ResponseEntity<?> getAllUsers() {
         return super.getAll();
@@ -55,7 +55,7 @@ public class UserController<T extends User> extends AbscractBaseController<T> {
      * @param subDateOrder - date order before / after date
      * @return list of user entities
      */
-    @RequestMapping(value = "/user?type={type}&date={date}&order={order}", method = RequestMethod.GET)
+    @RequestMapping(params = {"type", "date", "order"}, value = "/user/", method = RequestMethod.GET, consumes = {"application/xml", "application/json"})
     @ResponseBody
     public ResponseEntity<?> getAllUsersBySubscriptionTypeAndDate(@PathVariable("date") Date subDate, @PathVariable("type") Subscription.SubscriptionType subType, @PathVariable("order") boolean subDateOrder) {
         LOGGER.info("Fetching all users by subscription date {} and type {} by date order {} (1 - before, 0 - after)", subType, subDate, subDateOrder);
@@ -73,9 +73,9 @@ public class UserController<T extends User> extends AbscractBaseController<T> {
      * @param id - user identifier
      * @return user entity
      */
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET, consumes = {"application/xml", "application/json"})
     @ResponseBody
-    public ResponseEntity<?> getUserById(@PathVariable("id") long id) {
+    public ResponseEntity<?> getUserById(@PathVariable("id") Long id) {
         return super.getById(id);
     }
 
@@ -86,7 +86,7 @@ public class UserController<T extends User> extends AbscractBaseController<T> {
      * @param ucBuilder
      * @return response status code
      */
-    @RequestMapping(value = "/user/", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/", method = RequestMethod.POST, consumes = {"application/xml", "application/json"})
     @ResponseBody
     public ResponseEntity<?> createUser(@RequestBody T user, UriComponentsBuilder ucBuilder) {
         ResponseEntity<?> response = super.create(user);
@@ -101,9 +101,9 @@ public class UserController<T extends User> extends AbscractBaseController<T> {
      * @param user - user entity
      * @return updated user entity
      */
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT, consumes = {"application/xml", "application/json"})
     @ResponseBody
-    public ResponseEntity<?> updateUser(@PathVariable("id") long id, @RequestBody T user) {
+    public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @RequestBody T user) {
         return super.update(id, user);
     }
 
@@ -113,9 +113,9 @@ public class UserController<T extends User> extends AbscractBaseController<T> {
      * @param id - user identifier
      * @return response status code
      */
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE, consumes = {"application/xml", "application/json"})
     @ResponseBody
-    public ResponseEntity<?> deleteUser(@PathVariable("id") long id) {
+    public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
         return super.delete(id);
     }
 
@@ -124,7 +124,7 @@ public class UserController<T extends User> extends AbscractBaseController<T> {
      *
      * @return response status code
      */
-    @RequestMapping(value = "/user/", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/user/", method = RequestMethod.DELETE, consumes = {"application/xml", "application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public ResponseEntity<?> deleteAllUsers() {
