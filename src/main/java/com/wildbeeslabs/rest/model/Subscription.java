@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.Basic;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -32,6 +34,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class Subscription extends BaseEntity implements Serializable {
 
     @Id
+    @Basic(optional = false)
+    @NotNull
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "subscription_id")
     private Long id;

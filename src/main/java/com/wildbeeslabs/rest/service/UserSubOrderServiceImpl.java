@@ -91,4 +91,9 @@ public class UserSubOrderServiceImpl<T extends UserSubOrder> implements UserSubO
     public void delete(final T item) {
         userSubOrderRepository.delete(item);
     }
+
+    @Override
+    public List<T> findSubscribedAtBetween(final Date dateFrom, final Date dateTo) {
+        return userSubOrderRepository.findSubscribedAtBetween(dateFrom, dateTo);
+    }
 }

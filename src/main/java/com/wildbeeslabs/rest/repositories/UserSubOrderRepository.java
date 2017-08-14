@@ -3,6 +3,7 @@ package com.wildbeeslabs.rest.repositories;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.UserSubOrder;
+import java.util.Date;
 
 import java.util.List;
 
@@ -36,4 +37,13 @@ public interface UserSubOrderRepository<T extends UserSubOrder> extends JpaRepos
      * @return list of subscription orders
      */
     List<T> findBySubscription(final Subscription subscription);
+
+    /**
+     * Get list of subscription orders by date range (from / to)
+     *
+     * @param dateFrom - start date of range
+     * @param dateTo - end date of range
+     * @return list of subscription orders
+     */
+    List<T> findSubscribedAtBetween(final Date dateFrom, final Date dateTo);
 }

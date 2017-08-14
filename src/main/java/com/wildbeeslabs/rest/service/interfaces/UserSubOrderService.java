@@ -3,6 +3,7 @@ package com.wildbeeslabs.rest.service.interfaces;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.UserSubOrder;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,4 +32,13 @@ public interface UserSubOrderService<T extends UserSubOrder> extends BaseService
      * @return list of subscription orders
      */
     List<T> findBySubscription(final Subscription subscription);
+
+    /**
+     * Get list of subscription orders by date range (from / to)
+     *
+     * @param dateFrom - start date of range
+     * @param dateTo - end date of range
+     * @return list of subscription orders
+     */
+    List<T> findSubscribedAtBetween(final Date dateFrom, final Date dateTo);
 }

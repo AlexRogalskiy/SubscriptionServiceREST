@@ -3,6 +3,7 @@ package com.wildbeeslabs.rest.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
+import javax.persistence.Basic;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -27,16 +29,18 @@ import javax.persistence.Temporal;
 public class UserSubOrder extends BaseEntity implements Serializable {
 
     @Id
+    @Basic(optional = false)
+    @NotNull
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "order_id")
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "subscription_id", nullable = false)
+    @JoinColumn(name = "subscription_id", referencedColumnName = "subscription_id", nullable = false)
     private Subscription subscription;
 
     @Column(name = "subscribed_at", nullable = false)

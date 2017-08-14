@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -33,6 +34,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class User extends BaseEntity implements Serializable {
 
     @Id
+    @Basic(optional = false)
+    @NotNull
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
     private Long id;
