@@ -82,10 +82,18 @@ public class UserServiceImpl<T extends User> implements UserService<T> {
 
     @Override
     public List<T> findBySubscriptionTypeAndDate(final Date subDate, final Subscription.SubscriptionStatusType subType, final DateTypeOrder dateTypeOrder) {
-        if (Objects.equals(dateTypeOrder, DateTypeOrder.BEFORE)) {
-            return userRepository.findBySubscriptionTypeAndDateBefore(subDate, subType);
-        } else if (Objects.equals(dateTypeOrder, DateTypeOrder.AFTER)) {
-            return userRepository.findBySubscriptionTypeAndDateAfter(subDate, subType);
+        if (Objects.nonNull(subDate) && Objects.nonNull(subType)) {
+            if (Objects.equals(dateTypeOrder, DateTypeOrder.BEFORE)) {
+                return userRepository.findBySubscriptionTypeAndDateBefore(subDate, subType);
+            } else if (Objects.equals(dateTypeOrder, DateTypeOrder.AFTER)) {
+                return userRepository.findBySubscriptionTypeAndDateAfter(subDate, subType);
+            }
+        } else {
+            if (Objects.nonNull(subDate)) {
+                return this.findBySubscriptionDate(subDate, dateTypeOrder);
+            } else if (Objects.nonNull(subType)) {
+                return this.findBySubscriptionType(subType);
+            }
         }
         return new ArrayList<>();
     }

@@ -46,4 +46,20 @@ public interface UserSubOrderRepository<T extends UserSubOrder> extends JpaRepos
      * @return list of subscription orders
      */
     List<T> findSubscribedAtBetween(final Date dateFrom, final Date dateTo);
+
+    /**
+     * Get list of subscription orders before (including) particular date
+     *
+     * @param date - request date
+     * @return list of subscription orders
+     */
+    List<T> findSubscribedAtLessThanEqual(final Date date);
+
+    /**
+     * Get list of subscription orders after (excluding) particular date
+     *
+     * @param date - request date
+     * @return list of subscription orders
+     */
+    List<T> findSubscribedAtGreaterThan(final Date date);
 }

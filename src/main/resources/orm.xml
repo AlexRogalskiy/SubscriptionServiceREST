@@ -9,16 +9,16 @@
     </named-query>
 
     <named-query name="User.findBySubscriptionTypeAndDateBefore">
-        <query>SELECT o.user FROM UserSubOrder o INNER JOIN o.subscription s WHERE s.type = :subType AND o.createdAt <= :subDate</query>
+        <query>SELECT o.user FROM UserSubOrder o INNER JOIN o.subscription s WHERE s.type = :subType AND o.subscribedAt <= :subDate</query>
     </named-query>
     <named-query name="User.findBySubscriptionTypeAndDateAfter">
-        <query>SELECT o.user FROM UserSubOrder o INNER JOIN o.subscription s WHERE s.type = :subType AND o.createdAt > :subDate</query>
+        <query>SELECT o.user FROM UserSubOrder o INNER JOIN o.subscription s WHERE s.type = :subType AND o.subscribedAt > :subDate</query>
     </named-query>
     <named-query name="User.findByDateBefore">
-        <query>SELECT o.user FROM UserSubOrder o WHERE o.createdAt <= :subDate</query>
+        <query>SELECT o.user FROM UserSubOrder o WHERE o.subscribedAt <= :subDate</query>
     </named-query>
     <named-query name="User.findByDateAfter">
-        <query>SELECT o.user FROM UserSubOrder o WHERE o.createdAt > :subDate</query>
+        <query>SELECT o.user FROM UserSubOrder o WHERE o.subscribedAt > :subDate</query>
     </named-query>
     <named-query name="User.findBySubscriptionType">
         <query>SELECT o.user FROM UserSubOrder o INNER JOIN o.subscription s WHERE s.type = :subType</query>

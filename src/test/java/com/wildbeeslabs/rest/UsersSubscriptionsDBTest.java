@@ -22,17 +22,7 @@ import org.hibernate.service.ServiceRegistryBuilder;
  */
 public class UsersSubscriptionsDBTest {
 
-    public static void main(String[] args) {
-        // loads configuration and mappings
-        Configuration configuration = new Configuration().configure();
-        ServiceRegistryBuilder registry = new ServiceRegistryBuilder();
-        registry.applySettings(configuration.getProperties());
-        ServiceRegistry serviceRegistry = registry.buildServiceRegistry();
-
-        // builds a session factory from the service registry
-        SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-
-        Session session = sessionFactory.openSession();
+    private static void init(final Session session) {
         session.beginTransaction();
 
         Subscription groupAdmin = new Subscription();
@@ -85,7 +75,23 @@ public class UsersSubscriptionsDBTest {
 
         session.save(groupAdmin);
         session.save(groupGuest);
+        session.save(user1);
+        session.save(user2);
+        session.save(userSubOrder1);
+        session.save(userSubOrder2);
+        session.save(userSubOrder3);
 
         session.getTransaction().commit();
+    }
+
+    public static void main(String[] args) {
+        /*Configuration configuration = new Configuration().configure();
+
+        ServiceRegistryBuilder registry = new ServiceRegistryBuilder();
+        registry.applySettings(configuration.getProperties());
+
+        ServiceRegistry serviceRegistry = registry.buildServiceRegistry();
+        SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+        init(sessionFactory.openSession());*/
     }
 }

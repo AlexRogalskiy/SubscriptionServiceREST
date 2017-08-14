@@ -27,27 +27,27 @@ public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
      * Default query to find subscribed users by subscription type and date
      * before
      */
-    //SELECT u FROM User u INNER JOIN u.subOrders o INNER JOIN o.subscription s WHERE s.type = :subType AND o.createdAt > :subDate
-    public final static String FIND_USER_BY_SUB_TYPE_AND_SUB_DATE_AFTER_QUERY = "SELECT o.user FROM UserSubOrder o INNER JOIN o.subscription s WHERE s.type = :subType AND o.createdAt > :subDate";
+    //SELECT u FROM User u INNER JOIN u.subOrders o INNER JOIN o.subscription s WHERE s.type = :subType AND o.subscribedAt > :subDate
+    public final static String FIND_USER_BY_SUB_TYPE_AND_SUB_DATE_AFTER_QUERY = "SELECT o.user FROM UserSubOrder o INNER JOIN o.subscription s WHERE s.type = :subType AND o.subscribedAt > :subDate";
 
     /**
      * Default query to find subscribed users by subscription type and date
      * after
      */
-    //SELECT u FROM User u INNER JOIN u.subOrders o INNER JOIN o.subscription s WHERE s.type = :subType AND o.createdAt <= :subDate
-    public final static String FIND_USER_BY_SUB_TYPE_AND_SUB_DATE_BEFORE_QUERY = "SELECT o.user FROM UserSubOrder o INNER JOIN o.subscription s WHERE s.type = :subType AND o.createdAt <= :subDate";
+    //SELECT u FROM User u INNER JOIN u.subOrders o INNER JOIN o.subscription s WHERE s.type = :subType AND o.subscribedAt <= :subDate
+    public final static String FIND_USER_BY_SUB_TYPE_AND_SUB_DATE_BEFORE_QUERY = "SELECT o.user FROM UserSubOrder o INNER JOIN o.subscription s WHERE s.type = :subType AND o.subscribedAt <= :subDate";
 
     /**
      * Default query to find subscribed users by date before
      */
-    //SELECT u FROM User u INNER JOIN u.subOrders o WHERE o.createdAt > :subDate
-    public final static String FIND_USER_BY_SUB_DATE_AFTER_QUERY = "SELECT o.user FROM UserSubOrder o WHERE o.createdAt > :subDate";
+    //SELECT u FROM User u INNER JOIN u.subOrders o WHERE o.subscribedAt > :subDate
+    public final static String FIND_USER_BY_SUB_DATE_AFTER_QUERY = "SELECT o.user FROM UserSubOrder o WHERE o.subscribedAt > :subDate";
 
     /**
      * Default query to find subscribed users by date after
      */
-    //SELECT u FROM User u INNER JOIN u.subOrders o WHERE o.createdAt <= :subDate
-    public final static String FIND_USER_BY_SUB_DATE_BEFORE_QUERY = "SELECT o.user FROM UserSubOrder o WHERE o.createdAt <= :subDate";
+    //SELECT u FROM User u INNER JOIN u.subOrders o WHERE o.subscribedAt <= :subDate
+    public final static String FIND_USER_BY_SUB_DATE_BEFORE_QUERY = "SELECT o.user FROM UserSubOrder o WHERE o.subscribedAt <= :subDate";
 
     /**
      * Default query to find subscribed users by subscription type

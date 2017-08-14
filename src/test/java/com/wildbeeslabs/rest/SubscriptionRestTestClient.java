@@ -87,7 +87,7 @@ public class SubscriptionRestTestClient {
     }
 
     public static void main(String args[]) {
-        listAllUsers();
+        /*listAllUsers();
         getUser();
         createUser();
         listAllUsers();
@@ -96,6 +96,6 @@ public class SubscriptionRestTestClient {
         deleteUser();
         listAllUsers();
         deleteAllUsers();
-        listAllUsers();
+        listAllUsers();*/
     }
 }
