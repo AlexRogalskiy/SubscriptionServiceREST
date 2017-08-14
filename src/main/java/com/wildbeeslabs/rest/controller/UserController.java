@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -55,9 +56,9 @@ public class UserController<T extends User> extends AbscractBaseController<T> {
      * @param subDateOrder - date order before / after date
      * @return list of user entities
      */
-    @RequestMapping(params = {"type", "date", "order"}, value = "/user/", method = RequestMethod.GET, consumes = {"application/xml", "application/json"})
+    @RequestMapping(params = {"type", "date", "order"}, value = "/users/", method = RequestMethod.GET, consumes = {"application/xml", "application/json"})
     @ResponseBody
-    public ResponseEntity<?> getAllUsersBySubscriptionTypeAndDate(@PathVariable("date") Date subDate, @PathVariable("type") Subscription.SubscriptionType subType, @PathVariable("order") boolean subDateOrder) {
+    public ResponseEntity<?> getAllUsersBySubscriptionTypeAndDate(@RequestParam(name = "date", required = false) Date subDate, @RequestParam(name = "type", required = false) Subscription.SubscriptionType subType, @RequestParam(name = "order", required = false, defaultValue = "false") Boolean subDateOrder) {
         LOGGER.info("Fetching all users by subscription date {} and type {} by date order {} (1 - before, 0 - after)", subType, subDate, subDateOrder);
         UserService.DateTypeOrder dateTypeOrder = subDateOrder ? UserService.DateTypeOrder.AFTER : UserService.DateTypeOrder.BEFORE;
         List<T> userList = userService.findBySubscriptionTypeAndDate(subDate, subType, dateTypeOrder);
