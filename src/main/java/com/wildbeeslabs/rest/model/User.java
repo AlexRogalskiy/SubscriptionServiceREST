@@ -41,7 +41,7 @@ public class User extends BaseEntity implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 
@@ -52,7 +52,7 @@ public class User extends BaseEntity implements Serializable {
     @Column(name = "age", nullable = true)
     private Integer age;
 
-    @Column(name = "rating", columnDefinition = "Decimal(10,2) default '1.00'", nullable = false)
+    @Column(name = "rating", precision = 10, scale = 2, nullable = false)
     private Double rating;
 
     @Basic(optional = false)

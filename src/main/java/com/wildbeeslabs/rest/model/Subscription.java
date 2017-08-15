@@ -41,7 +41,7 @@ public class Subscription extends BaseEntity implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "subscription_id")
     private Long id;
 

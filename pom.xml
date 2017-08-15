@@ -23,7 +23,6 @@
         
         <springframework.version>4.3.10.RELEASE</springframework.version>
         <springsecurity.version>4.2.3.RELEASE</springsecurity.version>
-        <hibernate.version>4.2.7.SP1</hibernate.version>
         <apache.commons.version>3.5</apache.commons.version>
         
         <docker.image.prefix>rest-api</docker.image.prefix>
@@ -118,9 +117,10 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>${hibernate.version}</version>
-            <scope>test</scope>
-            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
         </dependency>
         
         <dependency>
