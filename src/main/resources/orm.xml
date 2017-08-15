@@ -4,6 +4,7 @@
                  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_2_0.xsd" 
                  version="2.0">
 
+    <!-- JPA Named Queries -->
     <named-query name="Subscription.findByUserId">
         <query>SELECT o.subscription FROM UserSubOrder o INNER JOIN o.user u WHERE u.id = :userId</query>
     </named-query>
@@ -24,4 +25,9 @@
         <query>SELECT o.user FROM UserSubOrder o INNER JOIN o.subscription s WHERE s.type = :subType</query>
     </named-query>
     
+    <!-- entity mapping -->
+    <entity class="com.wildbeeslabs.rest.model.User" name="User"></entity>
+    <entity class="com.wildbeeslabs.rest.model.Subscription" name="Subscription"></entity>
+    <entity class="com.wildbeeslabs.rest.model.UserSubOrder" name="UserSubOrder"></entity>
+
 </entity-mappings>
