@@ -28,8 +28,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @version 1.0.0
  * @since 2017-08-08
  */
-@RunWith(SpringRunner.class)
-@WebMvcTest(SubscriptionController.class)
+//@RunWith(SpringRunner.class)
+//@WebMvcTest(SubscriptionController.class)
 public class SubscriptionRestApiTest {
 
     @Autowired
