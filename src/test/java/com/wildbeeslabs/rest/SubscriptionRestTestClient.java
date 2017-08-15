@@ -17,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
  */
 public class SubscriptionRestTestClient {
 
-    public static final String REST_SERVICE_URI = "http://localhost:8080/rest/api";
+    public static final String REST_SERVICE_URI = "http://localhost:8080/newsletterSub/api";
 
     /* GET */
     private static void listAllUsers() {
@@ -87,7 +87,7 @@ public class SubscriptionRestTestClient {
     }
 
     public static void main(String args[]) {
-        /*listAllUsers();
+        listAllUsers();
         getUser();
         createUser();
         listAllUsers();
@@ -96,6 +96,6 @@ public class SubscriptionRestTestClient {
         deleteUser();
         listAllUsers();
         deleteAllUsers();
-        listAllUsers();*/
+        listAllUsers();
     }
 }

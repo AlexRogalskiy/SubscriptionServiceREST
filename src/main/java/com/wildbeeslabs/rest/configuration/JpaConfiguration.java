@@ -25,6 +25,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "com.wildbeeslabs.rest.repositories",
@@ -53,7 +55,7 @@ public class JpaConfiguration {
      */
     @Bean
     public DataSource dataSource() {
-        DataSourceProperties dataSourceProperties = dataSourceProperties();
+        /*DataSourceProperties dataSourceProperties = dataSourceProperties();
         HikariDataSource dataSource = (HikariDataSource) DataSourceBuilder
                 .create(dataSourceProperties.getClassLoader())
                 .driverClassName(dataSourceProperties.getDriverClassName())
@@ -63,6 +65,12 @@ public class JpaConfiguration {
                 .type(HikariDataSource.class)
                 .build();
         dataSource.setMaximumPoolSize(maxPoolSize);
+        return dataSource;*/
+        final DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(environment.getRequiredProperty("datasource.subscriptionapp.driverClassName"));
+        dataSource.setUrl(environment.getRequiredProperty("datasource.subscriptionapp.url"));
+        dataSource.setUsername(environment.getRequiredProperty("datasource.subscriptionapp.username"));
+        dataSource.setPassword(environment.getRequiredProperty("datasource.subscriptionapp.password"));
         return dataSource;
     }
 
@@ -86,6 +94,11 @@ public class JpaConfiguration {
     public JpaVendorAdapter jpaVendorAdapter() {
         HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
         return hibernateJpaVendorAdapter;
+    }
+    
+    @Bean
+    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
+        return new PersistenceExceptionTranslationPostProcessor();
     }
 
     /*
