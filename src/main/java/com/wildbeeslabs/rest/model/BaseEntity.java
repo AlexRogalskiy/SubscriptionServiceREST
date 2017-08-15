@@ -7,7 +7,11 @@ import javax.persistence.Basic;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  *
@@ -21,13 +25,25 @@ import javax.persistence.Temporal;
 public abstract class BaseEntity implements Serializable {
 
     @Basic(optional = false)
-    @Column(name = "created_at", nullable = false, insertable = false, updatable = false)
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date createdAt;
 
-    @Column(name = "modified_at", nullable = true)
+    @UpdateTimestamp
+    @Column(name = "modified_at", nullable = true, insertable = false)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date modifiedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.modifiedAt = new Date();
+    }
 
     public Date getCreatedAt() {
         return createdAt;

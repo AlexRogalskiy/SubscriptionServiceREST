@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
-  <persistence-unit name="SubscriptionDB" transaction-type="RESOURCE_LOCAL">
-    <mapping-file>./orm.xml</mapping-file>
-    <provider>org.hibernate.ejb.HibernatePersistence</provider>
-    <jta-data-source>jdbc:mysql://localhost:3306/subscriptiondb</jta-data-source>
-    <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <properties>
-        <property name="hibernate.cache.provider_class" value="net.sf.ehcache.hibernate.EhCacheProvider" />
-        <property name="hibernate.cache.use_query_cache" value="true" />
-        <property name="hibernate.cache.use_second_level_cache" value="true" />
-        <property name="hibernate.show_sql" value="true" />
-        <property name="hibernate.format_sql" value="true" />
-        <property name="use_sql_comments" value="false" />
-        <property name="hibernate.dialect" value="org.hibernate.dialect.MYSQLDialect" />
-        <property name="hibernate.c3p0.min_size" value="5" />
-        <property name="hibernate.c3p0.max_size" value="20" />
-        <property name="hibernate.c3p0.timeout" value="300" />
-        <property name="hibernate.c3p0.max_statements" value="50" />
-        <property name="hibernate.c3p0.idle_test_period" value="3000" />
-
-        <property name="hibernate.search.default.directory_provider" value="org.hibernate.search.store.FSDirectoryProvider" />
-    </properties>
-  </persistence-unit>
+    <persistence-unit name="SubscriptionDB" transaction-type="RESOURCE_LOCAL">
+        <non-jta-data-source>jdbc:mysql://localhost:3306/subscriptiondb</non-jta-data-source>
+        <mapping-file>./orm.xml</mapping-file>
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <properties>
+            <property name="hibernate.cache.provider_class" value="net.sf.ehcache.hibernate.EhCacheProvider"/>
+            <property name="hibernate.cache.use_query_cache" value="true"/>
+            <property name="hibernate.cache.use_second_level_cache" value="true"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="use_sql_comments" value="false"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MYSQLDialect"/>
+            <property name="hibernate.c3p0.min_size" value="5"/>
+            <property name="hibernate.c3p0.max_size" value="20"/>
+            <property name="hibernate.c3p0.timeout" value="300"/>
+            <property name="hibernate.c3p0.max_statements" value="50"/>
+            <property name="hibernate.c3p0.idle_test_period" value="3000"/>
+            <property name="hibernate.search.default.directory_provider" value="org.hibernate.search.store.FSDirectoryProvider"/>
+        </properties>
+    </persistence-unit>
 </persistence>

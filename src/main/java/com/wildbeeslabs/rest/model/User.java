@@ -55,8 +55,7 @@ public class User extends BaseEntity implements Serializable {
     @Column(name = "rating", precision = 10, scale = 2, nullable = false)
     private Double rating;
 
-    @Basic(optional = false)
-    @Column(name = "registered_at", nullable = false, insertable = false, updatable = false)
+    @Column(name = "registered_at", nullable = true, insertable = false)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date registeredAt;
 

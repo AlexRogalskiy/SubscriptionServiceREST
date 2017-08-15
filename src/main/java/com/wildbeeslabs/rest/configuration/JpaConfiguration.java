@@ -32,7 +32,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 @EnableJpaRepositories(basePackages = "com.wildbeeslabs.rest.repositories",
         entityManagerFactoryRef = "entityManagerFactory",
         transactionManagerRef = "transactionManager")
-//@ImportResource("classpath:hibernate-config.xml")
+//@ImportResource("classpath:hibernate.cfg.xml")
 //@PropertySource({"classpath:application.yml"})
 @EnableTransactionManagement
 public class JpaConfiguration {
