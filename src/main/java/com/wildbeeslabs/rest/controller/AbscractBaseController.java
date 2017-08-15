@@ -60,7 +60,7 @@ public abstract class AbscractBaseController<T extends BaseEntity> implements IB
             return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.CONFLICT);
         }
         getService().save(item);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
@@ -86,14 +86,14 @@ public abstract class AbscractBaseController<T extends BaseEntity> implements IB
             return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
         }
         getService().deleteById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<?> deleteAll() {
         LOGGER.info("Deleting all items");
         getService().deleteAll();
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     protected abstract BaseService<T> getService();

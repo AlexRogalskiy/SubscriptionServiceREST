@@ -16,12 +16,20 @@ import java.util.List;
 public interface SubscriptionService<T extends Subscription> extends BaseService<T> {
 
     /**
+     * Get subscription entity by name
+     *
+     * @param name - subscription name pattern
+     * @return list of subscription entities
+     */
+    T findByName(final String name);
+
+    /**
      * Get list of subscription entities by name pattern
      *
      * @param pattern - subscription name pattern
      * @return list of subscription entities
      */
-    List<T> findByName(final String pattern);
+    List<T> findByPatternName(final String pattern);
 
     /**
      * Get list of subscription entities by type

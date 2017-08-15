@@ -1,5 +1,7 @@
 package com.wildbeeslabs.rest.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
@@ -40,7 +42,6 @@ public class User extends BaseEntity implements Serializable {
 
     @Id
     @Basic(optional = false)
-    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
@@ -68,6 +69,9 @@ public class User extends BaseEntity implements Serializable {
     }
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @Column(nullable = true)
+    //@JsonBackReference
+    @JsonIgnore
     private Set<UserSubOrder> subOrders = new HashSet<>();
 
     public Long getId() {

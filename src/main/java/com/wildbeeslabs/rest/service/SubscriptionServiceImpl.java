@@ -51,7 +51,7 @@ public class SubscriptionServiceImpl<T extends Subscription> implements Subscrip
     }
 
     @Override
-    @PreAuthorize("hasRole('ADMIN') AND hasRole('DBA')")
+    @PreAuthorize("hasRole('USER') AND hasRole('DBA')")
     public void deleteById(final Long id) {
         subscriptionRepository.delete(id);
     }
@@ -68,7 +68,12 @@ public class SubscriptionServiceImpl<T extends Subscription> implements Subscrip
     }
 
     @Override
-    public List<T> findByName(final String pattern) {
+    public T findByName(final String name) {
+        return subscriptionRepository.findByNameIgnoreCase(name);
+    }
+
+    @Override
+    public List<T> findByPatternName(final String pattern) {
         return subscriptionRepository.findByNameLike(pattern);
     }
 

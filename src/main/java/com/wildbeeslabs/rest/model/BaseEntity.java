@@ -3,7 +3,6 @@ package com.wildbeeslabs.rest.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
-import javax.persistence.Basic;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -24,7 +23,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 @MappedSuperclass
 public abstract class BaseEntity implements Serializable {
 
-    @Basic(optional = false)
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)

@@ -1,5 +1,8 @@
 package com.wildbeeslabs.rest.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
@@ -40,21 +43,23 @@ public class Subscription extends BaseEntity implements Serializable {
 
     @Id
     @Basic(optional = false)
-    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "subscription_id")
     private Long id;
 
     @NotEmpty
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
+    @JacksonXmlProperty(localName = "name")
     private String name;
 
     @Column(name = "expired_at", nullable = true)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @JacksonXmlProperty(localName = "expireAt")
     private Date expireAt;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
+    @JacksonXmlProperty(localName = "type")
     private SubscriptionStatusType type;
 
     public static enum SubscriptionStatusType {
@@ -62,6 +67,10 @@ public class Subscription extends BaseEntity implements Serializable {
     }
 
     @OneToMany(mappedBy = "subscription", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @Column(nullable = true)
+    //@JsonBackReference
+    @JsonIgnore
+    @JacksonXmlProperty(localName = "users")
     private Set<UserSubOrder> userOrders = new HashSet<>();
 
     public Long getId() {
@@ -101,14 +110,16 @@ public class Subscription extends BaseEntity implements Serializable {
     }
 
     public void setUserOrders(final Set<UserSubOrder> userOrders) {
-        this.userOrders = userOrders;
+        this.userOrders.clear();
+        if (Objects.nonNull(userOrders)) {
+            this.userOrders.addAll(userOrders);
+        }
     }
 
     public void addUserOrder(final UserSubOrder userOrder) {
-        if (Objects.isNull(userOrders)) {
-            this.userOrders = new HashSet<>();
+        if (Objects.nonNull(userOrder)) {
+            this.userOrders.add(userOrder);
         }
-        this.userOrders.add(userOrder);
     }
 
     @Override
@@ -148,6 +159,6 @@ public class Subscription extends BaseEntity implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Subscription {id: %d, name: %s, expireAt: %s, type: %s, users: %s}", this.id, this.name, this.expireAt, this.type.name(), this.userOrders);
+        return String.format("Subscription {id: %d, name: %s, expireAt: %s, type: %s, users: %s}", this.id, this.name, this.expireAt, this.type, this.userOrders);
     }
 }
