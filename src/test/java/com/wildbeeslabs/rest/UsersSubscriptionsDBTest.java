@@ -5,11 +5,12 @@ import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.UserSubOrder;
 
 import java.util.Date;
+import org.hibernate.HibernateException;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
+//import org.hibernate.service.ServiceRegistry;
 //import org.hibernate.service.ServiceRegistryBuilder;
 
 /**
@@ -21,6 +22,38 @@ import org.hibernate.service.ServiceRegistry;
  * @since 2017-08-08
  */
 public class UsersSubscriptionsDBTest {
+
+    /**
+     * Create SessionFactory instance from hibernate.cfg.xml
+     */
+    protected static class HibernateSessionFactory {
+
+        private static final SessionFactory SESSSION_FACTORY = buildSessionFactory();
+
+        private static SessionFactory buildSessionFactory() {
+            try {
+                /*Configuration configuration = new Configuration().configure();
+
+                ServiceRegistryBuilder registry = new ServiceRegistryBuilder();
+                registry.applySettings(configuration.getProperties());
+                ServiceRegistry serviceRegistry = registry.buildServiceRegistry();
+
+                return configuration.buildSessionFactory(serviceRegistry);*/
+                return new Configuration().configure().buildSessionFactory();
+            } catch (HibernateException e) {
+                throw new ExceptionInInitializerError(e);
+            }
+        }
+
+        public static SessionFactory getSessionFactory() {
+            return SESSSION_FACTORY;
+        }
+
+        public static void shutdown() {
+            getSessionFactory().close();
+        }
+
+    }
 
     private static void init(final Session session) {
         session.beginTransaction();

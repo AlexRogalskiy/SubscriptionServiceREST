@@ -27,7 +27,7 @@ public interface UserSubOrderRepository<T extends UserSubOrder> extends BaseRepo
      * @param user - user entity
      * @return list of subscription orders
      */
-    List<T> findByUser(final User user);
+    //List<T> findByUser(final User user);
 
     /**
      * Get list of subscription orders by subscription
@@ -35,7 +35,7 @@ public interface UserSubOrderRepository<T extends UserSubOrder> extends BaseRepo
      * @param subscription - subscription entity
      * @return list of subscription orders
      */
-    List<T> findBySubscription(final Subscription subscription);
+    //List<T> findBySubscription(final Subscription subscription);
 
     /**
      * Get list of subscription orders by date range (from / to)

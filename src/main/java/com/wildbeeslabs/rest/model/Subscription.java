@@ -2,13 +2,14 @@ package com.wildbeeslabs.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import javax.persistence.Basic;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,6 +24,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -35,14 +37,16 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @since 2017-08-08
  */
 @Entity(name = "Subscription")
-@Table(name = "subscriptions")
+@Table(name = "subscriptions", uniqueConstraints = {
+    @UniqueConstraint(columnNames = "name")
+})
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Subscription extends BaseEntity implements Serializable {
 
     @Id
     @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "subscription_id")
+    @Column(name = "subscription_id", unique = true, nullable = false)
     private Long id;
 
     @NotEmpty
@@ -64,9 +68,9 @@ public class Subscription extends BaseEntity implements Serializable {
         PREMIUM, STANDARD, ADVANCED
     }
 
-    @OneToMany(mappedBy = "subscription", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "pk.subscription", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @Column(name = "users", nullable = true)
-    //@JsonBackReference
+    //@JsonBackReference(value = "subOrderToSubscription")
     @JsonIgnore
     @JacksonXmlProperty(localName = "users")
     private final Set<UserSubOrder> userOrders = new HashSet<>();

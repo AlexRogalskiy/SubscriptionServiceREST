@@ -27,7 +27,7 @@ public interface SubscriptionRepository<T extends Subscription> extends BaseRepo
     //SELECT o.subscription FROM UserSubOrder o WHERE o.user.id = :userId
     //SELECT s FROM Subscription s INNER JOIN s.userOrders o WHERE o.user.id = :userId
     //SELECT o.subscription FROM UserSubOrder o INNER JOIN o.user u WHERE u.id = :userId
-    public final static String FIND_SUB_BY_USER_ID_QUERY = "SELECT o.subscription FROM UserSubOrder o INNER JOIN o.user u WHERE u.id = :userId";
+    public final static String FIND_SUB_BY_USER_ID_QUERY = "SELECT o.pk.subscription FROM UserSubOrder o INNER JOIN o.pk.user u WHERE u.id = :userId";
 
     /**
      * Get subscription entity by name (case insensitive)

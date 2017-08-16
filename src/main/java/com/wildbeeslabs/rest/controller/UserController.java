@@ -11,6 +11,7 @@ import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -54,7 +55,7 @@ public class UserController<T extends User> extends AbscractBaseController<T> {
      * @param subDateOrder - date order (before / after)
      * @return list of user entities
      */
-    @RequestMapping(value = "/users", method = RequestMethod.GET, consumes = {"application/xml", "application/json"})
+    @RequestMapping(value = "/users", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> getAllUsers(@RequestParam(name = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date subDate, @RequestParam(name = "type", required = false) Subscription.SubscriptionStatusType subType, @RequestParam(name = "order", required = false, defaultValue = "false") Boolean subDateOrder) {
         LOGGER.info("Fetching all users by subscription date {} and type {} by date order {} (1 - before, 0 - after)", subType, subDate, subDateOrder);
@@ -73,7 +74,7 @@ public class UserController<T extends User> extends AbscractBaseController<T> {
      * @param id - user identifier
      * @return user entity
      */
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET, consumes = {"application/xml", "application/json"})
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> getUserById(@PathVariable("id") Long id) {
         return super.getById(id);
@@ -86,7 +87,7 @@ public class UserController<T extends User> extends AbscractBaseController<T> {
      * @param ucBuilder - URI builder instance
      * @return response status code
      */
-    @RequestMapping(value = "/user", method = RequestMethod.POST, consumes = {"application/xml", "application/json"})
+    @RequestMapping(value = "/user", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> createUser(@RequestBody T user, UriComponentsBuilder ucBuilder) {
         return super.create(user);
@@ -99,7 +100,7 @@ public class UserController<T extends User> extends AbscractBaseController<T> {
      * @param user - user entity
      * @return updated user entity
      */
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT, consumes = {"application/xml", "application/json"})
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @RequestBody T user) {
         return super.update(id, user);
@@ -111,7 +112,7 @@ public class UserController<T extends User> extends AbscractBaseController<T> {
      * @param id - user identifier
      * @return response status code
      */
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE, consumes = {"application/xml", "application/json"})
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
         return super.delete(id);
@@ -122,7 +123,7 @@ public class UserController<T extends User> extends AbscractBaseController<T> {
      *
      * @return response status code
      */
-    @RequestMapping(value = "/users", method = RequestMethod.DELETE, consumes = {"application/xml", "application/json"})
+    @RequestMapping(value = "/users", method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<?> deleteAllUsers() {

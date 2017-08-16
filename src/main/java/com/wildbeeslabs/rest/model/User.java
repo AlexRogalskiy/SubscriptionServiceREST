@@ -2,13 +2,14 @@ package com.wildbeeslabs.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import javax.persistence.Basic;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,6 +24,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -35,14 +37,16 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @since 2017-08-08
  */
 @Entity(name = "User")
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = {
+    @UniqueConstraint(columnNames = "login")
+})
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User extends BaseEntity implements Serializable {
 
     @Id
     @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "user_id", unique = true, nullable = false)
     private Long id;
 
     @NotEmpty
@@ -72,9 +76,9 @@ public class User extends BaseEntity implements Serializable {
         ACTIVE, BLOCKED, UNVERIFIED
     }
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "pk.user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @Column(name = "subscriptions", nullable = true)
-    //@JsonBackReference
+    //@JsonBackReference(value = "userOrderToUser")
     @JsonIgnore
     @JacksonXmlProperty(localName = "subscriptions")
     private final Set<UserSubOrder> subOrders = new HashSet<>();

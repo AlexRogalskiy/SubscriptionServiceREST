@@ -65,18 +65,19 @@ public class UserSubOrderServiceImpl<T extends UserSubOrder> implements UserSubO
 
     @Override
     public boolean isExist(final T userSubOrder) {
-        return Objects.nonNull(findByUser(userSubOrder.getUser())) && Objects.nonNull(findBySubscription(userSubOrder.getSubscription()));
+        //return Objects.nonNull(findByUser(userSubOrder.getUser())) && Objects.nonNull(findBySubscription(userSubOrder.getSubscription()));
+        return true;
     }
 
-    @Override
-    public List<T> findByUser(final User user) {
-        return userSubOrderRepository.findByUser(user);
-    }
+    //@Override
+    //public List<T> findByUser(final User user) {
+        //return userSubOrderRepository.findByUser(user);
+    //}
 
-    @Override
-    public List<T> findBySubscription(final Subscription subscription) {
-        return userSubOrderRepository.findBySubscription(subscription);
-    }
+    //@Override
+    //public List<T> findBySubscription(final Subscription subscription) {
+    //    return userSubOrderRepository.findBySubscription(subscription);
+    //}
 
     @Override
     public void merge(final T itemTo, final T itemFrom) {

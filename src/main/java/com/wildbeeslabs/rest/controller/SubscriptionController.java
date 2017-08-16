@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,7 +39,7 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
      *
      * @return list of subscription entities
      */
-    @RequestMapping(value = "/subscriptions", method = RequestMethod.GET, consumes = {"application/xml", "application/json"})
+    @RequestMapping(value = "/subscriptions", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> getAllSubscriptions() {
         return super.getAll();
@@ -50,7 +51,7 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
      * @param userId - user identifier
      * @return list of subscription entities
      */
-    @RequestMapping(value = "/user/{userId}/subscription", method = RequestMethod.GET, consumes = {"application/xml", "application/json"})
+    @RequestMapping(value = "/user/{userId}/subscription", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> getSubscriptionsByUserId(@PathVariable("userId") Long userId) {
         LOGGER.info("Fetching subscriptions by user id {}", userId);
@@ -67,7 +68,7 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
      * @param id - subscription identifier
      * @return subscription entity
      */
-    @RequestMapping(value = "/subscription/{id}", method = RequestMethod.GET, consumes = {"application/xml", "application/json"})
+    @RequestMapping(value = "/subscription/{id}", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> getSubscriptionById(@PathVariable("id") Long id) {
         return super.getById(id);
@@ -80,7 +81,7 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
      * @param ucBuilder - URI builder instance
      * @return request status code
      */
-    @RequestMapping(value = "/subscription", method = RequestMethod.POST, consumes = {"application/xml", "application/json"})
+    @RequestMapping(value = "/subscription", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> createSubscription(@RequestBody T subscription, UriComponentsBuilder ucBuilder) {
         return super.create(subscription);
@@ -93,7 +94,7 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
      * @param subscription - subscription entity
      * @return updated subscription entity
      */
-    @RequestMapping(value = "/subscription/{id}", method = RequestMethod.PUT, consumes = {"application/xml", "application/json"})
+    @RequestMapping(value = "/subscription/{id}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> updateSubscription(@PathVariable("id") Long id, @RequestBody T subscription) {
         return super.update(id, subscription);
@@ -105,7 +106,7 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
      * @param id - subscription identifier
      * @return response status code
      */
-    @RequestMapping(value = "/subscription/{id}", method = RequestMethod.DELETE, consumes = {"application/xml", "application/json"})
+    @RequestMapping(value = "/subscription/{id}", method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> deleteSubscription(@PathVariable("id") Long id) {
         return super.delete(id);
@@ -116,7 +117,7 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
      *
      * @return response status code
      */
-    @RequestMapping(value = "/subscriptions", method = RequestMethod.DELETE, consumes = {"application/xml", "application/json"})
+    @RequestMapping(value = "/subscriptions", method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<?> deleteAllSubscriptions() {
