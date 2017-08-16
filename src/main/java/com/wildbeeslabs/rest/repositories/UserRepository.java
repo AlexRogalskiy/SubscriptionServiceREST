@@ -23,27 +23,27 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository<T extends User> extends BaseRepository<T> {
 
     /**
-     * Default query to find subscribed users by subscription type and date
+     * Default query to find subscribed users by subscription type and date (after)
      * before
      */
     //SELECT u FROM User u INNER JOIN u.subOrders o INNER JOIN o.subscription s WHERE s.type = :subType AND o.subscribedAt > :subDate
     public final static String FIND_USER_BY_SUB_TYPE_AND_SUB_DATE_AFTER_QUERY = "SELECT o.pk.user FROM UserSubOrder o INNER JOIN o.pk.subscription s WHERE s.type = :subType AND o.subscribedAt > :subDate";
 
     /**
-     * Default query to find subscribed users by subscription type and date
+     * Default query to find subscribed users by subscription type and date (before)
      * after
      */
     //SELECT u FROM User u INNER JOIN u.subOrders o INNER JOIN o.subscription s WHERE s.type = :subType AND o.subscribedAt <= :subDate
     public final static String FIND_USER_BY_SUB_TYPE_AND_SUB_DATE_BEFORE_QUERY = "SELECT o.pk.user FROM UserSubOrder o INNER JOIN o.pk.subscription s WHERE s.type = :subType AND o.subscribedAt <= :subDate";
 
     /**
-     * Default query to find subscribed users by date before
+     * Default query to find subscribed users by date (after)
      */
     //SELECT u FROM User u INNER JOIN u.subOrders o WHERE o.subscribedAt > :subDate
     public final static String FIND_USER_BY_SUB_DATE_AFTER_QUERY = "SELECT DISTINCT o.pk.user FROM UserSubOrder o WHERE o.subscribedAt > :subDate";
 
     /**
-     * Default query to find subscribed users by date after
+     * Default query to find subscribed users by date after (before)
      */
     //SELECT u FROM User u INNER JOIN u.subOrders o WHERE o.subscribedAt <= :subDate
     public final static String FIND_USER_BY_SUB_DATE_BEFORE_QUERY = "SELECT DISTINCT o.pk.user FROM UserSubOrder o WHERE o.subscribedAt <= :subDate";
