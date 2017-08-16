@@ -3,6 +3,7 @@ package com.wildbeeslabs.rest.controller;
 import com.wildbeeslabs.rest.exception.ServiceException;
 import com.wildbeeslabs.rest.model.BaseEntity;
 import com.wildbeeslabs.rest.service.interfaces.BaseService;
+import java.beans.PropertyEditorSupport;
 
 import java.util.List;
 import java.util.Objects;
@@ -97,4 +98,20 @@ public abstract class AbscractBaseController<T extends BaseEntity> implements IB
     }
 
     protected abstract BaseService<T> getService();
+
+    protected static class BaseEnumConverter<T extends Enum<T>> extends PropertyEditorSupport {
+
+        private final Class<T> type;
+
+        public BaseEnumConverter(final Class<T> type) {
+            this.type = type;
+        }
+
+        @Override
+        public void setAsText(final String text) throws IllegalArgumentException {
+            String capitalized = text.toUpperCase();
+            T item = Enum.valueOf(this.type, capitalized);
+            setValue(item);
+        }
+    }
 }

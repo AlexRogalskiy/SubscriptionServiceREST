@@ -51,7 +51,7 @@ public class SubscriptionServiceImpl<T extends Subscription> implements Subscrip
     }
 
     @Override
-    @PreAuthorize("hasRole('USER') AND hasRole('DBA')")
+    @PreAuthorize("hasRole('ADMIN') AND hasRole('DBA')")
     public void deleteById(final Long id) {
         subscriptionRepository.delete(id);
     }

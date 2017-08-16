@@ -1,7 +1,7 @@
 package com.wildbeeslabs.rest.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
@@ -23,7 +23,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -48,20 +47,25 @@ public class User extends BaseEntity implements Serializable {
 
     @NotEmpty
     @Column(name = "login", nullable = false, unique = true, updatable = false)
+    @JacksonXmlProperty(localName = "login")
     private String login;
 
     @Column(name = "age", nullable = true)
+    @JacksonXmlProperty(localName = "age")
     private Integer age;
 
     @Column(name = "rating", precision = 10, scale = 2, nullable = false)
+    @JacksonXmlProperty(localName = "rating")
     private Double rating;
 
     @Column(name = "registered_at", nullable = true, insertable = false)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @JacksonXmlProperty(localName = "registeredAt")
     private Date registeredAt;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
+    @JacksonXmlProperty(localName = "status")
     private UserStatusType status;
 
     public static enum UserStatusType {
@@ -72,7 +76,8 @@ public class User extends BaseEntity implements Serializable {
     @Column(nullable = true)
     //@JsonBackReference
     @JsonIgnore
-    private Set<UserSubOrder> subOrders = new HashSet<>();
+    @JacksonXmlProperty(localName = "subscriptions")
+    private final Set<UserSubOrder> subOrders = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -127,14 +132,16 @@ public class User extends BaseEntity implements Serializable {
     }
 
     public void setSubOrders(final Set<UserSubOrder> subOrders) {
-        this.subOrders = subOrders;
+        this.subOrders.clear();
+        if (Objects.nonNull(subOrders)) {
+            this.subOrders.addAll(subOrders);
+        }
     }
 
     public void addSubscription(final UserSubOrder subOrder) {
-        if (Objects.isNull(subOrders)) {
-            this.subOrders = new HashSet<>();
+        if (Objects.nonNull(subOrder)) {
+            this.subOrders.add(subOrder);
         }
-        this.subOrders.add(subOrder);
     }
 
     @Override

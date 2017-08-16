@@ -2,7 +2,6 @@ package com.wildbeeslabs.rest.controller;
 
 import com.wildbeeslabs.rest.service.interfaces.SubscriptionService;
 import com.wildbeeslabs.rest.model.Subscription;
-import com.wildbeeslabs.rest.service.interfaces.BaseService;
 
 import java.util.List;
 
@@ -55,7 +54,7 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
     @ResponseBody
     public ResponseEntity<?> getSubscriptionsByUserId(@PathVariable("userId") Long userId) {
         LOGGER.info("Fetching subscriptions by user id {}", userId);
-        List<T> subscriptions = subscriptionService.findByUserId(userId);
+        List<T> subscriptions = getService().findByUserId(userId);
         if (subscriptions.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -78,7 +77,7 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
      * Create new subscription entity
      *
      * @param subscription - subscription data
-     * @param ucBuilder
+     * @param ucBuilder - URI builder instance
      * @return request status code
      */
     @RequestMapping(value = "/subscription", method = RequestMethod.POST, consumes = {"application/xml", "application/json"})
@@ -119,15 +118,20 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
      *
      * @return response status code
      */
-    @RequestMapping(value = "/subscription", method = RequestMethod.DELETE, consumes = {"application/xml", "application/json"})
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @RequestMapping(value = "/subscriptions", method = RequestMethod.DELETE, consumes = {"application/xml", "application/json"})
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<?> deleteAllSubscriptions() {
         return super.deleteAll();
     }
 
+    /**
+     * Get subscription service instance
+     *
+     * @return subscription service instance
+     */
     @Override
-    protected BaseService<T> getService() {
+    protected SubscriptionService<T> getService() {
         return subscriptionService;
     }
 }

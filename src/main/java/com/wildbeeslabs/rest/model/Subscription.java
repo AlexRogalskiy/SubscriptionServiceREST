@@ -1,6 +1,5 @@
 package com.wildbeeslabs.rest.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import java.io.Serializable;
@@ -24,7 +23,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -71,7 +69,7 @@ public class Subscription extends BaseEntity implements Serializable {
     //@JsonBackReference
     @JsonIgnore
     @JacksonXmlProperty(localName = "users")
-    private Set<UserSubOrder> userOrders = new HashSet<>();
+    private final Set<UserSubOrder> userOrders = new HashSet<>();
 
     public Long getId() {
         return id;

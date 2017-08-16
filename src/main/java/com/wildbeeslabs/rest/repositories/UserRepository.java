@@ -40,13 +40,13 @@ public interface UserRepository<T extends User> extends BaseRepository<T> {
      * Default query to find subscribed users by date before
      */
     //SELECT u FROM User u INNER JOIN u.subOrders o WHERE o.subscribedAt > :subDate
-    public final static String FIND_USER_BY_SUB_DATE_AFTER_QUERY = "SELECT o.user FROM UserSubOrder o WHERE o.subscribedAt > :subDate";
+    public final static String FIND_USER_BY_SUB_DATE_AFTER_QUERY = "SELECT DISTINCT o.user FROM UserSubOrder o WHERE o.subscribedAt > :subDate";
 
     /**
      * Default query to find subscribed users by date after
      */
     //SELECT u FROM User u INNER JOIN u.subOrders o WHERE o.subscribedAt <= :subDate
-    public final static String FIND_USER_BY_SUB_DATE_BEFORE_QUERY = "SELECT o.user FROM UserSubOrder o WHERE o.subscribedAt <= :subDate";
+    public final static String FIND_USER_BY_SUB_DATE_BEFORE_QUERY = "SELECT DISTINCT o.user FROM UserSubOrder o WHERE o.subscribedAt <= :subDate";
 
     /**
      * Default query to find subscribed users by subscription type

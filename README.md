@@ -1,13 +1,22 @@
 # SubscriptionServiceREST
 REST API Newsletter Subscription Service
 
-Basic authentication:
+----------------------------GENERAL-----------------------------
+
+URL: http://host:8080/newsletterSub/api/
+METHODS: GET / POST / PUT / DELETE
+Content-Type: application/json, application/xml
+
+---------------------------BASIC AUTH---------------------------
+
+Basic authentication (ROLES: USER, ADMIN, DBA):
 
 URL: /api/*
-user: user
+ROLE: USER
+username: user
 password: user123
 
-JSON:
+------------------------------JSON------------------------------
 
 1. Get all subscriptions:
 
@@ -25,7 +34,59 @@ curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET
 
 curl -d '{"name":"subscription11", "expireAt": "2018-11-11", "type": "PREMIUM"}' -H "Accept: Application/json" -H "Content-Type: application/json" -X POST http://localhost:8080/newsletterSub/api/subscription
 
-XML:
+5. Update subscription width id = 4:
+
+curl -d '{"name":"subscription4", "expireAt": "2018-11-11", "type": "PREMIUM"}' -H "Accept: application/json" -H "Content-Type: application/json" -X PUT http://localhost:8080/newsletterSub/api/subscription/4
+
+6. Delete subscription with id = 4:
+
+ROLE: ADMIN and DBA
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X DELETE http://localhost:8080/newsletterSub/api/subscription/4
+
+7. Delete all subscriptions:
+
+ROLE: ADMIN and DBA
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X DELETE http://localhost:8080/newsletterSub/api/subscriptions
+
+8. Get user by id = 1:
+
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:8080/newsletterSub/api/user/1
+
+9. Create user:
+
+curl -d '{"login":"user4@gmail.com", "age": "25", "rating": "1.00", "status": "UNVERIFIED"}' -H "Accept: Application/json" -H "Content-Type: application/json" -X POST http://localhost:8080/newsletterSub/api/user
+
+10. Update user with id = 4:
+
+curl -d '{"login":"user4@gmail.com", "age": "25", "rating": "10.00", "status": "UNVERIFIED"}' -H "Accept: application/json" -H "Content-Type: application/json" -X PUT http://localhost:8080/newsletterSub/api/user/4
+
+11. Delete user with id = 4:
+
+ROLE: ADMIN and DBA
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X DELETE http://localhost:8080/newsletterSub/api/user/4
+
+12. Delete all users:
+
+ROLE: ADMIN and DBA
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X DELETE http://localhost:8080/newsletterSub/api/users
+
+13. Get all users:
+
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:8080/newsletterSub/api/users
+
+14. Get all users subscribed before date:
+
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:8080/newsletterSub/api/users?date=2017-08-08&order=1
+
+15. Get all users subscribed after date:
+
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:8080/newsletterSub/api/users?date=2017-08-08{&order=0}
+
+16. Get all users by subscription type:
+
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:8080/newsletterSub/api/users?type=ADVANCED
+
+-------------------------------XML------------------------------
 
 1. Get all subscriptions:
 
@@ -41,8 +102,57 @@ curl -H "Accept: application/xml" -H "Content-Type: application/xml" -X GET http
 
 4. Create subscription:
 
-curl -d '<Subscription><name>subscription43</name><expireAt>2018-11-11</expireAt><type>PREMIUM</type></Subscription>' -H "Accept: application/xml" -H "Content-Type: application/xml" -X POST http://localhost:8080/newsletterSub/api/subscription
+curl -d '<Subscription><name>subscription11</name><expireAt>2018-11-11</expireAt><type>PREMIUM</type></Subscription>' -H "Accept: application/xml" -H "Content-Type: application/xml" -X POST http://localhost:8080/newsletterSub/api/subscription
 
+5. Update subscription width id = 4:
 
+curl -d '<Subscription><name>subscription4</name><expireAt>2018-11-11</expireAt><type>PREMIUM</type></Subscription>' -H "Accept: application/xml" -H "Content-Type: application/xml" -X PUT http://localhost:8080/newsletterSub/api/subscription/4
 
+6. Delete subscription with id = 4:
+
+ROLE: ADMIN and DBA
+curl -H "Accept: application/xml" -H "Content-Type: application/xml" -X DELETE http://localhost:8080/newsletterSub/api/subscription/4
+
+7. Delete all subscriptions:
+
+ROLE: ADMIN and DBA
+curl -H "Accept: application/xml" -H "Content-Type: application/xml" -X DELETE http://localhost:8080/newsletterSub/api/subscriptions
+
+8. Get user by id = 1:
+
+curl -i -H "Accept: application/xml" -H "Content-Type: application/xml" -X GET http://localhost:8080/newsletterSub/api/user/1
+
+9. Create user:
+
+curl -d '<User><login>user5@gmail.com</login><age>25</age><rating>1.00</rating><status>UNVERIFIED</status></User>' -H "Accept: application/xml" -H "Content-Type: application/xml" -X POST http://localhost:8080/newsletterSub/api/user
+
+10. Update user with id = 4:
+
+curl -d '<User><login>user5@gmail.com</login><age>25</age><rating>10.00</rating><status>UNVERIFIED</status></User>' -H "Accept: application/xml" -H "Content-Type: application/xml" -X PUT http://localhost:8080/newsletterSub/api/user/4
+
+11. Delete user with id = 4:
+
+ROLE: ADMIN and DBA
+curl -H "Accept: application/xml" -H "Content-Type: application/xml" -X DELETE http://localhost:8080/newsletterSub/api/user/4
+
+12. Delete all users:
+
+ROLE: ADMIN and DBA
+curl -H "Accept: application/xml" -H "Content-Type: application/xml" -X DELETE http://localhost:8080/newsletterSub/api/users
+
+13. Get all users:
+
+curl -i -H "Accept: application/xml" -H "Content-Type: application/xml" -X GET http://localhost:8080/newsletterSub/api/users
+
+14. Get all users subscribed before date:
+
+curl -i -H "Accept: application/xml" -H "Content-Type: application/xml" -X GET http://localhost:8080/newsletterSub/api/users?date=2017-08-08&order=1
+
+15. Get all users subscribed after date:
+
+curl -i -H "Accept: application/xml" -H "Content-Type: application/xml" -X GET http://localhost:8080/newsletterSub/api/users?date=2017-08-08{&order=0}
+
+16. Get all users by subscription type:
+
+curl -i -H "Accept: application/xml" -H "Content-Type: application/xml" -X GET http://localhost:8080/newsletterSub/api/users?type=ADVANCED
 
