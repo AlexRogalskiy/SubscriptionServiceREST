@@ -23,36 +23,31 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository<T extends User> extends BaseRepository<T> {
 
     /**
-     * Default query to find subscribed users by subscription type and date (after)
-     * before
+     * Default query to find subscribed users by subscription type and date
+     * after (excluding)
      */
-    //SELECT u FROM User u INNER JOIN u.subOrders o INNER JOIN o.subscription s WHERE s.type = :subType AND o.subscribedAt > :subDate
-    public final static String FIND_USER_BY_SUB_TYPE_AND_SUB_DATE_AFTER_QUERY = "SELECT o.pk.user FROM UserSubOrder o INNER JOIN o.pk.subscription s WHERE s.type = :subType AND o.subscribedAt > :subDate";
+    public final static String FIND_USER_BY_SUB_TYPE_AND_SUB_DATE_AFTER_QUERY = "SELECT o.pk.user FROM UserSubOrder o WHERE o.pk.subscription.type = :subType AND o.subscribedAt > :subDate";
 
     /**
-     * Default query to find subscribed users by subscription type and date (before)
-     * after
+     * Default query to find subscribed users by subscription type and date
+     * before (including)
      */
-    //SELECT u FROM User u INNER JOIN u.subOrders o INNER JOIN o.subscription s WHERE s.type = :subType AND o.subscribedAt <= :subDate
-    public final static String FIND_USER_BY_SUB_TYPE_AND_SUB_DATE_BEFORE_QUERY = "SELECT o.pk.user FROM UserSubOrder o INNER JOIN o.pk.subscription s WHERE s.type = :subType AND o.subscribedAt <= :subDate";
+    public final static String FIND_USER_BY_SUB_TYPE_AND_SUB_DATE_BEFORE_QUERY = "SELECT o.pk.user FROM UserSubOrder o WHERE o.pk.subscription.type = :subType AND o.subscribedAt <= :subDate";
 
     /**
-     * Default query to find subscribed users by date (after)
+     * Default query to find subscribed users by date after (excluding)
      */
-    //SELECT u FROM User u INNER JOIN u.subOrders o WHERE o.subscribedAt > :subDate
     public final static String FIND_USER_BY_SUB_DATE_AFTER_QUERY = "SELECT DISTINCT o.pk.user FROM UserSubOrder o WHERE o.subscribedAt > :subDate";
 
     /**
-     * Default query to find subscribed users by date after (before)
+     * Default query to find subscribed users by date before (including)
      */
-    //SELECT u FROM User u INNER JOIN u.subOrders o WHERE o.subscribedAt <= :subDate
     public final static String FIND_USER_BY_SUB_DATE_BEFORE_QUERY = "SELECT DISTINCT o.pk.user FROM UserSubOrder o WHERE o.subscribedAt <= :subDate";
 
     /**
      * Default query to find subscribed users by subscription type
      */
-    //SELECT u FROM User u INNER JOIN u.subOrders o INNER JOIN o.subscription s WHERE s.type = :subType
-    public final static String FIND_USER_BY_SUB_TYPE_QUERY = "SELECT o.pk.user FROM UserSubOrder o INNER JOIN o.pk.subscription s WHERE s.type = :subType";
+    public final static String FIND_USER_BY_SUB_TYPE_QUERY = "SELECT o.pk.user FROM UserSubOrder o WHERE o.pk.subscription.type = :subType";
 
     /**
      * Get user entity by login (case insensitive)
@@ -63,10 +58,9 @@ public interface UserRepository<T extends User> extends BaseRepository<T> {
     T findByLoginIgnoreCase(final String name);
 
     /**
-     * Get list of user entities by subscription type after (excluding)
-     * particular date
+     * Get list of user entities by subscription type and date before
      *
-     * @param subDate - request date
+     * @param subDate - request date (including)
      * @param subType - subscription type
      * @return list of user entities
      */
@@ -74,10 +68,9 @@ public interface UserRepository<T extends User> extends BaseRepository<T> {
     List<T> findBySubscriptionTypeAndDateBefore(@Param("subDate") final Date subDate, @Param("subType") final Subscription.SubscriptionStatusType subType);
 
     /**
-     * Get list of user entities by subscription type before (including)
-     * particular date
+     * Get list of user entities by subscription type and date after
      *
-     * @param subDate - request date
+     * @param subDate - request date (excluding)
      * @param subType - subscription type
      * @return list of user entities
      */
@@ -85,18 +78,18 @@ public interface UserRepository<T extends User> extends BaseRepository<T> {
     List<T> findBySubscriptionTypeAndDateAfter(@Param("subDate") final Date subDate, @Param("subType") final Subscription.SubscriptionStatusType subType);
 
     /**
-     * Get list of user entities after (excluding) particular date
+     * Get list of user entities by date before (including)
      *
-     * @param subDate - request date
+     * @param subDate - request date (including)
      * @return list of user entities
      */
     @Query(FIND_USER_BY_SUB_DATE_BEFORE_QUERY)
     List<T> findByDateBefore(@Param("subDate") final Date subDate);
 
     /**
-     * Get list of user entities before (including) particular date
+     * Get list of user entities by date after (excluding)
      *
-     * @param subDate - request date
+     * @param subDate - request date (excluding)
      * @return list of user entities
      */
     @Query(FIND_USER_BY_SUB_DATE_AFTER_QUERY)

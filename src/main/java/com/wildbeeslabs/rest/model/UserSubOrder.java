@@ -39,7 +39,7 @@ public class UserSubOrder extends BaseEntity implements Serializable {
 
     @Id
     @EmbeddedId
-    private UserSubOrderId pk;
+    private UserSubOrderId pk = new UserSubOrderId();
 
     public UserSubOrderId getPk() {
         return pk;

@@ -3,10 +3,11 @@ package com.wildbeeslabs.rest.service;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.UserSubOrder;
+import com.wildbeeslabs.rest.model.UserSubOrderId;
 import com.wildbeeslabs.rest.repositories.UserSubOrderRepository;
 import com.wildbeeslabs.rest.service.interfaces.UserSubOrderService;
-import java.util.Date;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,8 +33,8 @@ public class UserSubOrderServiceImpl<T extends UserSubOrder> implements UserSubO
     private UserSubOrderRepository<T> userSubOrderRepository;
 
     @Override
-    public T findById(final Long id) {
-        return userSubOrderRepository.findOne(id);
+    public T findById(final UserSubOrderId id) {
+        return userSubOrderRepository.findById(id);
     }
 
     @Override
@@ -65,7 +66,7 @@ public class UserSubOrderServiceImpl<T extends UserSubOrder> implements UserSubO
 
     @Override
     public boolean isExist(final T userSubOrder) {
-        return Objects.nonNull(findByUser(userSubOrder.getUser())) && Objects.nonNull(findBySubscription(userSubOrder.getSubscription()));
+        return Objects.nonNull(findById(userSubOrder.getPk()));
     }
 
     @Override

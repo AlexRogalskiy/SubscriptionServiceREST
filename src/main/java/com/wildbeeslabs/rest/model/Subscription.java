@@ -142,10 +142,7 @@ public class Subscription extends BaseEntity implements Serializable {
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (!Objects.equals(this.expireAt, other.expireAt)) {
-            return false;
-        }
-        return Objects.equals(this.userOrders, other.userOrders);
+        return Objects.equals(this.expireAt, other.expireAt);
     }
 
     @Override
@@ -155,12 +152,11 @@ public class Subscription extends BaseEntity implements Serializable {
         hash = 79 * hash + Objects.hashCode(this.name);
         hash = 79 * hash + Objects.hashCode(this.expireAt);
         hash = 79 * hash + Objects.hashCode(this.type);
-        hash = 79 * hash + Objects.hashCode(this.userOrders);
         return hash;
     }
 
     @Override
     public String toString() {
-        return String.format("Subscription {id: %d, name: %s, expireAt: %s, type: %s, users: %s}", this.id, this.name, this.expireAt, this.type, this.userOrders);
+        return String.format("Subscription {id: %d, name: %s, expireAt: %s, type: %s}", this.id, this.name, this.expireAt, this.type);
     }
 }

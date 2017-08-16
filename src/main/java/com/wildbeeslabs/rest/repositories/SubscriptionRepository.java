@@ -2,9 +2,9 @@ package com.wildbeeslabs.rest.repositories;
 
 import com.wildbeeslabs.rest.model.Subscription;
 
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
+
+import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -23,11 +23,7 @@ public interface SubscriptionRepository<T extends Subscription> extends BaseRepo
     /**
      * Default query to find subscriptions by user id
      */
-    //SELECT s FROM Subscription s INNER JOIN s.userOrders o INNER JOIN o.user u WHERE u.id = :userId
-    //SELECT o.subscription FROM UserSubOrder o WHERE o.user.id = :userId
-    //SELECT s FROM Subscription s INNER JOIN s.userOrders o WHERE o.user.id = :userId
-    //SELECT o.subscription FROM UserSubOrder o INNER JOIN o.user u WHERE u.id = :userId
-    public final static String FIND_SUB_BY_USER_ID_QUERY = "SELECT o.pk.subscription FROM UserSubOrder o INNER JOIN o.pk.user u WHERE u.id = :userId";
+    public final static String FIND_SUB_BY_USER_ID_QUERY = "SELECT o.pk.subscription FROM UserSubOrder o WHERE o.pk.user.id = :userId";
 
     /**
      * Get subscription entity by name (case insensitive)

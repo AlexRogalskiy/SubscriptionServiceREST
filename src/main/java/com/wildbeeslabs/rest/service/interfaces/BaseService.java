@@ -22,7 +22,9 @@ public interface BaseService<T extends Serializable> {
         ASC, DESC;
     }
 
-    T findById(final Long id);
+    default T findById(final Long id) {
+        return null;
+    }
 
     void save(final T item);
 

@@ -3,8 +3,8 @@ package com.wildbeeslabs.rest.controller;
 import com.wildbeeslabs.rest.exception.ServiceException;
 import com.wildbeeslabs.rest.model.BaseEntity;
 import com.wildbeeslabs.rest.service.interfaces.BaseService;
-import java.beans.PropertyEditorSupport;
 
+import java.beans.PropertyEditorSupport;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,7 +33,7 @@ public abstract class AbscractBaseController<T extends BaseEntity> implements IB
     @Override
     public ResponseEntity<?> getAll() {
         LOGGER.info("Fetching all items");
-        List<T> items = getService().findAll();
+        List<T> items = getDefaultService().findAll();
         if (items.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -43,7 +43,7 @@ public abstract class AbscractBaseController<T extends BaseEntity> implements IB
     @Override
     public ResponseEntity<?> getById(final Long id) {
         LOGGER.info("Fetching item by id {}", id);
-        T item = getService().findById(id);
+        T item = getDefaultService().findById(id);
         if (Objects.isNull(item)) {
             String errorMessage = String.format("ERROR: item with id={%d} is not found", id);
             LOGGER.error(errorMessage);
@@ -55,49 +55,49 @@ public abstract class AbscractBaseController<T extends BaseEntity> implements IB
     @Override
     public ResponseEntity<?> create(final T item) {
         LOGGER.info("Creating item : {}", item);
-        if (getService().isExist(item)) {
+        if (getDefaultService().isExist(item)) {
             String errorMessage = String.format("ERROR: item already exist");
             LOGGER.error(errorMessage);
             return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.CONFLICT);
         }
-        getService().save(item);
+        getDefaultService().save(item);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<?> update(final Long id, final T item) {
         LOGGER.info("Updating item by id {}", id);
-        T currentItem = getService().findById(id);
+        T currentItem = getDefaultService().findById(id);
         if (Objects.isNull(currentItem)) {
             String errorMessage = String.format("ERROR: item with id={%d} is not found", id);
             LOGGER.error(errorMessage);
             return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
         }
-        getService().merge(currentItem, item);
+        getDefaultService().merge(currentItem, item);
         return new ResponseEntity<>(currentItem, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<?> delete(final Long id) {
         LOGGER.info("Deleting item by id {}", id);
-        T item = getService().findById(id);
+        T item = getDefaultService().findById(id);
         if (Objects.isNull(item)) {
             String errorMessage = String.format("ERROR: item with id={%d} is not found", id);
             LOGGER.error(errorMessage);
             return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
         }
-        getService().deleteById(id);
+        getDefaultService().deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<?> deleteAll() {
         LOGGER.info("Deleting all items");
-        getService().deleteAll();
+        getDefaultService().deleteAll();
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    protected abstract BaseService<T> getService();
+    protected abstract BaseService<T> getDefaultService();
 
     protected static class BaseEnumConverter<T extends Enum<T>> extends PropertyEditorSupport {
 

@@ -175,10 +175,7 @@ public class User extends BaseEntity implements Serializable {
         if (!Objects.equals(this.registeredAt, other.registeredAt)) {
             return false;
         }
-        if (this.status != other.status) {
-            return false;
-        }
-        return Objects.equals(this.subOrders, other.subOrders);
+        return this.status == other.status;
     }
 
     @Override
@@ -190,12 +187,11 @@ public class User extends BaseEntity implements Serializable {
         hash = 29 * hash + Objects.hashCode(this.rating);
         hash = 29 * hash + Objects.hashCode(this.registeredAt);
         hash = 29 * hash + Objects.hashCode(this.status);
-        hash = 29 * hash + Objects.hashCode(this.subOrders);
         return hash;
     }
 
     @Override
     public String toString() {
-        return String.format("User {id: %d, login: %s, age: %d, rating: %f, status: %s, registeredAt: %s, subscriptions: %s}", this.id, this.login, this.age, this.rating, this.status, this.registeredAt, this.subOrders);
+        return String.format("User {id: %d, login: %s, age: %d, rating: %f, status: %s, registeredAt: %s}", this.id, this.login, this.age, this.rating, this.status, this.registeredAt);
     }
 }

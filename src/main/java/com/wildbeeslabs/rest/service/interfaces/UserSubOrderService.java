@@ -3,6 +3,7 @@ package com.wildbeeslabs.rest.service.interfaces;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.UserSubOrder;
+import com.wildbeeslabs.rest.model.UserSubOrderId;
 
 import java.util.Date;
 import java.util.List;
@@ -17,6 +18,14 @@ import java.util.List;
  * @param <T>
  */
 public interface UserSubOrderService<T extends UserSubOrder> extends BaseService<T> {
+
+    /**
+     * Get subscription order by id (compound primary key)
+     *
+     * @param id - subscription order identifier
+     * @return subscription order
+     */
+    T findById(final UserSubOrderId id);
 
     /**
      * Get list of subscription orders by user entity

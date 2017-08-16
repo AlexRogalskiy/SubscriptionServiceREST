@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>       
+    <session-factory>
+        <!-- Database connection settings -->
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/subscriptiondb</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">toor</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.hbm2ddl.auto">create-drop</property>
+        <property name="hibernate.default_schema"></property>
+        <property name="hibernate.globally_quoted_identifiers">true</property>
+        <property name="hibernate.id.new_generator_mappings">true</property>
+        <property name="hibernate.generate_statistics">true</property>
+        <property name="hibernate.connection.autocommit">true</property>
+        <property name="hibernate.transaction.flush_before_completion">false</property>
+
+        <!-- Database cache settings -->
+        <!--    <property name="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</property>
+            <property name="hibernate.cache.use_query_cache">true</property>
+            <property name="hibernate.cache.use_second_level_cache">true</property>
+            <property name="hibernate.cache.provider_configuration">category-ehcache.xml</property>
+            <property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</property>
+        -->    
+        <!-- Database performance settings -->
+        <!--    <property name="hibernate.c3p0.min_size">5</property>
+            <property name="hibernate.c3p0.max_size">20</property>
+            <property name="hibernate.c3p0.timeout">300</property>
+            <property name="hibernate.c3p0.max_statements">50</property>
+            <property name="hibernate.c3p0.idle_test_period">3000</property>
+        -->    
+        <!-- Misc settings -->
+        <!--   <property name="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</property>
+        --> 
+     
+        <mapping class="com.wildbeeslabs.rest.model.User"/>
+        <mapping class="com.wildbeeslabs.rest.model.Subscription"/>
+        <mapping class="com.wildbeeslabs.rest.model.UserSubOrder"/>
+        <mapping class="com.wildbeeslabs.rest.model.UserSubOrderId"/>
+        
+    </session-factory>
+</hibernate-configuration>

@@ -61,7 +61,7 @@ public class UserController<T extends User> extends AbscractBaseController<T> {
         LOGGER.info("Fetching all users by subscription date {} and type {} by date order {} (1 - before, 0 - after)", subType, subDate, subDateOrder);
 
         UserService.DateTypeOrder dateTypeOrder = Objects.equals(subDateOrder, Boolean.TRUE) ? UserService.DateTypeOrder.AFTER : UserService.DateTypeOrder.BEFORE;
-        List<T> userList = getService().findAllBySubscriptionTypeAndDate(subDate, subType, dateTypeOrder);
+        List<T> userList = getDefaultService().findAllBySubscriptionTypeAndDate(subDate, subType, dateTypeOrder);
         if (userList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -131,12 +131,12 @@ public class UserController<T extends User> extends AbscractBaseController<T> {
     }
 
     /**
-     * Get user service instance
+     * Get default user service instance
      *
      * @return user service instance
      */
     @Override
-    protected UserService<T> getService() {
+    protected UserService<T> getDefaultService() {
         return userService;
     }
 }

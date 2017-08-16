@@ -71,5 +71,4 @@ public class UserSubOrderId implements java.io.Serializable {
     public String toString() {
         return String.format("UserSubOrderId {user: %s, subscription: %s}", this.user, this.subscription);
     }
-
 }

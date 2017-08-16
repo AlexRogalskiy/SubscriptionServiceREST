@@ -1,8 +1,10 @@
 package com.wildbeeslabs.rest.repositories;
 
 import com.wildbeeslabs.rest.model.BaseEntity;
+
 import java.util.Date;
 import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -38,11 +40,10 @@ public interface BaseRepository<T extends BaseEntity> extends JpaRepository<T, L
     List<T> findAllByCreatedAtGreaterThan(final Date date);
 
     /**
-     * Get list of entities created between (lower bound excluding, upper bound
-     * including) particular date
+     * Get list of entities created by date period
      *
-     * @param dateFrom - start date
-     * @param dateTo - end date
+     * @param dateFrom - start date of period (excluding)
+     * @param dateTo - end date of period (including)
      * @return list of entities
      */
     @Query("select e from #{#entityName} e where e.createdAt > ?1 and e.createdAt <= ?2")

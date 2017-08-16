@@ -6,15 +6,15 @@
 
     <!-- Subscription JPA Named Queries -->
     <named-query name="Subscription.findByUserId">
-        <query>SELECT o.pk.subscription FROM UserSubOrder o INNER JOIN o.pk.user u WHERE u.id = :userId</query>
+        <query>SELECT o.pk.subscription FROM UserSubOrder o WHERE o.pk.user.id = :userId</query>
     </named-query>
     
     <!-- User JPA Named Queries -->
     <named-query name="User.findBySubscriptionTypeAndDateBefore">
-        <query>SELECT o.pk.user FROM UserSubOrder o INNER JOIN o.pk.subscription s WHERE s.type = :subType AND o.subscribedAt <= :subDate</query>
+        <query>SELECT o.pk.user FROM UserSubOrder o WHERE o.pk.subscription.type = :subType AND o.subscribedAt <= :subDate</query>
     </named-query>
     <named-query name="User.findBySubscriptionTypeAndDateAfter">
-        <query>SELECT o.pk.user FROM UserSubOrder o INNER JOIN o.pk.subscription s WHERE s.type = :subType AND o.subscribedAt > :subDate</query>
+        <query>SELECT o.pk.user FROM UserSubOrder o WHERE o.pk.subscription.type = :subType AND o.subscribedAt > :subDate</query>
     </named-query>
     <named-query name="User.findByDateBefore">
         <query>SELECT DISTINCT o.pk.user FROM UserSubOrder o WHERE o.subscribedAt <= :subDate</query>
@@ -23,18 +23,21 @@
         <query>SELECT DISTINCT o.pk.user FROM UserSubOrder o WHERE o.subscribedAt > :subDate</query>
     </named-query>
     <named-query name="User.findBySubscriptionType">
-        <query>SELECT o.pk.user FROM UserSubOrder o INNER JOIN o.pk.subscription s WHERE s.type = :subType</query>
+        <query>SELECT o.pk.user FROM UserSubOrder o WHERE o.pk.subscription.type = :subType</query>
     </named-query>
     
     <!-- UserSubOrder JPA Named Queries -->
+    <named-query name="UserSubOrder.findById">
+        <query>SELECT o FROM UserSubOrder o WHERE o.pk = :userSubOrderId</query>
+    </named-query>
     <named-query name="UserSubOrder.findByUserId">
-        <query>SELECT o FROM UserSubOrder o INNER JOIN o.pk.user u WHERE u.id = :userId</query>
+        <query>SELECT o FROM UserSubOrder o WHERE o.pk.user.id = :userId</query>
     </named-query>
     <named-query name="UserSubOrder.findByUser">
         <query>SELECT o FROM UserSubOrder o WHERE o.pk.user = :user</query>
     </named-query>
     <named-query name="UserSubOrder.findBySubscriptionId">
-        <query>SELECT o FROM UserSubOrder o INNER JOIN o.pk.subscription s WHERE s.id = :subscriptionId</query>
+        <query>SELECT o FROM UserSubOrder o WHERE o.pk.subscription.id = :subscriptionId</query>
     </named-query>
     <named-query name="UserSubOrder.findBySubscription">
         <query>SELECT o FROM UserSubOrder o WHERE o.pk.subscription = :subscription</query>
