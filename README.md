@@ -86,6 +86,14 @@ curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET
 
 curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:8080/newsletterSub/api/users?type=ADVANCED
 
+17. Get all users by subscription type and date (before):
+
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:8080/newsletterSub/api/users?type=STANDARD&date=2017-08-08&order=1
+
+18. Create user with subscription:
+
+curl -d '{"login":"user4@gmail.com", "age": "25", "rating": "1.00", "status": "UNVERIFIED"}' -H "Accept: Application/json" -H "Content-Type: application/json" -X POST http://localhost:8080/newsletterSub/api/user
+
 -------------------------------XML------------------------------
 
 1. Get all subscriptions:
@@ -156,3 +164,6 @@ curl -i -H "Accept: application/xml" -H "Content-Type: application/xml" -X GET h
 
 curl -i -H "Accept: application/xml" -H "Content-Type: application/xml" -X GET http://localhost:8080/newsletterSub/api/users?type=ADVANCED
 
+17. Get all users by subscription type and date (before):
+
+curl -i -H "Accept: application/xml" -H "Content-Type: application/xml" -X GET http://localhost:8080/newsletterSub/api/users?type=STANDARD&date=2017-08-08&order=1

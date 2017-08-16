@@ -83,9 +83,7 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
     @RequestMapping(value = "/subscription", method = RequestMethod.POST, consumes = {"application/xml", "application/json"})
     @ResponseBody
     public ResponseEntity<?> createSubscription(@RequestBody T subscription, UriComponentsBuilder ucBuilder) {
-        ResponseEntity<?> response = super.create(subscription);
-        //response.getHeaders().setLocation(ucBuilder.path("/api/subscription/{id}").buildAndExpand(subscription.getId()).toUri());
-        return response;
+        return super.create(subscription);
     }
 
     /**

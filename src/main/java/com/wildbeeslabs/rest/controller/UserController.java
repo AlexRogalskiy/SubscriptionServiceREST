@@ -59,11 +59,7 @@ public class UserController<T extends User> extends AbscractBaseController<T> {
     public ResponseEntity<?> getAllUsers(@RequestParam(name = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date subDate, @RequestParam(name = "type", required = false) Subscription.SubscriptionStatusType subType, @RequestParam(name = "order", required = false, defaultValue = "false") Boolean subDateOrder) {
         LOGGER.info("Fetching all users by subscription date {} and type {} by date order {} (1 - before, 0 - after)", subType, subDate, subDateOrder);
 
-        //Date sDate = subDate.isPresent() ? subDate.get() : null;
-        //Subscription.SubscriptionStatusType sType = subType.isPresent() ? subType.get() : null;
-        //Boolean sDateOrder = subDateOrder.isPresent() ? subDateOrder.get() : null;
         UserService.DateTypeOrder dateTypeOrder = Objects.equals(subDateOrder, Boolean.TRUE) ? UserService.DateTypeOrder.AFTER : UserService.DateTypeOrder.BEFORE;
-
         List<T> userList = getService().findAllBySubscriptionTypeAndDate(subDate, subType, dateTypeOrder);
         if (userList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -93,9 +89,7 @@ public class UserController<T extends User> extends AbscractBaseController<T> {
     @RequestMapping(value = "/user", method = RequestMethod.POST, consumes = {"application/xml", "application/json"})
     @ResponseBody
     public ResponseEntity<?> createUser(@RequestBody T user, UriComponentsBuilder ucBuilder) {
-        ResponseEntity<?> response = super.create(user);
-        //response.getHeaders().setLocation(ucBuilder.path("/api/user/{id}").buildAndExpand(user.getId()).toUri());
-        return response;
+        return super.create(user);
     }
 
     /**

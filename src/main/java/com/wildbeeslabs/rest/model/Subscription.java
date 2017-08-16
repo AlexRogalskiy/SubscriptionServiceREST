@@ -65,7 +65,7 @@ public class Subscription extends BaseEntity implements Serializable {
     }
 
     @OneToMany(mappedBy = "subscription", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @Column(nullable = true)
+    @Column(name = "users", nullable = true)
     //@JsonBackReference
     @JsonIgnore
     @JacksonXmlProperty(localName = "users")

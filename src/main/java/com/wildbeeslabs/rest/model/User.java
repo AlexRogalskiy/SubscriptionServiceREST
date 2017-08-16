@@ -73,7 +73,7 @@ public class User extends BaseEntity implements Serializable {
     }
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @Column(nullable = true)
+    @Column(name = "subscriptions", nullable = true)
     //@JsonBackReference
     @JsonIgnore
     @JacksonXmlProperty(localName = "subscriptions")
