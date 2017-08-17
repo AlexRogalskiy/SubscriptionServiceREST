@@ -1,5 +1,8 @@
 package com.wildbeeslabs.rest.exception;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
 /**
  *
  * Service REST Application exception
@@ -8,7 +11,10 @@ package com.wildbeeslabs.rest.exception;
  * @version 1.0.0
  * @since 2017-08-08
  */
-public class ServiceException extends Exception {
+@ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+public class ServiceException extends RuntimeException {
+
+    private static final long serialVersionUID = 1L;
 
     public ServiceException() {
     }

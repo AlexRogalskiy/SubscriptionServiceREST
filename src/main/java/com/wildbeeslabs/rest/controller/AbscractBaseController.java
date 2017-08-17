@@ -1,15 +1,20 @@
 package com.wildbeeslabs.rest.controller;
 
-import com.wildbeeslabs.rest.exception.ServiceException;
+import com.wildbeeslabs.rest.exception.ResourceAlreadyExistException;
+import com.wildbeeslabs.rest.exception.ResourceNotFoundException;
 import com.wildbeeslabs.rest.model.BaseEntity;
 import com.wildbeeslabs.rest.service.interfaces.BaseService;
 
 import java.beans.PropertyEditorSupport;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +31,17 @@ import org.springframework.http.ResponseEntity;
 public abstract class AbscractBaseController<T extends BaseEntity> implements IBaseController<T> {
 
     /**
-     * Default logger instance
+     * Default Logger instance
      */
     protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
+
+    @Autowired
+    private MessageSource messageSource;
+
+    protected String getMessage(final String name) {
+        Locale locale = LocaleContextHolder.getLocale();
+        return messageSource.getMessage(name, null, locale);
+    }
 
     @Override
     public ResponseEntity<?> getAll() {
@@ -45,9 +58,7 @@ public abstract class AbscractBaseController<T extends BaseEntity> implements IB
         LOGGER.info("Fetching item by id {}", id);
         T item = getDefaultService().findById(id);
         if (Objects.isNull(item)) {
-            String errorMessage = String.format("ERROR: item with id={%d} is not found", id);
-            LOGGER.error(errorMessage);
-            return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException(String.format(getMessage("error.no.item.id"), id));
         }
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
@@ -56,9 +67,7 @@ public abstract class AbscractBaseController<T extends BaseEntity> implements IB
     public ResponseEntity<?> create(final T item) {
         LOGGER.info("Creating item : {}", item);
         if (getDefaultService().isExist(item)) {
-            String errorMessage = String.format("ERROR: item already exist");
-            LOGGER.error(errorMessage);
-            return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.CONFLICT);
+            throw new ResourceAlreadyExistException(String.format(getMessage("error.already.exist.item")));
         }
         getDefaultService().save(item);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -69,9 +78,7 @@ public abstract class AbscractBaseController<T extends BaseEntity> implements IB
         LOGGER.info("Updating item by id {}", id);
         T currentItem = getDefaultService().findById(id);
         if (Objects.isNull(currentItem)) {
-            String errorMessage = String.format("ERROR: item with id={%d} is not found", id);
-            LOGGER.error(errorMessage);
-            return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException(String.format(getMessage("error.no.item.id"), id));
         }
         getDefaultService().merge(currentItem, item);
         return new ResponseEntity<>(currentItem, HttpStatus.OK);
@@ -82,9 +89,7 @@ public abstract class AbscractBaseController<T extends BaseEntity> implements IB
         LOGGER.info("Deleting item by id {}", id);
         T item = getDefaultService().findById(id);
         if (Objects.isNull(item)) {
-            String errorMessage = String.format("ERROR: item with id={%d} is not found", id);
-            LOGGER.error(errorMessage);
-            return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException(String.format(getMessage("error.no.item.id"), id));
         }
         getDefaultService().deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);

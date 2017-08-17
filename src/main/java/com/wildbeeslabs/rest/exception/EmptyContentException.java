@@ -5,29 +5,29 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  *
- * BadRequest REST Application exception
+ * EmptyContent REST Application exception
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
  */
-@ResponseStatus(HttpStatus.BAD_REQUEST)
-public class BadRequestException extends RuntimeException {
+@ResponseStatus(HttpStatus.NO_CONTENT)
+public class EmptyContentException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
-    public BadRequestException() {
+    public EmptyContentException() {
     }
 
-    public BadRequestException(String message) {
+    public EmptyContentException(String message) {
         super(message);
     }
 
-    public BadRequestException(Throwable cause) {
+    public EmptyContentException(Throwable cause) {
         super(cause);
     }
 
-    public BadRequestException(String message, Throwable cause) {
+    public EmptyContentException(String message, Throwable cause) {
         super(message, cause);
     }
 

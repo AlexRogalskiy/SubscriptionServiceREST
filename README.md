@@ -16,6 +16,8 @@ ROLE: USER
 username: user
 password: user123
 
+curl --user user:user123
+ 
 ------------------------------JSON------------------------------
 
 1. Get all subscriptions:

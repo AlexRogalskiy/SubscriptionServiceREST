@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  *
- * ResourceNotFound REST Application exception
+ * ResourceAlreadyExist REST Application exception
  *
  * @author Alex
  * @version 1.0.0
@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 @ResponseStatus(HttpStatus.CONFLICT)
 public class ResourceAlreadyExistException extends RuntimeException {
+
+    private static final long serialVersionUID = 1L;
 
     public ResourceAlreadyExistException() {
     }
