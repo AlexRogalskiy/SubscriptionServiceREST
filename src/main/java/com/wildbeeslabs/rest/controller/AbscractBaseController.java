@@ -12,10 +12,10 @@ import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -38,9 +38,9 @@ public abstract class AbscractBaseController<T extends BaseEntity> implements IB
     @Autowired
     private MessageSource messageSource;
 
-    protected String getMessage(final String name) {
+    protected String getLocaleMessage(final String message) {
         Locale locale = LocaleContextHolder.getLocale();
-        return messageSource.getMessage(name, null, locale);
+        return messageSource.getMessage(message, null, locale);
     }
 
     @Override
@@ -58,7 +58,7 @@ public abstract class AbscractBaseController<T extends BaseEntity> implements IB
         LOGGER.info("Fetching item by id {}", id);
         T item = getDefaultService().findById(id);
         if (Objects.isNull(item)) {
-            throw new ResourceNotFoundException(String.format(getMessage("error.no.item.id"), id));
+            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.item.id"), id));
         }
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
@@ -67,7 +67,7 @@ public abstract class AbscractBaseController<T extends BaseEntity> implements IB
     public ResponseEntity<?> create(final T item) {
         LOGGER.info("Creating item : {}", item);
         if (getDefaultService().isExist(item)) {
-            throw new ResourceAlreadyExistException(String.format(getMessage("error.already.exist.item")));
+            throw new ResourceAlreadyExistException(String.format(getLocaleMessage("error.already.exist.item")));
         }
         getDefaultService().save(item);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -78,7 +78,7 @@ public abstract class AbscractBaseController<T extends BaseEntity> implements IB
         LOGGER.info("Updating item by id {}", id);
         T currentItem = getDefaultService().findById(id);
         if (Objects.isNull(currentItem)) {
-            throw new ResourceNotFoundException(String.format(getMessage("error.no.item.id"), id));
+            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.item.id"), id));
         }
         getDefaultService().merge(currentItem, item);
         return new ResponseEntity<>(currentItem, HttpStatus.OK);
@@ -89,7 +89,7 @@ public abstract class AbscractBaseController<T extends BaseEntity> implements IB
         LOGGER.info("Deleting item by id {}", id);
         T item = getDefaultService().findById(id);
         if (Objects.isNull(item)) {
-            throw new ResourceNotFoundException(String.format(getMessage("error.no.item.id"), id));
+            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.item.id"), id));
         }
         getDefaultService().deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);

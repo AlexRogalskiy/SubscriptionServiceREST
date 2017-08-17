@@ -69,7 +69,7 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
         LOGGER.info("Fetching subscriptions by user id {}", userId);
         User userItem = userService.findById(userId);
         if (Objects.isNull(userItem)) {
-            throw new ResourceNotFoundException(String.format(getMessage("error.no.user.item.id"), userId));
+            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.user.item.id"), userId));
         }
         /*List<UserSubOrder> subscriptionOrders = userSubOrderService.findByUser(userItem);
         if (subscriptionOrders.isEmpty()) {
@@ -96,11 +96,11 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
         LOGGER.info("Fetching subscription order by subscription id {} and user id {}", subscriptionId, userId);
         User userItem = userService.findById(userId);
         if (Objects.isNull(userItem)) {
-            throw new ResourceNotFoundException(String.format(getMessage("error.no.user.item.id"), userId));
+            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.user.item.id"), userId));
         }
         T subscriptionItem = getDefaultService().findById(subscriptionId);
         if (Objects.isNull(subscriptionItem)) {
-            throw new ResourceNotFoundException(String.format(getMessage("error.no.subscription.item.id"), subscriptionId));
+            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.subscription.item.id"), subscriptionId));
         }
         UserSubOrder order = new UserSubOrder();
         order.setSubscription(subscriptionItem);
@@ -108,7 +108,7 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
 
         UserSubOrder currentOrder = userSubOrderService.findById(order.getPk());
         if (Objects.isNull(currentOrder)) {
-            throw new ResourceNotFoundException(String.format(getMessage("error.no.order.item.id"), order.getPk()));
+            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.order.item.id"), order.getPk()));
         }
         return new ResponseEntity<>(currentOrder, HttpStatus.OK);
     }
@@ -126,21 +126,21 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
     public ResponseEntity<?> createSubscriptionByUserId(@PathVariable("userId") Long userId, @RequestBody UserSubOrder order, UriComponentsBuilder ucBuilder) {
         LOGGER.info("Creating subscription order by user id {}", userId);
         if (Objects.isNull(order) || Objects.isNull(order.getSubscription()) || Objects.isNull(order.getSubscription().getId())) {
-            throw new BadRequestException(String.format(getMessage("error.no.order.item")));
+            throw new BadRequestException(String.format(getLocaleMessage("error.no.order.item")));
         }
         User userItem = userService.findById(userId);
         if (Objects.isNull(userItem)) {
-            throw new ResourceNotFoundException(String.format(getMessage("error.no.user.item.id"), userId));
+            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.user.item.id"), userId));
         }
         T subscriptionItem = getDefaultService().findById(order.getSubscription().getId());
         if (Objects.isNull(subscriptionItem)) {
-            throw new ResourceNotFoundException(String.format(getMessage("error.no.subscription.item.id"), order.getSubscription().getId()));
+            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.subscription.item.id"), order.getSubscription().getId()));
         }
         order.setSubscription(subscriptionItem);
         order.setUser(userItem);
 
         if (userSubOrderService.isExist(order)) {
-            throw new ResourceAlreadyExistException(String.format(getMessage("error.already.exist.order.item"), order.getPk()));
+            throw new ResourceAlreadyExistException(String.format(getLocaleMessage("error.already.exist.order.item"), order.getPk()));
         }
         //userItem.getSubOrders().add(order);
         //userService.save(userItem);
@@ -161,22 +161,22 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
     public ResponseEntity<?> updateSubscriptionsByUserId(@PathVariable("userId") Long userId, @PathVariable("subscriptionId") Long subscriptionId, @RequestBody UserSubOrder order) {
         LOGGER.info("Updating subscription order by subscription id {} and user id {}", subscriptionId, userId);
         if (Objects.isNull(order) || Objects.isNull(order.getSubscription())) {
-            throw new BadRequestException(String.format(getMessage("error.no.order.item")));
+            throw new BadRequestException(String.format(getLocaleMessage("error.no.order.item")));
         }
         User userItem = userService.findById(userId);
         if (Objects.isNull(userItem)) {
-            throw new ResourceNotFoundException(String.format(getMessage("error.no.user.item.id"), userId));
+            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.user.item.id"), userId));
         }
         T subscriptionItem = getDefaultService().findById(subscriptionId);
         if (Objects.isNull(subscriptionItem)) {
-            throw new ResourceNotFoundException(String.format(getMessage("error.no.subscription.item.id"), subscriptionId));
+            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.subscription.item.id"), subscriptionId));
         }
         order.setSubscription(subscriptionItem);
         order.setUser(userItem);
 
         UserSubOrder currentOrder = userSubOrderService.findById(order.getPk());
         if (Objects.isNull(currentOrder)) {
-            throw new ResourceNotFoundException(String.format(getMessage("error.no.order.item.id"), order.getPk()));
+            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.order.item.id"), order.getPk()));
         }
         userSubOrderService.merge(currentOrder, order);
         return new ResponseEntity<>(currentOrder, HttpStatus.OK);
@@ -195,11 +195,11 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
         LOGGER.info("Deleting subscription order by subscription id {} and user id {}", subscriptionId, userId);
         User userItem = userService.findById(userId);
         if (Objects.isNull(userItem)) {
-            throw new ResourceNotFoundException(String.format(getMessage("error.no.user.item.id"), userId));
+            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.user.item.id"), userId));
         }
         T subscriptionItem = getDefaultService().findById(subscriptionId);
         if (Objects.isNull(subscriptionItem)) {
-            throw new ResourceNotFoundException(String.format(getMessage("error.no.subscription.item.id"), subscriptionId));
+            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.subscription.item.id"), subscriptionId));
         }
         UserSubOrder order = new UserSubOrder();
         order.setSubscription(subscriptionItem);
@@ -207,7 +207,7 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
 
         UserSubOrder currentOrder = userSubOrderService.findById(order.getPk());
         if (Objects.isNull(currentOrder)) {
-            throw new ResourceNotFoundException(String.format(getMessage("error.no.order.item.id"), order.getPk()));
+            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.order.item.id"), order.getPk()));
         }
         userSubOrderService.delete(order);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -225,7 +225,7 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
         LOGGER.info("Deleting all subscription orders by user id {}", userId);
         User userItem = userService.findById(userId);
         if (Objects.isNull(userItem)) {
-            throw new ResourceNotFoundException(String.format(getMessage("error.no.user.item.id"), userId));
+            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.user.item.id"), userId));
         }
         List<UserSubOrder> subscriptionOrders = userSubOrderService.findByUser(userItem);
         if (subscriptionOrders.isEmpty()) {
@@ -259,7 +259,7 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
         LOGGER.info("Fetching users by subscription id {}", subscriptionId);
         T subscriptionItem = getDefaultService().findById(subscriptionId);
         if (Objects.isNull(subscriptionItem)) {
-            throw new ResourceNotFoundException(String.format(getMessage("error.no.subscription.item.id"), subscriptionId));
+            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.subscription.item.id"), subscriptionId));
         }
         /*List<UserSubOrder> userOrders = userSubOrderService.findBySubscription(subscriptionItem);
         if (userOrders.isEmpty()) {
