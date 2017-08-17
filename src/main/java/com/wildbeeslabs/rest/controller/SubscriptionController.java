@@ -67,7 +67,7 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
         LOGGER.info("Fetching subscriptions by user id {}", userId);
         User userItem = userService.findById(userId);
         if (Objects.isNull(userItem)) {
-            String errorMessage = String.format("ERROR: item with id={%d} is not found", userId);
+            String errorMessage = String.format("ERROR: user item with id={%d} is not found", userId);
             LOGGER.error(errorMessage);
             return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
         }
@@ -274,6 +274,34 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
     @ResponseBody
     public ResponseEntity<?> getSubscriptionById(@PathVariable("id") Long id) {
         return super.getById(id);
+    }
+
+    /**
+     * Get list of user entities by subscription ID
+     *
+     * @param subscriptionId - subscription identifier
+     * @return list of user entities
+     */
+    @RequestMapping(value = "/subscription/{subscriptionId}/users", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public ResponseEntity<?> getUsersBySubscriptionId(@PathVariable("subscriptionId") Long subscriptionId) {
+        LOGGER.info("Fetching users by subscription id {}", subscriptionId);
+        T subscriptionItem = getDefaultService().findById(subscriptionId);
+        if (Objects.isNull(subscriptionItem)) {
+            String errorMessage = String.format("ERROR: subscription item with id={%d} is not found", subscriptionId);
+            LOGGER.error(errorMessage);
+            return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
+        }
+        /*List<UserSubOrder> userOrders = userSubOrderService.findBySubscription(subscriptionItem);
+        if (userOrders.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(userOrders, HttpStatus.OK);*/
+        List<User> users = userService.findBySubscriptionId(subscriptionId);
+        if (users.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     /**

@@ -53,4 +53,12 @@ public interface UserService<T extends User> extends BaseService<T> {
      * @return list of user entities
      */
     List<T> findAllBySubscriptionType(final Subscription.SubscriptionStatusType subType);
+
+    /**
+     * Get list of user entities by subscription ID
+     *
+     * @param subscriptionId - subscription identifier
+     * @return list of user entities
+     */
+    List<T> findBySubscriptionId(final Long subscriptionId);
 }

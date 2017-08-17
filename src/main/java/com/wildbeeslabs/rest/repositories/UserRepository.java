@@ -23,6 +23,11 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository<T extends User> extends BaseRepository<T> {
 
     /**
+     * Default query to find users by subscription id
+     */
+    public final static String FIND_USER_BY_SUB_ID_QUERY = "SELECT o.pk.user FROM UserSubOrder o WHERE o.pk.subscription.id = :subscriptionId";
+
+    /**
      * Default query to find subscribed users by subscription type and date
      * after (excluding)
      */
@@ -103,4 +108,13 @@ public interface UserRepository<T extends User> extends BaseRepository<T> {
      */
     @Query(FIND_USER_BY_SUB_TYPE_QUERY)
     List<T> findBySubscriptionType(@Param("subType") final Subscription.SubscriptionStatusType subType);
+
+    /**
+     * Get list of user entities by subscription ID
+     *
+     * @param subscriptionId - subscription identifier
+     * @return list of user entities
+     */
+    @Query(FIND_USER_BY_SUB_ID_QUERY)
+    List<T> findBySubscriptionId(@Param("subscriptionId") final Long subscriptionId);
 }

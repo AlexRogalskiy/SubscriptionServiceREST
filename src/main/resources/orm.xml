@@ -25,6 +25,9 @@
     <named-query name="User.findBySubscriptionType">
         <query>SELECT o.pk.user FROM UserSubOrder o WHERE o.pk.subscription.type = :subType</query>
     </named-query>
+    <named-query name="User.findBySubscriptionId">
+        <query>SELECT o.pk.user FROM UserSubOrder o WHERE o.pk.subscription.id = :subscriptionId</query>
+    </named-query>
     
     <!-- UserSubOrder JPA Named Queries -->
     <named-query name="UserSubOrder.findById">

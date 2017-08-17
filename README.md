@@ -114,6 +114,10 @@ curl -H "Accept: application/json" -H "Content-Type: application/json" -X DELETE
 
 curl -H "Accept: application/json" -H "Content-Type: application/json" -X DELETE http://localhost:8080/newsletterSub/api/user/2/subscriptions
 
+24. Get list of users assigned to subscription (id = 2):
+
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:8080/newsletterSub/api/subscription/2/users
+
 -------------------------------XML------------------------------
 
 1. Get all subscriptions:
@@ -212,3 +216,6 @@ curl -H "Accept: application/xml" -H "Content-Type: application/xml" -X DELETE h
 
 curl -H "Accept: application/xml" -H "Content-Type: application/xml" -X DELETE http://localhost:8080/newsletterSub/api/user/2/subscriptions
 
+24. Get list of users assigned to subscription (id = 2):
+
+curl -i -H "Accept: application/xml" -H "Content-Type: application/xml" -X GET http://localhost:8080/newsletterSub/api/subscription/2/users

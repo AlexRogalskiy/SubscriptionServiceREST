@@ -127,4 +127,9 @@ public class UserServiceImpl<T extends User> implements UserService<T> {
     public void delete(final List<T> items) {
         userRepository.delete(items);
     }
+
+    @Override
+    public List<T> findBySubscriptionId(final Long subscriptionId) {
+        return userRepository.findBySubscriptionId(subscriptionId);
+    }
 }
