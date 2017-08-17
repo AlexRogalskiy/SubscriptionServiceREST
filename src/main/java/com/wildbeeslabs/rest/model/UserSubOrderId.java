@@ -22,12 +22,10 @@ import javax.persistence.ManyToOne;
 public class UserSubOrderId implements java.io.Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    //@JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     //@JsonManagedReference(value = "userOrderToUser")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    //@JoinColumn(name = "subscription_id", referencedColumnName = "subscription_id", nullable = false)
     //@JsonManagedReference(value = "subOrderToSubscription")
     private Subscription subscription;
 

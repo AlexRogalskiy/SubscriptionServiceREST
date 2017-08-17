@@ -13,6 +13,7 @@
                      password-parameter="password"
                      authentication-failure-url="/prohibited" />
         -->
+        <logout />
         <!-- <access-denied-handler error-page="/error-page" /> -->
         <access-denied-handler ref="accessDeniedServiceHandler" />
     </http>

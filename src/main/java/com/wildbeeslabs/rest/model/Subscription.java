@@ -26,6 +26,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.UniqueConstraint;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -43,6 +44,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 })
 @Inheritance(strategy = InheritanceType.JOINED)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@XmlRootElement(name = "subscription")
 public class Subscription extends BaseEntity implements Serializable {
 
     @Id

@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -36,6 +37,7 @@ import javax.persistence.Transient;
             joinColumns = @JoinColumn(name = "subscription_id", referencedColumnName = "subscription_id", nullable = false))})
 @Inheritance(strategy = InheritanceType.JOINED)
 @SuppressWarnings({"ConsistentAccessType", "IdDefinedInHierarchy"})
+@XmlRootElement(name = "userSubOrder")
 public class UserSubOrder extends BaseEntity implements Serializable {
 
     @Id

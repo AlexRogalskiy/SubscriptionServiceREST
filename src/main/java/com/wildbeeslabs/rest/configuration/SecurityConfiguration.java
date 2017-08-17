@@ -60,6 +60,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 //.usernameParameter("ssid").passwordParameter("password")
                 //.and().exceptionHandling().accessDeniedPage("/prohibited");
                 .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler)
-                .and().headers().cacheControl().disable();
+                .and().headers().cacheControl().disable()
+                .and().logout();
     }
 }
