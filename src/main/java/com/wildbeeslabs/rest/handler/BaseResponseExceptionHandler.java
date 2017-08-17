@@ -5,6 +5,7 @@ import com.wildbeeslabs.rest.exception.EmptyContentException;
 import com.wildbeeslabs.rest.exception.ResourceAlreadyExistException;
 import com.wildbeeslabs.rest.exception.ResourceNotFoundException;
 import com.wildbeeslabs.rest.exception.ServiceException;
+
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,7 +34,9 @@ public class BaseResponseExceptionHandler {// extends ResponseEntityExceptionHan
         NOT_FOUND(103),
         EMPTY_CONTENT(104),
         SERVICE_ERROR(105),
-        BAD_MEDIA_TYPE(106);
+        BAD_MEDIA_TYPE(106),
+        METHOD_NOT_ALLOWED(107),
+        MEDIA_TYPE_MISMATCH(109);
 
         private final Integer value;
 
@@ -159,6 +165,27 @@ public class BaseResponseExceptionHandler {// extends ResponseEntityExceptionHan
         LOGGER.error(ex.getMessage());
         String url = req.getRequestURI().substring(req.getContentType().length());
         return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.BAD_REQUEST, ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({HttpRequestMethodNotSupportedException.class})
+    protected ResponseEntity<?> handle(final HttpServletRequest req, final HttpRequestMethodNotSupportedException ex) {
+        LOGGER.error(ex.getMessage());
+        String url = req.getRequestURI().substring(req.getContentType().length());
+        return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.METHOD_NOT_ALLOWED, ex.getMessage()), HttpStatus.METHOD_NOT_ALLOWED);
+    }
+
+    @ExceptionHandler({HttpMessageNotReadableException.class})
+    protected ResponseEntity<?> handle(final HttpServletRequest req, final HttpMessageNotReadableException ex) {
+        LOGGER.error(ex.getMessage());
+        String url = req.getRequestURI().substring(req.getContentType().length());
+        return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.BAD_REQUEST, ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({HttpMediaTypeNotSupportedException.class})
+    protected ResponseEntity<?> handle(final HttpServletRequest req, final HttpMediaTypeNotSupportedException ex) {
+        LOGGER.error(ex.getMessage());
+        String url = req.getRequestURI().substring(req.getContentType().length());
+        return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.MEDIA_TYPE_MISMATCH, ex.getMessage()), HttpStatus.UNSUPPORTED_MEDIA_TYPE);
     }
 
     @ExceptionHandler({ServiceException.class})

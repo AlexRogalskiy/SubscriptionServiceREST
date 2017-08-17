@@ -1,5 +1,11 @@
-# SubscriptionServiceREST
+
 REST API Newsletter Subscription Service
+
+----------------------------INSTALL-----------------------------
+
+1. mvn package docker:build
+
+2. java -jar target/rest-api-newsletter-subscription.war –spring.profiles.active=local
 
 ----------------------------GENERAL-----------------------------
 
