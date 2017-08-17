@@ -1,6 +1,7 @@
 package com.wildbeeslabs.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 import java.io.Serializable;
@@ -41,6 +42,7 @@ import org.hibernate.validator.constraints.NotEmpty;
     @UniqueConstraint(columnNames = "login")
 })
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User extends BaseEntity implements Serializable {
 
     @Id

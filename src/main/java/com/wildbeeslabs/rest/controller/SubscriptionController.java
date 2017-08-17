@@ -7,7 +7,6 @@ import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.UserSubOrder;
 import com.wildbeeslabs.rest.service.interfaces.UserService;
 import com.wildbeeslabs.rest.service.interfaces.UserSubOrderService;
-import java.util.Date;
 
 import java.util.List;
 import java.util.Objects;
@@ -62,16 +61,21 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
      * @param userId - user identifier
      * @return list of subscription entities
      */
-    @RequestMapping(value = "/user/{userId}/subscription", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/user/{userId}/subscriptions", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> getSubscriptionsByUserId(@PathVariable("userId") Long userId) {
         LOGGER.info("Fetching subscriptions by user id {}", userId);
-        User item = userService.findById(userId);
-        if (Objects.isNull(item)) {
+        User userItem = userService.findById(userId);
+        if (Objects.isNull(userItem)) {
             String errorMessage = String.format("ERROR: item with id={%d} is not found", userId);
             LOGGER.error(errorMessage);
             return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
         }
+        /*List<UserSubOrder> subscriptionOrders = userSubOrderService.findByUser(userItem);
+        if (subscriptionOrders.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(subscriptionOrders, HttpStatus.OK);*/
         List<T> subscriptions = getDefaultService().findByUserId(userId);
         if (subscriptions.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -80,19 +84,55 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
     }
 
     /**
-     * Create new subscription entity by user ID
+     * Get subscription order entity by user ID / subscription ID
      *
      * @param userId - user identifier
-     * @param subscription - subscription entity
-     * @param ucBuilder
-     * @return list of subscription entities
+     * @param subscriptionId - subscription identifier
+     * @return subscription order entity
+     */
+    @RequestMapping(value = "/user/{userId}/subscription/{subscriptionId}", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public ResponseEntity<?> getSubscriptionsByUserId(@PathVariable("userId") Long userId, @PathVariable("subscriptionId") Long subscriptionId) {
+        LOGGER.info("Fetching subscription id {} by user id {}", subscriptionId, userId);
+        User userItem = userService.findById(userId);
+        if (Objects.isNull(userItem)) {
+            String errorMessage = String.format("ERROR: item with id={%d} is not found", userId);
+            LOGGER.error(errorMessage);
+            return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
+        }
+        T subscriptionItem = getDefaultService().findById(subscriptionId);
+        if (Objects.isNull(subscriptionItem)) {
+            String errorMessage = String.format("ERROR: subscription item with id={%d} is not found", subscriptionId);
+            LOGGER.error(errorMessage);
+            return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
+        }
+        UserSubOrder order = new UserSubOrder();
+        order.setSubscription(subscriptionItem);
+        order.setUser(userItem);
+
+        UserSubOrder currentOrder = userSubOrderService.findById(order.getPk());
+        if (Objects.isNull(currentOrder)) {
+            String errorMessage = String.format("ERROR: subscription order with id={%s} is not found", order.getPk());
+            LOGGER.error(errorMessage);
+            return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(currentOrder, HttpStatus.OK);
+    }
+
+    /**
+     * Create new subscription order entity by user ID
+     *
+     * @param userId - user identifier
+     * @param order - subscription order entity
+     * @param ucBuilder - URI builder
+     * @return response status code
      */
     @RequestMapping(value = "/user/{userId}/subscription", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public ResponseEntity<?> createSubscriptionByUserId(@PathVariable("userId") Long userId, @RequestBody T subscription, UriComponentsBuilder ucBuilder) {
-        LOGGER.info("Creating subscriptions by user id {}", userId);
-        if (Objects.isNull(subscription) || Objects.isNull(subscription.getId())) {
-            String errorMessage = String.format("ERROR: no subscription not found");
+    public ResponseEntity<?> createSubscriptionByUserId(@PathVariable("userId") Long userId, @RequestBody UserSubOrder order, UriComponentsBuilder ucBuilder) {
+        LOGGER.info("Creating subscription by user id {}", userId);
+        if (Objects.isNull(order) || Objects.isNull(order.getSubscription()) || Objects.isNull(order.getSubscription().getId())) {
+            String errorMessage = String.format("ERROR: subscription entity is empty or not valid");
             LOGGER.error(errorMessage);
             return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.CONFLICT);
         }
@@ -102,16 +142,12 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
             LOGGER.error(errorMessage);
             return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
         }
-        T subscriptionItem = getDefaultService().findById(subscription.getId());
+        T subscriptionItem = getDefaultService().findById(order.getSubscription().getId());
         if (Objects.isNull(subscriptionItem)) {
-            String errorMessage = String.format("ERROR: subscription item with id={%d} is not found", subscription.getId());
+            String errorMessage = String.format("ERROR: subscription item with id={%d} is not found", order.getSubscription().getId());
             LOGGER.error(errorMessage);
             return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
         }
-
-        UserSubOrder order = new UserSubOrder();
-        order.setExpireAt(null);
-        order.setSubscribedAt(new Date());
         order.setSubscription(subscriptionItem);
         order.setUser(userItem);
 
@@ -121,43 +157,113 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
             return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.CONFLICT);
         }
         userItem.getSubOrders().add(order);
-
         userService.save(userItem);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
-     * Update subscription entities by user ID
+     * Update subscription order entity by user ID / subscription ID
      *
      * @param userId - user identifier
-     * @return list of subscription entities
+     * @param subscriptionId - subscription identifier
+     * @param order - subscription order entity
+     * @return updated subscription order entity
      */
-    /*@RequestMapping(value = "/user/{userId}/subscription", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/user/{userId}/subscription/{subscriptionId}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public ResponseEntity<?> updateSubscriptionsByUserId(@PathVariable("userId") Long userId) {
-        LOGGER.info("Updating subscriptions by user id {}", userId);
-        List<T> subscriptions = getService().findByUserId(userId);
-        if (subscriptions.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<?> updateSubscriptionsByUserId(@PathVariable("userId") Long userId, @PathVariable("subscriptionId") Long subscriptionId, @RequestBody UserSubOrder order) {
+        LOGGER.info("Updating subscription with {} by user id {}", subscriptionId, userId);
+        if (Objects.isNull(order) || Objects.isNull(order.getSubscription())) {
+            String errorMessage = String.format("ERROR: subscription entity is empty or not valid");
+            LOGGER.error(errorMessage);
+            return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.CONFLICT);
         }
-        return new ResponseEntity<>(subscriptions, HttpStatus.OK);
-    }*/
+        User userItem = userService.findById(userId);
+        if (Objects.isNull(userItem)) {
+            String errorMessage = String.format("ERROR: user item with id={%d} is not found", userId);
+            LOGGER.error(errorMessage);
+            return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
+        }
+        T subscriptionItem = getDefaultService().findById(subscriptionId);
+        if (Objects.isNull(subscriptionItem)) {
+            String errorMessage = String.format("ERROR: subscription item with id={%d} is not found", subscriptionId);
+            LOGGER.error(errorMessage);
+            return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
+        }
+        order.setSubscription(subscriptionItem);
+        order.setUser(userItem);
+
+        UserSubOrder currentOrder = userSubOrderService.findById(order.getPk());
+        if (Objects.isNull(currentOrder)) {
+            String errorMessage = String.format("ERROR: subscription order with id={%s} is not found", order.getPk());
+            LOGGER.error(errorMessage);
+            return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
+        }
+        userSubOrderService.merge(currentOrder, order);
+        return new ResponseEntity<>(currentOrder, HttpStatus.OK);
+    }
+
     /**
-     * Delete subscription entities by user ID
+     * Delete subscription order entity by user ID / subscription ID
      *
      * @param userId - user identifier
-     * @return list of subscription entities
+     * @param subscriptionId - subscription identifier
+     * @return response status code
      */
-    /*@RequestMapping(value = "/user/{userId}/subscription", method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/user/{userId}/subscription/{subscriptionId}", method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public ResponseEntity<?> deleteSubscriptionsByUserId(@PathVariable("userId") Long userId) {
-        LOGGER.info("Deleting subscriptions by user id {}", userId);
-        List<T> subscriptions = getService().findByUserId(userId);
-        if (subscriptions.isEmpty()) {
+    public ResponseEntity<?> deleteSubscriptionsByUserId(@PathVariable("userId") Long userId, @PathVariable("subscriptionId") Long subscriptionId) {
+        LOGGER.info("Deleting subscription with id {} by user id {}", subscriptionId, userId);
+        User userItem = userService.findById(userId);
+        if (Objects.isNull(userItem)) {
+            String errorMessage = String.format("ERROR: user item with id={%d} is not found", userId);
+            LOGGER.error(errorMessage);
+            return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
+        }
+        T subscriptionItem = getDefaultService().findById(subscriptionId);
+        if (Objects.isNull(subscriptionItem)) {
+            String errorMessage = String.format("ERROR: subscription item with id={%d} is not found", subscriptionId);
+            LOGGER.error(errorMessage);
+            return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
+        }
+        UserSubOrder order = new UserSubOrder();
+        order.setSubscription(subscriptionItem);
+        order.setUser(userItem);
+
+        UserSubOrder currentOrder = userSubOrderService.findById(order.getPk());
+        if (Objects.isNull(currentOrder)) {
+            String errorMessage = String.format("ERROR: subscription order with id={%s} is not found", order.getPk());
+            LOGGER.error(errorMessage);
+            return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
+        }
+        userSubOrderService.delete(order);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * Delete all subscription order entities by user ID
+     *
+     * @param userId - user identifier
+     * @return response status code
+     */
+    @RequestMapping(value = "/user/{userId}/subscriptions", method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public ResponseEntity<?> deleteAllSubscriptions(@PathVariable("userId") Long userId) {
+        LOGGER.info("Deleting all subscriptions by user id {}", userId);
+        User userItem = userService.findById(userId);
+        if (Objects.isNull(userItem)) {
+            String errorMessage = String.format("ERROR: user item with id={%d} is not found", userId);
+            LOGGER.error(errorMessage);
+            return new ResponseEntity<>(new ServiceException(errorMessage), HttpStatus.NOT_FOUND);
+        }
+        List<UserSubOrder> subscriptionOrders = userSubOrderService.findByUser(userItem);
+        if (subscriptionOrders.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(subscriptions, HttpStatus.OK);
-    }*/
+        userSubOrderService.delete(subscriptionOrders);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     /**
      * Get subscription entity by ID
      *
@@ -175,7 +281,7 @@ public class SubscriptionController<T extends Subscription> extends AbscractBase
      *
      * @param subscription - subscription data
      * @param ucBuilder - URI builder instance
-     * @return request status code
+     * @return response status code
      */
     @RequestMapping(value = "/subscription", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody

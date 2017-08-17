@@ -90,9 +90,29 @@ curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET
 
 curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:8080/newsletterSub/api/users?type=STANDARD&date=2017-08-08&order=1
 
-18. Assign subscription (id = 1) to user (id = 2):
+18. Get list of subscriptions assigned to user (id = 2):
 
-curl -d '{"id": 1,"name": "subscription1","expireAt": 1544562000000,"type": "PREMIUM"}' -H "Accept: Application/json" -H "Content-Type: application/json" -X POST http://localhost:8080/newsletterSub/api/user/2/subscription
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:8080/newsletterSub/api/user/2/subscriptions
+
+19. Get subscription order with subscription (id = 1) and to user (id = 2):
+
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:8080/newsletterSub/api/user/2/subscription/1
+
+20. Create subscription order with subscription (id = 1) and user (id = 2):
+
+curl -d '{"subscribedAt": "2017-08-05","expiredAt": "2018-05-05","subscription":{"id": 1,"name": "subscription1","expireAt": 1544562000000,"type": "PREMIUM"}}' -H "Accept: Application/json" -H "Content-Type: application/json" -X POST http://localhost:8080/newsletterSub/api/user/2/subscription
+
+21. Update subscription order with subscription (id = 1) and user (id = 2):
+
+curl -d '{"subscribedAt": "2017-08-05","expiredAt": "2018-06-06","subscription":{"id": 1,"name": "subscription1","expireAt": 1544562000000,"type": "PREMIUM"}}' -H "Accept: Application/json" -H "Content-Type: application/json" -X PUT http://localhost:8080/newsletterSub/api/user/2/subscription/1
+
+22. Delete subscription order with subscription (id = 1) and user (id = 2):
+
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X DELETE http://localhost:8080/newsletterSub/api/user/2/subscription/1
+
+23. Delete all subscription orders with user (id = 2):
+
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X DELETE http://localhost:8080/newsletterSub/api/user/2/subscriptions
 
 -------------------------------XML------------------------------
 
@@ -168,7 +188,27 @@ curl -i -H "Accept: application/xml" -H "Content-Type: application/xml" -X GET h
 
 curl -i -H "Accept: application/xml" -H "Content-Type: application/xml" -X GET http://localhost:8080/newsletterSub/api/users?type=STANDARD&date=2017-08-08&order=1
 
-18. Assign subscription (id = 1) to user (id = 2):
+18. Get list of subscriptions assigned to user (id = 2):
 
-curl -d '<Subscription><id>1</id><name>subscription1</name><expireAt>1544562000000</expireAt><type>PREMIUM</type></Subscription>' -H "Accept: application/xml" -H "Content-Type: application/xml" -X POST http://localhost:8080/newsletterSub/api/user/2/subscription
+curl -i -H "Accept: application/xml" -H "Content-Type: application/xml" -X GET http://localhost:8080/newsletterSub/api/user/2/subscriptions
+
+19. Get subscription order with subscription (id = 1) and to user (id = 2):
+
+curl -i -H "Accept: application/xml" -H "Content-Type: application/xml" -X GET http://localhost:8080/newsletterSub/api/user/2/subscription/1
+
+20. Create subscription order with subscription (id = 1) and user (id = 2):
+
+curl -d '<UserSubOrder><subscribedAt>2017-08-05</subscribedAt><expiredAt>2018-05-05</expiredAt><subscription><id>1</id><name>subscription1</name><expireAt>1544562000000</expireAt><type>PREMIUM</type></subscription></UserSubOrder>' -H "Accept: application/xml" -H "Content-Type: application/xml" -X POST http://localhost:8080/newsletterSub/api/user/2/subscription
+
+21. Update subscription order with subscription (id = 1) and user (id = 2):
+
+curl -d '<UserSubOrder><subscribedAt>2017-08-05</subscribedAt><expiredAt>2018-06-06</expiredAt><subscription><id>1</id><name>subscription1</name><expireAt>1544562000000</expireAt><type>PREMIUM</type></subscription></UserSubOrder>' -H "Accept: application/xml" -H "Content-Type: application/xml" -X PUT http://localhost:8080/newsletterSub/api/user/2/subscription/1
+
+22. Delete subscription order with subscription (id = 1) and user (id = 2):
+
+curl -H "Accept: application/xml" -H "Content-Type: application/xml" -X DELETE http://localhost:8080/newsletterSub/api/user/2/subscription/1
+
+23. Delete all subscription orders with user (id = 2):
+
+curl -H "Accept: application/xml" -H "Content-Type: application/xml" -X DELETE http://localhost:8080/newsletterSub/api/user/2/subscriptions
 

@@ -7,6 +7,7 @@ import com.wildbeeslabs.rest.model.UserSubOrderId;
 
 import java.util.Date;
 import java.util.List;
+import org.springframework.data.jpa.repository.Modifying;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,6 +29,11 @@ public interface UserSubOrderRepository<T extends UserSubOrder> extends BaseRepo
      * Default query to find order by id
      */
     public final static String FIND_ORDER_BY_ID_QUERY = "SELECT o FROM UserSubOrder o WHERE o.pk = :userSubOrderId";
+
+    /**
+     * Default query to delete order by id
+     */
+    public final static String DELETE_ORDER_BY_ID_QUERY = "DELETE FROM UserSubOrder o WHERE o.pk = :userSubOrderId";
 
     /**
      * Default query to find orders by user id
@@ -94,6 +100,14 @@ public interface UserSubOrderRepository<T extends UserSubOrder> extends BaseRepo
     @Query(FIND_ORDER_BY_ID_QUERY)
     T findById(@Param("userSubOrderId") final UserSubOrderId userSubOrderId);
 
+    /**
+     * Delete subscription order by id
+     *
+     * @param userSubOrderId - subscription order identifier
+     */
+    //@Modifying
+    //@Query(DELETE_ORDER_BY_ID_QUERY)
+    //void deleteById(@Param("userSubOrderId") final UserSubOrderId userSubOrderId);
     /**
      * Get list of subscription orders by subscribed date period
      *

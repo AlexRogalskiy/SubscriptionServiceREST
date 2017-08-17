@@ -1,5 +1,6 @@
 package com.wildbeeslabs.rest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -39,6 +40,7 @@ public class UserSubOrder extends BaseEntity implements Serializable {
 
     @Id
     @EmbeddedId
+    @JsonIgnore
     private UserSubOrderId pk = new UserSubOrderId();
 
     public UserSubOrderId getPk() {
@@ -73,7 +75,7 @@ public class UserSubOrder extends BaseEntity implements Serializable {
 
     @Column(name = "expired_at", nullable = true)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date expireAt;
+    private Date expiredAt;
 
     public Date getSubscribedAt() {
         return subscribedAt;
@@ -83,12 +85,12 @@ public class UserSubOrder extends BaseEntity implements Serializable {
         this.subscribedAt = subscribedAt;
     }
 
-    public Date getExpireAt() {
-        return expireAt;
+    public Date getExpiredAt() {
+        return expiredAt;
     }
 
-    public void setExpireAt(final Date expireAt) {
-        this.expireAt = expireAt;
+    public void setExpiredAt(final Date expiredAt) {
+        this.expiredAt = expiredAt;
     }
 
     @Override
@@ -106,7 +108,7 @@ public class UserSubOrder extends BaseEntity implements Serializable {
         if (!Objects.equals(this.subscribedAt, other.subscribedAt)) {
             return false;
         }
-        return Objects.equals(this.expireAt, other.expireAt);
+        return Objects.equals(this.expiredAt, other.expiredAt);
     }
 
     @Override
@@ -114,12 +116,12 @@ public class UserSubOrder extends BaseEntity implements Serializable {
         int hash = 3;
         hash = 23 * hash + Objects.hashCode(this.pk);
         hash = 23 * hash + Objects.hashCode(this.subscribedAt);
-        hash = 23 * hash + Objects.hashCode(this.expireAt);
+        hash = 23 * hash + Objects.hashCode(this.expiredAt);
         return hash;
     }
 
     @Override
     public String toString() {
-        return String.format("UserSubOrder {primary key: %s, subscribedAt: %s, expiredAt: %s}", this.pk, this.subscribedAt, this.expireAt);
+        return String.format("UserSubOrder {primary key: %s, subscribedAt: %s, expiredAt: %s}", this.pk, this.subscribedAt, this.expiredAt);
     }
 }

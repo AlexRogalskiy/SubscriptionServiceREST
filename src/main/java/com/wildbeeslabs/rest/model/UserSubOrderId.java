@@ -1,5 +1,7 @@
 package com.wildbeeslabs.rest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
@@ -16,6 +18,7 @@ import javax.persistence.ManyToOne;
  * @since 2017-08-08
  */
 @Embeddable
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class UserSubOrderId implements java.io.Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -69,6 +72,6 @@ public class UserSubOrderId implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return String.format("UserSubOrderId {user: %s, subscription: %s}", this.user, this.subscription);
+        return String.format("UserSubOrderId {userId: %d, subscriptionId: %d}", this.user.getId(), this.subscription.getId());
     }
 }

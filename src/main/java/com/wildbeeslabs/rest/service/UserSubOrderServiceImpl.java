@@ -47,11 +47,10 @@ public class UserSubOrderServiceImpl<T extends UserSubOrder> implements UserSubO
         save(userSubOrder);
     }
 
-    @Override
-    public void deleteById(final Long id) {
-        userSubOrderRepository.delete(id);
-    }
-
+    //@Override
+    //public void deleteById(final UserSubOrderId id) {
+    //    userSubOrderRepository.deleteById(id);
+    //}
     @Override
     @Transactional(readOnly = true)
     public List<T> findAll() {
@@ -81,16 +80,20 @@ public class UserSubOrderServiceImpl<T extends UserSubOrder> implements UserSubO
 
     @Override
     public void merge(final T itemTo, final T itemFrom) {
-        itemTo.setExpireAt(itemFrom.getExpireAt());
+        itemTo.setExpiredAt(itemFrom.getExpiredAt());
+        itemTo.setSubscribedAt(itemFrom.getSubscribedAt());
         itemTo.setModifiedAt(new Date());
-        itemTo.setSubscription(itemFrom.getSubscription());
-        itemTo.setUser(itemFrom.getUser());
         update(itemTo);
     }
 
     @Override
     public void delete(final T item) {
         userSubOrderRepository.delete(item);
+    }
+
+    @Override
+    public void delete(final List<T> items) {
+        userSubOrderRepository.delete(items);
     }
 
     @Override

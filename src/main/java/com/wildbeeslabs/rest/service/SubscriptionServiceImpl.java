@@ -102,4 +102,9 @@ public class SubscriptionServiceImpl<T extends Subscription> implements Subscrip
     public void delete(final T item) {
         subscriptionRepository.delete(item);
     }
+
+    @Override
+    public void delete(final List<T> items) {
+        subscriptionRepository.delete(items);
+    }
 }

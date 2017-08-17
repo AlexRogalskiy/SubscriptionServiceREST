@@ -28,6 +28,12 @@ public interface UserSubOrderService<T extends UserSubOrder> extends BaseService
     T findById(final UserSubOrderId id);
 
     /**
+     * Delete subscription order by id (compound primary key)
+     *
+     * @param id - subscription order identifier
+     */
+    //void deleteById(final UserSubOrderId id);
+    /**
      * Get list of subscription orders by user entity
      *
      * @param user - user entity

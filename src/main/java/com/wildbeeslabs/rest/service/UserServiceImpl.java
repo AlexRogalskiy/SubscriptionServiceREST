@@ -122,4 +122,9 @@ public class UserServiceImpl<T extends User> implements UserService<T> {
         itemTo.setSubOrders(itemFrom.getSubOrders());
         update(itemTo);
     }
+
+    @Override
+    public void delete(final List<T> items) {
+        userRepository.delete(items);
+    }
 }

@@ -32,9 +32,11 @@ public interface BaseService<T extends Serializable> {
 
     void merge(final T itemTo, final T itemFrom);
 
-    void deleteById(final Long id);
+    default void deleteById(final Long id) {};
 
     void delete(final T item);
+    
+    void delete(final List<T> item);
 
     List<T> findAll();
 

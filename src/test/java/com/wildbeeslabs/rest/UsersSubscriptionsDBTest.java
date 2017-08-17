@@ -50,19 +50,19 @@ public class UsersSubscriptionsDBTest {
 
         UserSubOrder userSubOrder1 = new UserSubOrder();
         userSubOrder1.setCreatedAt(new Date());
-        userSubOrder1.setExpireAt(null);
+        userSubOrder1.setExpiredAt(null);
         userSubOrder1.setSubscription(groupAdmin);
         userSubOrder1.setUser(user1);
 
         UserSubOrder userSubOrder2 = new UserSubOrder();
         userSubOrder2.setCreatedAt(new Date());
-        userSubOrder2.setExpireAt(null);
+        userSubOrder2.setExpiredAt(null);
         userSubOrder2.setSubscription(groupGuest);
         userSubOrder2.setUser(user1);
 
         UserSubOrder userSubOrder3 = new UserSubOrder();
         userSubOrder3.setCreatedAt(new Date());
-        userSubOrder3.setExpireAt(null);
+        userSubOrder3.setExpiredAt(null);
         userSubOrder3.setSubscription(groupAdmin);
         userSubOrder3.setUser(user2);
 
