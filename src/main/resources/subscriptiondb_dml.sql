@@ -1,4 +1,4 @@
-INSERT INTO users (created_at, login, age, registered_at, status) VALUES ('2017-04-18', 'user1@gmail.com', 25, '2017-04-18', 'UNVERIFIED'), ('2017-04-30', 'user2@gmail.com', 26, '2017-04-30', 'ACTIVE'), ('2017-01-30', 'user3@gmail.com', 27, '2017-01-30', 'BLOCKED');
+INSERT INTO users (created_at, login, age, rating, registered_at, status) VALUES ('2017-04-18', 'user1@gmail.com', 25, 1.00, '2017-04-18', 'UNVERIFIED'), ('2017-04-30', 'user2@gmail.com', 26, 1.00, '2017-04-30', 'ACTIVE'), ('2017-01-30', 'user3@gmail.com', 27, 1.00, '2017-01-30', 'BLOCKED');
 
 INSERT INTO subscriptions (created_at, name, expired_at, status) VALUES ('2018-12-12', 'subscription1', '2018-12-12', 'PREMIUM'), ('2018-11-12', 'subscription2', '2018-11-12', 'ADVANCED'), ('2018-10-12', 'subscription3', '2018-10-12', 'STANDARD');
 

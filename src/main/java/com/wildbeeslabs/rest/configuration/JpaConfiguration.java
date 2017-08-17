@@ -25,8 +25,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
+//import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "com.wildbeeslabs.rest.repositories",
@@ -44,6 +45,11 @@ public class JpaConfiguration {
     private int maxPoolSize;
 
     @Bean
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
+
+    @Bean
     @Primary
     @ConfigurationProperties(prefix = "datasource.subscriptionapp")
     public DataSourceProperties dataSourceProperties() {
@@ -55,7 +61,7 @@ public class JpaConfiguration {
      */
     @Bean
     public DataSource dataSource() {
-        /*DataSourceProperties dataSourceProperties = dataSourceProperties();
+        DataSourceProperties dataSourceProperties = dataSourceProperties();
         HikariDataSource dataSource = (HikariDataSource) DataSourceBuilder
                 .create(dataSourceProperties.getClassLoader())
                 .driverClassName(dataSourceProperties.getDriverClassName())
@@ -65,13 +71,13 @@ public class JpaConfiguration {
                 .type(HikariDataSource.class)
                 .build();
         dataSource.setMaximumPoolSize(maxPoolSize);
-        return dataSource;*/
-        final DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        return dataSource;
+        /*final DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(environment.getRequiredProperty("datasource.subscriptionapp.driverClassName"));
         dataSource.setUrl(environment.getRequiredProperty("datasource.subscriptionapp.url"));
         dataSource.setUsername(environment.getRequiredProperty("datasource.subscriptionapp.username"));
         dataSource.setPassword(environment.getRequiredProperty("datasource.subscriptionapp.password"));
-        return dataSource;
+        return dataSource;*/
     }
 
     /*
@@ -95,7 +101,7 @@ public class JpaConfiguration {
         HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
         return hibernateJpaVendorAdapter;
     }
-    
+
     @Bean
     public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
@@ -115,6 +121,9 @@ public class JpaConfiguration {
         }
         if (StringUtils.isNotEmpty(environment.getRequiredProperty("datasource.subscriptionapp.hibernate.globally_quoted_identifiers"))) {
             properties.put("hibernate.globally_quoted_identifiers", environment.getRequiredProperty("datasource.subscriptionapp.hibernate.globally_quoted_identifiers"));
+        }
+        if (StringUtils.isNotEmpty(environment.getRequiredProperty("datasource.subscriptionapp.hibernate.hbm2ddl.import_files"))) {
+            properties.put("hibernate.hbm2ddl.import_files", environment.getRequiredProperty("datasource.subscriptionapp.hibernate.hbm2ddl.import_files"));
         }
         return properties;
     }

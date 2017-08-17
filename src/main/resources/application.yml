@@ -13,7 +13,9 @@ datasource:
     defaultSchema:
     maxPoolSize: 20
     hibernate:
-      hbm2ddl.method: create-drop
+      hbm2ddl:
+        method: create-drop
+        import_files: subscriptiondb_dml.sql
       show_sql: true
       format_sql: true
       dialect: org.hibernate.dialect.H2Dialect
@@ -30,7 +32,9 @@ datasource:
     defaultSchema:
     maxPoolSize: 10
     hibernate:
-      hbm2ddl.method: create-drop
+      hbm2ddl:
+        method: create-drop
+        import_files: subscriptiondb_dml.sql
       show_sql: true
       format_sql: true
       dialect: org.hibernate.dialect.MySQLDialect

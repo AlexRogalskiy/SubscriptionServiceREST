@@ -121,77 +121,77 @@ public class BaseResponseExceptionHandler {// extends ResponseEntityExceptionHan
     @ExceptionHandler({ResourceAlreadyExistException.class})
     protected ResponseEntity<?> handle(final HttpServletRequest req, final ResourceAlreadyExistException ex) {
         LOGGER.error(ex.getMessage());
-        String url = req.getRequestURI().substring(req.getContentType().length());
+        String url = req.getRequestURI().substring(req.getContextPath().length());
         return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.ALREADY_EXIST, ex.getMessage()), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler({BadRequestException.class})
     protected ResponseEntity<?> handle(final HttpServletRequest req, final BadRequestException ex) {
         LOGGER.error(ex.getMessage());
-        String url = req.getRequestURI().substring(req.getContentType().length());
+        String url = req.getRequestURI().substring(req.getContextPath().length());
         return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.BAD_REQUEST, ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({ResourceNotFoundException.class})
     protected ResponseEntity<?> handle(final HttpServletRequest req, final ResourceNotFoundException ex) {
         LOGGER.error(ex.getMessage());
-        String url = req.getRequestURI().substring(req.getContentType().length());
+        String url = req.getRequestURI().substring(req.getContextPath().length());
         return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.NOT_FOUND, ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({EmptyContentException.class})
     protected ResponseEntity<?> handle(final HttpServletRequest req, final EmptyContentException ex) {
         LOGGER.error(ex.getMessage());
-        String url = req.getRequestURI().substring(req.getContentType().length());
+        String url = req.getRequestURI().substring(req.getContextPath().length());
         return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.EMPTY_CONTENT, ex.getMessage()), HttpStatus.NO_CONTENT);
     }
 
     @ExceptionHandler({TypeMismatchException.class})
     protected ResponseEntity<?> handle(final HttpServletRequest req, final TypeMismatchException ex) {
         LOGGER.error(ex.getMessage());
-        String url = req.getRequestURI().substring(req.getContentType().length());
+        String url = req.getRequestURI().substring(req.getContextPath().length());
         return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.BAD_MEDIA_TYPE, ex.getMessage()), HttpStatus.UNSUPPORTED_MEDIA_TYPE);
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
     protected ResponseEntity<?> handle(final HttpServletRequest req, final MethodArgumentNotValidException ex) {
         LOGGER.error(ex.getMessage());
-        String url = req.getRequestURI().substring(req.getContentType().length());
+        String url = req.getRequestURI().substring(req.getContextPath().length());
         return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.BAD_REQUEST, ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({MissingPathVariableException.class})
     protected ResponseEntity<?> handle(final HttpServletRequest req, final MissingPathVariableException ex) {
         LOGGER.error(ex.getMessage());
-        String url = req.getRequestURI().substring(req.getContentType().length());
+        String url = req.getRequestURI().substring(req.getContextPath().length());
         return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.BAD_REQUEST, ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({HttpRequestMethodNotSupportedException.class})
     protected ResponseEntity<?> handle(final HttpServletRequest req, final HttpRequestMethodNotSupportedException ex) {
         LOGGER.error(ex.getMessage());
-        String url = req.getRequestURI().substring(req.getContentType().length());
+        String url = req.getRequestURI().substring(req.getContextPath().length());
         return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.METHOD_NOT_ALLOWED, ex.getMessage()), HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     @ExceptionHandler({HttpMessageNotReadableException.class})
     protected ResponseEntity<?> handle(final HttpServletRequest req, final HttpMessageNotReadableException ex) {
         LOGGER.error(ex.getMessage());
-        String url = req.getRequestURI().substring(req.getContentType().length());
+        String url = req.getRequestURI().substring(req.getContextPath().length());
         return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.BAD_REQUEST, ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({HttpMediaTypeNotSupportedException.class})
     protected ResponseEntity<?> handle(final HttpServletRequest req, final HttpMediaTypeNotSupportedException ex) {
         LOGGER.error(ex.getMessage());
-        String url = req.getRequestURI().substring(req.getContentType().length());
+        String url = req.getRequestURI().substring(req.getContextPath().length());
         return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.MEDIA_TYPE_MISMATCH, ex.getMessage()), HttpStatus.UNSUPPORTED_MEDIA_TYPE);
     }
 
     @ExceptionHandler({ServiceException.class})
     protected ResponseEntity<?> handle(final HttpServletRequest req, final ServiceException ex) {
         LOGGER.error(ex.getMessage());
-        String url = req.getRequestURI().substring(req.getContentType().length());
+        String url = req.getRequestURI().substring(req.getContextPath().length());
         return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.SERVICE_ERROR, ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

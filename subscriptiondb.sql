@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2017-08-16 17:17:45
+Date: 2017-08-17 16:58:13
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -57,9 +57,9 @@ CREATE TABLE `users` (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('1', '2017-04-18 00:00:00', null, '25', 'user1@gmail.com', '0', '2017-04-18 00:00:00', 'UNVERIFIED');
-INSERT INTO `users` VALUES ('2', '2017-04-30 00:00:00', null, '26', 'user2@gmail.com', '0', '2017-04-30 00:00:00', 'ACTIVE');
-INSERT INTO `users` VALUES ('3', '2017-01-30 00:00:00', null, '27', 'user3@gmail.com', '0', '2017-01-30 00:00:00', 'BLOCKED');
+INSERT INTO `users` VALUES ('1', '2017-04-18 00:00:00', null, '25', 'user1@gmail.com', '1', '2017-04-18 00:00:00', 'UNVERIFIED');
+INSERT INTO `users` VALUES ('2', '2017-04-30 00:00:00', null, '26', 'user2@gmail.com', '1', '2017-04-30 00:00:00', 'ACTIVE');
+INSERT INTO `users` VALUES ('3', '2017-01-30 00:00:00', null, '27', 'user3@gmail.com', '1', '2017-01-30 00:00:00', 'BLOCKED');
 
 -- ----------------------------
 -- Table structure for `user_sub_orders`

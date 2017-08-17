@@ -3,9 +3,14 @@ REST API Newsletter Subscription Service
 
 ----------------------------INSTALL-----------------------------
 
-1. mvn package docker:build
+1. 	mvn package docker:build
 
-2. java -jar target/rest-api-newsletter-subscription.war –spring.profiles.active=local
+2. 	java -jar target/rest-api-newsletter-subscription.war –spring.profiles.active=local
+or
+	java -jar target/rest-api-newsletter-subscription.war –spring.profiles.active=prod
+where
+		local - h2 database
+		prod (by default) - mysql database
 
 ----------------------------GENERAL-----------------------------
 
@@ -22,7 +27,8 @@ ROLE: USER
 username: user
 password: user123
 
-curl --user user:user123
+For basic authentication:
+	curl --user user:user123 ...
  
 ------------------------------JSON------------------------------
 

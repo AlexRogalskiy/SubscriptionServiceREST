@@ -1,10 +1,17 @@
 package com.wildbeeslabs.rest;
 
 import com.wildbeeslabs.rest.model.User;
-import java.net.URI;
-import java.util.LinkedHashMap;
-import java.util.List;
 
+import java.net.URI;
+import java.nio.charset.Charset;
+import java.util.List;
+import org.apache.tomcat.util.codec.binary.Base64;
+
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -19,16 +26,28 @@ public class SubscriptionRestTestClient {
 
     public static final String REST_SERVICE_URI = "http://localhost:8080/newsletterSub/api";
 
+    private static HttpHeaders getHeaders(final String username, final String password) {
+        String auth = username + ":" + password;
+        String encodedCredential = new String(Base64.encodeBase64(auth.getBytes(Charset.forName("UTF-8"))));
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.add("Authorization", "Basic " + encodedCredential);
+        return headers;
+    }
+
     /* GET */
     private static void listAllUsers() {
         System.out.println("Testing listAllUsers API-----------");
 
         RestTemplate restTemplate = new RestTemplate();
-        List<LinkedHashMap<String, Object>> usersMap = restTemplate.getForObject(REST_SERVICE_URI + "/user/", List.class);
+        HttpEntity<String> requestEntity = new HttpEntity<>(getHeaders("user", "user123"));
+        //List<LinkedHashMap<String, Object>> usersMap = restTemplate.getForObject(REST_SERVICE_URI + "/users", List.class);
+        ResponseEntity<List> responseEntity = restTemplate.exchange(REST_SERVICE_URI + "/users", HttpMethod.GET, requestEntity, List.class, 1);
+        List<User> userList = responseEntity.getBody();
 
-        if (usersMap != null) {
-            usersMap.forEach((map) -> {
-                System.out.println("User : id=" + map.get("id") + ", Name=" + map.get("name") + ", Age=" + map.get("age") + ", Salary=" + map.get("salary"));
+        if (userList != null) {
+            userList.forEach((map) -> {
+                System.out.println("User : id=" + map.getId() + ", Name=" + map.getLogin() + ", Age=" + map.getAge() + ", raing=" + map.getRating() + ", status=" + map.getStatus());
             });
         } else {
             System.out.println("No user exist----------");
@@ -54,7 +73,7 @@ public class SubscriptionRestTestClient {
         user.setRating(24.3);
         user.setStatus(User.UserStatusType.ACTIVE);
 
-        URI uri = restTemplate.postForLocation(REST_SERVICE_URI + "/user/", user, User.class);
+        URI uri = restTemplate.postForLocation(REST_SERVICE_URI + "/user", user, User.class);
         System.out.println("Location : " + uri.toASCIIString());
     }
 
@@ -88,7 +107,7 @@ public class SubscriptionRestTestClient {
 
     public static void main(String args[]) {
         listAllUsers();
-        getUser();
+        /*getUser();
         createUser();
         listAllUsers();
         updateUser();
@@ -96,6 +115,6 @@ public class SubscriptionRestTestClient {
         deleteUser();
         listAllUsers();
         deleteAllUsers();
-        listAllUsers();
+        listAllUsers();*/
     }
 }

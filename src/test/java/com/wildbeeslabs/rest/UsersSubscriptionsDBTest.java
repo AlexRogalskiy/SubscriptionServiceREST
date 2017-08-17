@@ -3,13 +3,14 @@ package com.wildbeeslabs.rest;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.UserSubOrder;
+import com.wildbeeslabs.rest.service.HibernateSessionService;
 
 import java.util.Date;
 
-import org.hibernate.HibernateException;
+//import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
+//import org.hibernate.SessionFactory;
+//import org.hibernate.cfg.Configuration;
 //import org.hibernate.service.ServiceRegistry;
 //import org.hibernate.service.ServiceRegistryBuilder;
 
@@ -23,7 +24,8 @@ import org.hibernate.cfg.Configuration;
  */
 public class UsersSubscriptionsDBTest {
 
-    private static void init(final Session session) {
+    private static void init() {
+        final Session session = HibernateSessionService.getSessionFactory().openSession();
         session.beginTransaction();
 
         Subscription groupAdmin = new Subscription();
@@ -83,6 +85,7 @@ public class UsersSubscriptionsDBTest {
         session.save(userSubOrder3);
 
         session.getTransaction().commit();
+        HibernateSessionService.shutdown();
     }
 
     public static void main(String[] args) {
@@ -92,7 +95,7 @@ public class UsersSubscriptionsDBTest {
         registry.applySettings(configuration.getProperties());
 
         ServiceRegistry serviceRegistry = registry.buildServiceRegistry();
-        SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-        init(sessionFactory.openSession());*/
+        SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);*/
+        //init();
     }
 }
