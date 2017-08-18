@@ -19,8 +19,8 @@ set DOCKER_CERT_PATH=C:\Users\{USERNAME}\.docker\machine\machines\default2
 or
 	java -jar target/rest-api-newsletter-subscription.war –spring.profiles.active=prod
 where
-		local - h2 database
-		prod (by default) - mysql database
+		prod - h2 database
+		local (by default) - mysql database
 
 ----------------------------GENERAL-----------------------------
 
