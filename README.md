@@ -3,9 +3,19 @@ REST API Newsletter Subscription Service
 
 ----------------------------INSTALL-----------------------------
 
-1. 	mvn package docker:build
+1. 	SET JAVA_HOME to JDK installation folder
 
-2. 	java -jar target/rest-api-newsletter-subscription.war –spring.profiles.active=local
+FOR WIN10
+
+set DOCKER_HOST=tcp://192.168.99.101:2376
+set DOCKER_MACHINE_NAME=default2
+set DOCKER_TLS_VERIFY=1
+set DOCKER_TOOLBOX_INSTALL_PATH=C:\Program Files\Docker Toolbox
+set DOCKER_CERT_PATH=C:\Users\{USERNAME}\.docker\machine\machines\default2
+
+2. 	mvn clean package docker:build
+
+3. 	java -jar target/rest-api-newsletter-subscription.war –spring.profiles.active=local
 or
 	java -jar target/rest-api-newsletter-subscription.war –spring.profiles.active=prod
 where

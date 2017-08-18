@@ -47,7 +47,12 @@
                 <version>0.4.11</version>
                 <configuration>
                     <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
-                    <dockerDirectory>/</dockerDirectory>
+                    <forceTags>false</forceTags>
+                    <imageTags>
+                        <imageTag>${project.version}</imageTag>
+                        <imageTag>latest</imageTag>
+                    </imageTags>
+                    <dockerDirectory>./</dockerDirectory>
                     <resources>
                         <resource>
                             <targetPath>/</targetPath>
@@ -56,6 +61,36 @@
                         </resource>
                     </resources>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>build-image</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>tag-image</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>tag</goal>
+                        </goals>
+                        <configuration>
+                            <image>${docker.image.prefix}/${project.artifactId}:${project.version}</image>
+                            <newName>${docker.image.prefix}/${project.artifactId}:${project.version}</newName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>push-image</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>push</goal>
+                        </goals>
+                        <configuration>
+                            <imageName>${docker.image.prefix}/${project.artifactId}:${project.version}</imageName>
+                        </configuration>
+                    </execution>        
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
