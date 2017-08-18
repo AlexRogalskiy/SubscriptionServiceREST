@@ -1,4 +1,4 @@
-//package com.wildbeeslabs.rest;
+package com.wildbeeslabs.rest;
 //
 //import com.fasterxml.jackson.databind.ObjectMapper;
 //import static com.wildbeeslabs.rest.SubscriptionRestTestClient.REST_SERVICE_URI;
@@ -172,3 +172,81 @@
 //        //this.mvc.perform(get(REST_SERVICE_URI + "/user/25").accept(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isNotFound());
 //    }
 //}
+
+import static com.jayway.restassured.RestAssured.given;
+import com.jayway.restassured.http.ContentType;
+import com.wildbeeslabs.rest.configuration.JpaConfiguration;
+import com.wildbeeslabs.rest.configuration.SecurityConfiguration;
+import com.wildbeeslabs.rest.controller.UserController;
+import com.wildbeeslabs.rest.service.UserServiceImpl;
+import com.wildbeeslabs.rest.service.interfaces.UserService;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.Matchers.greaterThan;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.ContextHierarchy;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+@RunWith(SpringRunner.class)
+//@WebMvcTest(controllers = {UserController.class, UserServiceImpl.class}, secure = false)
+//@WebAppConfiguration
+//@EnableWebMvc
+@SpringBootTest(classes = {SubscriptionRestAppLoader.class, UserController.class}, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@Import({JpaConfiguration.class, SecurityConfiguration.class})
+@AutoConfigureMockMvc
+public class UserControllerTest {
+
+    public static final String REST_SERVICE_URI = "http://localhost:8080/newsletterSub/api";
+
+    @Test
+    public void makeSureThatGoogleIsUp() {
+        given().when().get("http://www.google.com").then().statusCode(200);
+    }
+
+    @Test
+    public void testForbiddenAccess() {
+        given().when().get(REST_SERVICE_URI + "/users").then().statusCode(401);
+    }
+
+    @Test
+    public void testAuthorizationAccess() {
+        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/users").then().statusCode(200);
+    }
+
+    @Test
+    public void testNotFound() {
+        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/userss").then().statusCode(404);
+    }
+
+    @Test
+    public void testVerifyUser1() {
+        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/user/1").then()
+                .body("login", equalTo("user1@gmail.com"))
+                .body("age", equalTo(25))
+                .body("id", equalTo(1))
+                .body("createdAt", equalTo(1492462800000L))
+                .body("modifiedAt", nullValue())
+                .body("rating", equalTo(1.0f))
+                .body("registeredAt", equalTo(1492462800000L))
+                .body("status", equalTo("UNVERIFIED"))
+                .statusCode(200);
+    }
+}
