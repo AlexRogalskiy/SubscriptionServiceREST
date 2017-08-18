@@ -1,5 +1,5 @@
 # Dockerfile
-FROM openjdk:8-jdk-alpine
+FROM openjdk:8-jdk
 VOLUME /tmp
 ADD target/rest-api-newsletter-subscription.war app.war
 ENV JAVA_OPTS="-Dspring.profiles.active=prod"
