@@ -1,6 +1,7 @@
 server:
   port: 8080
   contextPath: /newsletterSub
+  basePath: http://localhost
 ---
 spring:
   profiles: prod
