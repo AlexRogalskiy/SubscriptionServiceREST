@@ -1,6 +1,7 @@
 #Dockerfile MySQL database engine
 FROM ubuntu:latest
 MAINTAINER AlexandeR "alexander.rogalsky@yandex.ru"
+LABEL Description="MySQL database engine default repository image" Vendor="WildBeesLabs" Version="1.0"
 
 ENV MYSQL_USER=mysql \
     MYSQL_DATA_DIR=/var/lib/mysql \

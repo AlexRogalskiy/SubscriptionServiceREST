@@ -1,6 +1,6 @@
 1. Build docker container:
 
-	docker build --build-arg H2_DB_SOURCE={URL_LINK} -t={IMAGE_NAME}} .
+	docker build [--build-arg H2_DB_SOURCE={URL_LINK}] -t={IMAGE_NAME}} .
 
 2. Run docker container:
 

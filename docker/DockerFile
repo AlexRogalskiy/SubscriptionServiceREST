@@ -1,5 +1,6 @@
 # Dockerfile
 FROM openjdk:8-jdk-alpine
+LABEL Description="Newsletter subscription service based on JAVA & SpringBoot as a default repository image" Vendor="WildBeesLabs" Version="1.0"
 
 EXPOSE 8080
 VOLUME /tmp
