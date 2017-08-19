@@ -1,27 +1,86 @@
 
-REST API Newsletter Subscription Service
+	REST API Newsletter Subscription Service
 
 ----------------------------INSTALL-----------------------------
 
 1. 	SET JAVA_HOME to JDK installation folder
 
-FOR WIN10
+2. 	In case of Windows 10 installation execute the following commands:
 
-set DOCKER_HOST=tcp://192.168.99.101:2376
-set DOCKER_MACHINE_NAME=default2
-set DOCKER_TLS_VERIFY=1
-set DOCKER_TOOLBOX_INSTALL_PATH=C:\Program Files\Docker Toolbox
-set DOCKER_CERT_PATH=C:\Users\{USERNAME}\.docker\machine\machines\default2
+	set DOCKER_HOST=tcp://192.168.99.101:2376
+	set DOCKER_MACHINE_NAME=default2
+	set DOCKER_TLS_VERIFY=1
+	set DOCKER_TOOLBOX_INSTALL_PATH=C:\Program Files\Docker Toolbox
+	set DOCKER_CERT_PATH=C:\Users\{USERNAME}\.docker\machine\machines\default2
 
 2. 	mvn clean package docker:build
 
 3. 	java -jar target/rest-api-newsletter-subscription.war –spring.profiles.active=local
-or
+		or
 	java -jar target/rest-api-newsletter-subscription.war –spring.profiles.active=prod
-where
-		prod - h2 database
-		local (by default) - mysql database
+		where
+			prod - h2 database
+			local (by default) - mysql database
 
+--------------------------------------------------------------------
+	SETTING UP MySQL via another docker container
+--------------------------------------------------------------------
+1. docker-machine ls
+	Choose your docker-machine name to establish connection with.
+	
+	If list is empty - set up a new one:
+	
+		docker-machine create -d virtualbox {DOCKER_MACHINE_NAME}
+		docker-machine start {DOCKER_MACHINE_NAME}
+		docker-machine env {DOCKER_MACHINE_NAME}
+		eval "$(docker-machine env {DOCKER_MACHINE_NAME})"
+	
+	In case of logging to DOCKER_HUB:
+	
+		docker login -u='{USER_NAME}' -p='{PASSWORD}'
+		
+2. docker-machine ssh {DOCKER_MACHINE_NAME}
+
+3. ifconfig
+	Choose the ip address of docker0 network
+	
+4. VirtualBox on settings -> network -> NAT -> port forwarding:
+
+	Add route 172.17.0.1 for mysql
+		Name 		-> mysql
+		Protocol 	-> TCP
+		Host IP 	-> 127.0.0.1
+		Host Port 	-> 3306
+		Guest IP 	-> 172.17.0.1
+		Guest Port	-> 3306
+		
+5. Cd to folder docker-mysql
+6. docker build --tag={IMAGE_NAME} .
+7. Run your brand-new container:
+
+	docker run -it -v <local-enabled-dir>:/var/lib/mysql -v <local-log-dir>:/var/log/mysql -p 3306:3306 -e MYSQL_ROOT_PWD={ROOT_PASSWORD} --name {CONTAINER_NAME} {IMAGE_NAME}
+		or with a link to another container
+	docker run -it -v <local-enabled-dir>:/var/lib/mysql -v <local-log-dir>:/var/log/mysql --link {CONTAINER_NAME_TO_LINK} -p 3306:3306 -e MYSQL_ROOT_PWD={ROOT_PASSWORD} --name {CONTAINER_NAME} {IMAGE_NAME}
+		or in a daemon mode
+	docker run -d -v <local-enabled-dir>:/var/lib/mysql -v <local-log-dir>:/var/log/mysql -p 3306:3306 -e MYSQL_ROOT_PWD={ROOT_PASSWORD} --name {CONTAINER_NAME} {IMAGE_NAME}
+	
+	if no image name is being provided then
+	
+		docker images
+		
+	Choose the correct one:
+	
+		docker run -it -p 3306:3306 --name {CONTAINER_NAME} -e MYSQL_ROOT_PASSWORD={ROOT_PASSWORD} {IMAGE_ID}
+
+8. Now you are ready to run any mysql client with connection binded to localhost:3306 with further port forwarding to docker container.
+
+--------------------------------------------------------------------
+
+	To build your docker container manually (with no maven-docker-plugin installation):
+
+		docker build -f {PATH_TO_DOCKER_FILE} -t {APPLICATION_NAME}:{APPLICATION_TAG} .
+		docker run --rm -p 8080:8080 {APPLICATION_NAME}:{APPLICATION_TAG}
+	
 ----------------------------GENERAL-----------------------------
 
 URL: http://host:8080/newsletterSub/api/
