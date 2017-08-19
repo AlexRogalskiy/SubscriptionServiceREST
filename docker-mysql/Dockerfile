@@ -1,3 +1,4 @@
+#Dockerfile MySQL database engine
 FROM ubuntu:latest
 MAINTAINER AlexandeR "alexander.rogalsky@yandex.ru"
 
