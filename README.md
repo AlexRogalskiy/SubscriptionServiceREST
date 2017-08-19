@@ -70,7 +70,7 @@
 		
 	Choose the correct one:
 	
-		docker run -it -p 3306:3306 --name {CONTAINER_NAME} -e MYSQL_ROOT_PASSWORD={ROOT_PASSWORD} {IMAGE_ID}
+		docker run -it -p 3306:3306 --name {CONTAINER_NAME} -e MYSQL_ROOT_PWD={ROOT_PASSWORD} {IMAGE_ID}
 
 8. Now you are ready to run any mysql client with connection binded to localhost:3306 with further port forwarding to docker container.
 

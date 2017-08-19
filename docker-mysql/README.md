@@ -43,7 +43,7 @@
 	if no image name is being provided then
 		docker images
 	Choose the correct one:
-		docker run -it -p 3306:3306 --name {CONTAINER_NAME} -e MYSQL_ROOT_PASSWORD={ROOT_PASSWORD} {IMAGE_ID}
+		docker run -it -p 3306:3306 --name {CONTAINER_NAME} -e MYSQL_ROOT_PWD={ROOT_PASSWORD} {IMAGE_ID}
 		
 8.  In order to promote remote connections execute the following commands inside your docker container:
 
