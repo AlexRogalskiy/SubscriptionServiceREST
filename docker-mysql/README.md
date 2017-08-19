@@ -54,5 +54,9 @@
 	grant all privileges on *.* to 'root'@'10.0.2.2' with grant option;
 	flush privileges;
 	select user, host from mysql.user where user='root';
+	
+		or
+	
+	docker exec -i -t {CONTAINER_NAME}} mysql -u{USER_NAME}} -p
 
 9. Now you are ready to run any mysql client with connection binded to localhost:3306 with further port forwarding to docker container.
