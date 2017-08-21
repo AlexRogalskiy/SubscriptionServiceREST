@@ -5,6 +5,8 @@ server:
 ---
 spring:
   profiles: prod
+  main:
+      banner-mode: "off"
 datasource:
   subscriptionapp:
     url: jdbc:h2:~/subscriptiondb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
@@ -24,6 +26,8 @@ datasource:
 ---
 spring:
   profiles: local, default
+  main:
+      banner-mode: "on"
 datasource:
   subscriptionapp:
     url: jdbc:mysql://localhost:3306/subscriptiondb?createDatabaseIfNotExist=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=UTF-8&characterSetResults=UTF-8
