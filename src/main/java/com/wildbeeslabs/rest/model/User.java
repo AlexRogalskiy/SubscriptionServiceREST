@@ -178,7 +178,7 @@ public class User extends BaseEntity implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 5;
+        int hash = super.hashCode();
         hash = 29 * hash + Objects.hashCode(this.id);
         hash = 29 * hash + Objects.hashCode(this.login);
         hash = 29 * hash + Objects.hashCode(this.age);
@@ -190,6 +190,6 @@ public class User extends BaseEntity implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("User {id: %d, login: %s, age: %d, rating: %f, status: %s, registeredAt: %s}", this.id, this.login, this.age, this.rating, this.status, this.registeredAt);
+        return String.format("User {id: %d, login: %s, age: %d, rating: %f, status: %s, registeredAt: %s, inherited: %s}", this.id, this.login, this.age, this.rating, this.status, this.registeredAt, super.toString());
     }
 }

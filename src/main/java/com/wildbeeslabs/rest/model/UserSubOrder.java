@@ -112,7 +112,7 @@ public class UserSubOrder extends BaseEntity implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 3;
+        int hash = super.hashCode();
         hash = 23 * hash + Objects.hashCode(this.pk);
         hash = 23 * hash + Objects.hashCode(this.subscribedAt);
         hash = 23 * hash + Objects.hashCode(this.expiredAt);
@@ -121,6 +121,6 @@ public class UserSubOrder extends BaseEntity implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("UserSubOrder {primary key: %s, subscribedAt: %s, expiredAt: %s}", this.pk, this.subscribedAt, this.expiredAt);
+        return String.format("UserSubOrder {primary key: %s, subscribedAt: %s, expiredAt: %s, inherited: %s}", this.pk, this.subscribedAt, this.expiredAt, super.toString());
     }
 }

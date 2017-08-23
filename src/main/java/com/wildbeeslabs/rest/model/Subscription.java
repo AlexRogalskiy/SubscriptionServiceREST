@@ -158,6 +158,6 @@ public class Subscription extends BaseEntity implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Subscription {id: %d, name: %s, expireAt: %s, type: %s}", this.id, this.name, this.expireAt, this.type);
+        return String.format("Subscription {id: %d, name: %s, expireAt: %s, type: %s, inherited: %s}", this.id, this.name, this.expireAt, this.type, super.toString());
     }
 }
