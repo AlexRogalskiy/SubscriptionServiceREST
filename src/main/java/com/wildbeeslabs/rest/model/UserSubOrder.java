@@ -97,10 +97,7 @@ public class UserSubOrder extends BaseEntity implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (null == obj || obj.getClass() != this.getClass()) {
+        if (!super.equals(obj)) {
             return false;
         }
         final UserSubOrder other = (UserSubOrder) obj;

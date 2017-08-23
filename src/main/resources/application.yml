@@ -27,7 +27,7 @@ datasource:
 spring:
   profiles: local, default
   main:
-      banner-mode: "on"
+      banner-mode: "console"
 datasource:
   subscriptionapp:
     url: jdbc:mysql://localhost:3306/subscriptiondb?createDatabaseIfNotExist=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=UTF-8&characterSetResults=UTF-8

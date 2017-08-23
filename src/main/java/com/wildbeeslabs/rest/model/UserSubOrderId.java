@@ -2,6 +2,7 @@ package com.wildbeeslabs.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
@@ -11,7 +12,7 @@ import javax.persistence.ManyToOne;
 
 /**
  *
- * UserSubOrder Compound PK REST Application Model
+ * UserSubOrder Compound Primary key REST Application Model
  *
  * @author Alex
  * @version 1.0.0
@@ -19,7 +20,7 @@ import javax.persistence.ManyToOne;
  */
 @Embeddable
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class UserSubOrderId implements java.io.Serializable {
+public class UserSubOrderId implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     //@JsonManagedReference(value = "userOrderToUser")
