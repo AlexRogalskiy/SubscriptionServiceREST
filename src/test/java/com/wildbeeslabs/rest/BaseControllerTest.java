@@ -2,8 +2,10 @@ package com.wildbeeslabs.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.wildbeeslabs.rest.controller.SubscriptionController;
 import com.wildbeeslabs.rest.controller.UserController;
+import com.wildbeeslabs.rest.controller.UserSubscriptionController;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -19,8 +21,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+/**
+ *
+ * BaseController REST Application Test
+ *
+ * @author Alex
+ * @version 1.0.0
+ * @since 2017-08-08
+ */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {SubscriptionRestAppLoader.class, UserController.class, SubscriptionController.class}, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(classes = {SubscriptionRestAppLoader.class, UserController.class, SubscriptionController.class, UserSubscriptionController.class}, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 abstract public class BaseControllerTest {
 
     /**
@@ -62,4 +72,9 @@ abstract public class BaseControllerTest {
         }
         return value;
     }
+
+//    @Before
+//    public void setUp() { 
+//        RestAssured.authentication = preemptive().basic("user", "123");
+//    }
 }

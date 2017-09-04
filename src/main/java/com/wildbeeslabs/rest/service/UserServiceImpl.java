@@ -4,8 +4,8 @@ import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.repositories.UserRepository;
 import com.wildbeeslabs.rest.service.interfaces.UserService;
-import java.util.ArrayList;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -117,6 +117,7 @@ public class UserServiceImpl<T extends User> implements UserService<T> {
     public void merge(final T itemTo, final T itemFrom) {
         itemTo.setAge(itemFrom.getAge());
         itemTo.setModifiedAt(new Date());
+        itemTo.setModifiedBy(itemFrom.getModifiedBy());
         itemTo.setRating(itemFrom.getRating());
         itemTo.setStatus(itemFrom.getStatus());
         itemTo.setSubOrders(itemFrom.getSubOrders());
@@ -124,7 +125,7 @@ public class UserServiceImpl<T extends User> implements UserService<T> {
     }
 
     @Override
-    public void delete(final List<T> items) {
+    public void delete(final List<? extends T> items) {
         userRepository.delete(items);
     }
 

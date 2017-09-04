@@ -36,7 +36,7 @@ public interface BaseService<T extends Serializable> {
 
     void delete(final T item);
     
-    void delete(final List<T> item);
+    void delete(final List<? extends T> item);
 
     List<T> findAll();
 

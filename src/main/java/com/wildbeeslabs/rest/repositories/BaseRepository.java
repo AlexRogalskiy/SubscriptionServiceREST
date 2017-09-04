@@ -48,4 +48,22 @@ public interface BaseRepository<T extends BaseEntity> extends JpaRepository<T, L
      */
     @Query("select e from #{#entityName} e where e.createdAt > ?1 and e.createdAt <= ?2")
     List<T> findAllByCreatedAtBetween(final Date dateFrom, final Date dateTo);
+
+    /**
+     * Get list of entities created by user
+     *
+     * @param createdBy - user name who created entities
+     * @return list of entities
+     */
+    @Query("select e from #{#entityName} e where e.createdBy = ?1")
+    List<T> findAllByCreatedByIgnoreCase(final String createdBy);
+
+    /**
+     * Get list of entities modified by user
+     *
+     * @param modifiedBy - user name who modified entities
+     * @return list of entities
+     */
+    @Query("select e from #{#entityName} e where e.modifiedBy = ?1")
+    List<T> findAllByModifiedByIgnoreCase(final String modifiedBy);
 }

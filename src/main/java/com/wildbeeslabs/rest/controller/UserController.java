@@ -84,7 +84,7 @@ public class UserController<T extends User> extends AbscractBaseController<T> {
      * Create new user entity
      *
      * @param user - user data
-     * @param ucBuilder - URI builder instance
+     * @param ucBuilder - URI component builder
      * @return response status code
      */
     @RequestMapping(value = "/user", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})

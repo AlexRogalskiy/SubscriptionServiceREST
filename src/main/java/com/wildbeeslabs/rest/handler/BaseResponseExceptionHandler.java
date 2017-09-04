@@ -9,6 +9,8 @@ import com.wildbeeslabs.rest.exception.ServiceException;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,10 +25,11 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+//import org.springframework.web.context.request.WebRequest;
 //import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
-public class BaseResponseExceptionHandler {// extends ResponseEntityExceptionHandler {
+public class BaseResponseExceptionHandler {//extends ResponseEntityExceptionHandler {
 
     public enum ResponseStatusCode {
         ALREADY_EXIST(101),
@@ -49,12 +52,18 @@ public class BaseResponseExceptionHandler {// extends ResponseEntityExceptionHan
         }
     }
 
+    @XmlRootElement(name = "exception")
     protected class ExceptionEntity {
 
+        @XmlElement(name = "path")
         private String path;
+        @XmlElement(name = "code")
         private Integer code;
+        @XmlElement(name = "error")
         private String error;
+        @XmlElement(name = "message")
         private String message;
+        @XmlElement(name = "timestamp")
         private Long timestamp;
 
         public ExceptionEntity() {
@@ -116,7 +125,7 @@ public class BaseResponseExceptionHandler {// extends ResponseEntityExceptionHan
     /**
      * Default Logger instance
      */
-    protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
+    protected final Logger LOGGER = LoggerFactory.getLogger(BaseResponseExceptionHandler.class);
 
     @ExceptionHandler({ResourceAlreadyExistException.class})
     protected ResponseEntity<?> handle(final HttpServletRequest req, final ResourceAlreadyExistException ex) {
@@ -139,6 +148,10 @@ public class BaseResponseExceptionHandler {// extends ResponseEntityExceptionHan
         return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.NOT_FOUND, ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 
+//    @ExceptionHandler({ResourceNotFoundException.class})
+//    protected ResponseEntity<?> handleNotFound(Exception ex, WebRequest request) {
+//        return handleExceptionInternal(ex, "Resource not found", new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+//    }
     @ExceptionHandler({EmptyContentException.class})
     protected ResponseEntity<?> handle(final HttpServletRequest req, final EmptyContentException ex) {
         LOGGER.error(ex.getMessage());

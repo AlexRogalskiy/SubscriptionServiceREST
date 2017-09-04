@@ -4,8 +4,6 @@ import static com.jayway.restassured.RestAssured.given;
 
 import com.jayway.restassured.http.ContentType;
 import com.wildbeeslabs.rest.model.Subscription;
-import com.wildbeeslabs.rest.model.User;
-import com.wildbeeslabs.rest.model.UserSubOrder;
 
 import java.util.Date;
 import java.util.Objects;
@@ -18,6 +16,14 @@ import static org.hamcrest.CoreMatchers.nullValue;
 
 import org.junit.Test;
 
+/**
+ *
+ * SubscriptionController REST Application Test
+ *
+ * @author Alex
+ * @version 1.0.0
+ * @since 2017-08-08
+ */
 public class SubscriptionControllerTest extends BaseControllerTest {
 
     @Test
@@ -39,6 +45,7 @@ public class SubscriptionControllerTest extends BaseControllerTest {
     public void testVerifySubscription1() {
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/subscription/1").then()
                 .body("name", equalTo("subscription1"))
+                .body("createdBy", equalTo("admin"))
                 .body("expiredAt", nullValue())
                 .body("id", equalTo(1))
                 .body("createdAt", equalTo(1544562000000L))
@@ -51,6 +58,7 @@ public class SubscriptionControllerTest extends BaseControllerTest {
     public void testAddSubscription() {
         final Subscription subscription = new Subscription();
         subscription.setExpireAt(new Date());
+        subscription.setCreatedBy("admin");
         subscription.setName("Guest Group");
         subscription.setType(Subscription.SubscriptionStatusType.STANDARD);
 
@@ -65,7 +73,7 @@ public class SubscriptionControllerTest extends BaseControllerTest {
 
     @Test
     public void testUpdateSubscription() {
-        Subscription subscription1 = given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/subscription/1").as(Subscription.class);
+        final Subscription subscription1 = given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/subscription/1").as(Subscription.class);
 
         assertTrue(Objects.nonNull(subscription1));
         assertTrue(Objects.equals("subscription1", subscription1.getName()));
@@ -90,31 +98,6 @@ public class SubscriptionControllerTest extends BaseControllerTest {
                 .statusCode(403);
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("dba", "dba123")
                 .when().delete(REST_SERVICE_URI + "/api/subscription/4").then()
-                .statusCode(200);
-    }
-
-    @Test
-    public void testAddUserSubscription() {
-        User user1 = given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/user/1").as(User.class);
-        Subscription subscription3 = given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/subscription/3").as(Subscription.class);
-
-        assertTrue(Objects.equals("user1@gmail.com", user1.getLogin()));
-        assertTrue(Objects.equals(User.UserStatusType.UNVERIFIED, user1.getStatus()));
-
-        assertTrue(Objects.equals("subscription3", subscription3.getName()));
-        assertTrue(Objects.equals(Subscription.SubscriptionStatusType.STANDARD, subscription3.getType()));
-
-        UserSubOrder userSubOrder = new UserSubOrder();
-        userSubOrder.setUser(user1);
-        userSubOrder.setSubscription(subscription3);
-        userSubOrder.setSubscribedAt(parseDate("2017-05-28 00:00:00"));
-
-        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123")
-                .body(userSubOrder)
-                .when().post(REST_SERVICE_URI + "/api/user/{id}/subscription", user1.getId()).then()
-                .statusCode(200);
-        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/user/{id}/subscriptions", user1.getId()).then()
-                .body("name", hasItem("subscription3"))
                 .statusCode(200);
     }
 }

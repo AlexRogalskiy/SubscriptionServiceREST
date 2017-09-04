@@ -3,8 +3,8 @@ package com.wildbeeslabs.rest.service;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.repositories.SubscriptionRepository;
 import com.wildbeeslabs.rest.service.interfaces.SubscriptionService;
-import java.util.Date;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -91,6 +91,7 @@ public class SubscriptionServiceImpl<T extends Subscription> implements Subscrip
     public void merge(final T itemTo, final T itemFrom) {
         itemTo.setExpireAt(itemFrom.getExpireAt());
         itemTo.setModifiedAt(new Date());
+        itemTo.setModifiedBy(itemFrom.getModifiedBy());
         itemTo.setName(itemFrom.getName());
         itemTo.setType(itemFrom.getType());
         itemTo.setUserOrders(itemFrom.getUserOrders());
@@ -104,7 +105,7 @@ public class SubscriptionServiceImpl<T extends Subscription> implements Subscrip
     }
 
     @Override
-    public void delete(final List<T> items) {
+    public void delete(final List<? extends T> items) {
         subscriptionRepository.delete(items);
     }
 }

@@ -34,6 +34,12 @@ public abstract class BaseEntity implements Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date modifiedAt;
 
+    @Column(name = "created_by", nullable = false, updatable = false)
+    private String createdBy;
+
+    @Column(name = "modified_by", nullable = true, insertable = false)
+    private String modifiedBy;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = new Date();
@@ -60,6 +66,22 @@ public abstract class BaseEntity implements Serializable {
         this.modifiedAt = modifiedAt;
     }
 
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(final String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(final String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -69,6 +91,12 @@ public abstract class BaseEntity implements Serializable {
             return false;
         }
         final BaseEntity other = (BaseEntity) obj;
+        if (!Objects.equals(this.createdBy, other.createdBy)) {
+            return false;
+        }
+        if (!Objects.equals(this.modifiedBy, other.modifiedBy)) {
+            return false;
+        }
         if (!Objects.equals(this.createdAt, other.createdAt)) {
             return false;
         }
@@ -78,13 +106,15 @@ public abstract class BaseEntity implements Serializable {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 97 * hash + Objects.hashCode(this.createdAt);
-        hash = 97 * hash + Objects.hashCode(this.modifiedAt);
+        hash = 53 * hash + Objects.hashCode(this.createdAt);
+        hash = 53 * hash + Objects.hashCode(this.modifiedAt);
+        hash = 53 * hash + Objects.hashCode(this.createdBy);
+        hash = 53 * hash + Objects.hashCode(this.modifiedBy);
         return hash;
     }
 
     @Override
     public String toString() {
-        return String.format("BaseEntity {createdAt: %s, createdAt: %s}", this.createdAt, this.modifiedAt);
+        return String.format("BaseEntity {createdAt: %s, createdAt: %s, createdBy: %s, modifiedBy: %s}", this.createdAt, this.modifiedAt, this.createdBy, this.modifiedBy);
     }
 }

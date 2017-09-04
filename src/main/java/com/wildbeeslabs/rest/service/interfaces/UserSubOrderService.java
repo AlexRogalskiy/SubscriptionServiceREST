@@ -50,11 +50,20 @@ public interface UserSubOrderService<T extends UserSubOrder> extends BaseService
     List<T> findBySubscription(final Subscription subscription);
 
     /**
-     * Get list of subscription orders by date range (from / to)
+     * Get list of subscription orders by user and subscription entity
+     *
+     * @param user - user entity
+     * @param subscription - subscription entity
+     * @return subscription order
+     */
+    T findByUserAndSubscription(final User user, final Subscription subscription);
+
+    /**
+     * Get list of subscription orders by date range (start date / end date)
      *
      * @param dateFrom - start date of range
      * @param dateTo - end date of range
      * @return list of subscription orders
      */
-    List<T> findSubscribedAtBetween(final Date dateFrom, final Date dateTo);
+    List<T> findBySubscribedAtBetween(final Date dateFrom, final Date dateTo);
 }

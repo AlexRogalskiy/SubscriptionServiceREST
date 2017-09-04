@@ -2,6 +2,13 @@ server:
   port: 8080
   contextPath: /newsletterSub
   basePath: http://localhost
+  error:
+      #path: /error
+      whitelabel:
+          enabled: false
+security:
+    basic:
+        enabled: true
 ---
 spring:
   profiles: prod

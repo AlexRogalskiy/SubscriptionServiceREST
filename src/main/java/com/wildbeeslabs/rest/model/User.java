@@ -152,6 +152,7 @@ public class User extends BaseEntity implements Serializable {
         }
     }
 
+    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(Object obj) {
         if (!super.equals(obj)) {

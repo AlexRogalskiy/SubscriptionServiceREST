@@ -20,7 +20,7 @@ import org.hibernate.cfg.Configuration;
 @Transactional
 public class HibernateSessionService {
 
-    private static final SessionFactory SESSSION_FACTORY = buildSessionFactory();
+    private static final SessionFactory DEFAULT_SESSSION_FACTORY = buildSessionFactory();
 
     private static SessionFactory buildSessionFactory() {
         try {
@@ -38,7 +38,7 @@ public class HibernateSessionService {
     }
 
     public static SessionFactory getSessionFactory() {
-        return SESSSION_FACTORY;
+        return HibernateSessionService.DEFAULT_SESSSION_FACTORY;
     }
 
     public static void shutdown() {

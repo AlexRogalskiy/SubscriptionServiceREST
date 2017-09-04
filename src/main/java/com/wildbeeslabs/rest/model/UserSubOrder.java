@@ -95,6 +95,7 @@ public class UserSubOrder extends BaseEntity implements Serializable {
         this.expiredAt = expiredAt;
     }
 
+    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(Object obj) {
         if (!super.equals(obj)) {

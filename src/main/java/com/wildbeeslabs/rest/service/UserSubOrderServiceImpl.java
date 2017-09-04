@@ -83,6 +83,7 @@ public class UserSubOrderServiceImpl<T extends UserSubOrder> implements UserSubO
         itemTo.setExpiredAt(itemFrom.getExpiredAt());
         itemTo.setSubscribedAt(itemFrom.getSubscribedAt());
         itemTo.setModifiedAt(new Date());
+        itemTo.setModifiedBy(itemFrom.getModifiedBy());
         update(itemTo);
     }
 
@@ -92,12 +93,20 @@ public class UserSubOrderServiceImpl<T extends UserSubOrder> implements UserSubO
     }
 
     @Override
-    public void delete(final List<T> items) {
+    public void delete(final List<? extends T> items) {
         userSubOrderRepository.delete(items);
     }
 
     @Override
-    public List<T> findSubscribedAtBetween(final Date dateFrom, final Date dateTo) {
+    public List<T> findBySubscribedAtBetween(final Date dateFrom, final Date dateTo) {
         return userSubOrderRepository.findBySubscribedAtBetween(dateFrom, dateTo);
+    }
+
+    @Override
+    public T findByUserAndSubscription(final User user, final Subscription subscription) {
+        UserSubOrder order = new UserSubOrder();
+        order.setSubscription(subscription);
+        order.setUser(user);
+        return this.findById(order.getPk());
     }
 }

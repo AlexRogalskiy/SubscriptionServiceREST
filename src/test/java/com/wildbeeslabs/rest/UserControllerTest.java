@@ -15,6 +15,14 @@ import static org.hamcrest.CoreMatchers.nullValue;
 
 import org.junit.Test;
 
+/**
+ *
+ * UserController REST Application Test
+ *
+ * @author Alex
+ * @version 1.0.0
+ * @since 2017-08-08
+ */
 public class UserControllerTest extends BaseControllerTest {
 
     @Test
@@ -33,9 +41,10 @@ public class UserControllerTest extends BaseControllerTest {
     }
 
     @Test
-    public void testVerifyUser1() {
+    public void testVerifyUser2() {
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/user/2").then()
                 .body("login", equalTo("user2@gmail.com"))
+                .body("createdBy", equalTo("user2@gmail.com"))
                 .body("age", equalTo(26))
                 .body("id", equalTo(2))
                 .body("createdAt", equalTo(1493499600000L))
@@ -50,6 +59,7 @@ public class UserControllerTest extends BaseControllerTest {
     public void testAddUser() {
         final User user = new User();
         user.setAge(25);
+        user.setCreatedBy("user18@gmail.com");
         user.setCreatedAt(parseDate("2017-04-18 00:00:00"));
         user.setLogin("user18@gmail.com");
         user.setModifiedAt(null);
@@ -68,7 +78,7 @@ public class UserControllerTest extends BaseControllerTest {
 
     @Test
     public void testUpdateUser() {
-        User user1 = given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/user/1").as(User.class);
+        final User user1 = given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/user/1").as(User.class);
 
         assertTrue(Objects.nonNull(user1));
         assertTrue(Objects.equals("user1@gmail.com", user1.getLogin()));

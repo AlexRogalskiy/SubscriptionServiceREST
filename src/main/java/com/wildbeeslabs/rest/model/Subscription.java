@@ -129,6 +129,7 @@ public class Subscription extends BaseEntity implements Serializable {
     }
 
     @Override
+    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     public boolean equals(Object obj) {
         if (!super.equals(obj)) {
             return false;
