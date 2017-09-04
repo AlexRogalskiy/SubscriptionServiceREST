@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+//import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 //import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 @Configuration
@@ -49,6 +50,10 @@ public class JpaConfiguration {
         return new PropertySourcesPlaceholderConfigurer();
     }
 
+//    @Bean
+//    public MethodValidationPostProcessor methodValidationPostProcessor() {
+//        return new MethodValidationPostProcessor();
+//    }
     @Bean
     @Primary
     @ConfigurationProperties(prefix = "datasource.subscriptionapp")

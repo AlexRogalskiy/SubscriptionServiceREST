@@ -28,7 +28,7 @@ import org.springframework.http.ResponseEntity;
  * @since 2017-08-08
  * @param <T>
  */
-public abstract class AbscractBaseController<T extends BaseEntity> implements IBaseController<T> {
+public abstract class ABaseController<T extends BaseEntity> implements IBaseController<T> {
 
     /**
      * Default Logger instance

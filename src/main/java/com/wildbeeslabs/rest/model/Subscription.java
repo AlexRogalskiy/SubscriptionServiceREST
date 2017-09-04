@@ -3,6 +3,7 @@ package com.wildbeeslabs.rest.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -26,9 +27,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.UniqueConstraint;
-import javax.xml.bind.annotation.XmlRootElement;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  *
@@ -44,7 +44,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 })
 @Inheritance(strategy = InheritanceType.JOINED)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@XmlRootElement(name = "subscription")
+@JacksonXmlRootElement(localName = "subscription")
 public class Subscription extends BaseEntity implements Serializable {
 
     @Id
@@ -53,7 +53,7 @@ public class Subscription extends BaseEntity implements Serializable {
     @Column(name = "subscription_id", unique = true, nullable = false)
     private Long id;
 
-    @NotEmpty
+    @NotBlank
     @Column(name = "name", nullable = false, unique = true)
     @JacksonXmlProperty(localName = "name")
     private String name;

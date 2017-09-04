@@ -1,5 +1,7 @@
 package com.wildbeeslabs.rest.handler;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.wildbeeslabs.rest.exception.BadRequestException;
 import com.wildbeeslabs.rest.exception.EmptyContentException;
 import com.wildbeeslabs.rest.exception.ResourceAlreadyExistException;
@@ -9,13 +11,13 @@ import com.wildbeeslabs.rest.exception.ServiceException;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import org.hibernate.exception.ConstraintViolationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -24,6 +26,8 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 //import org.springframework.web.context.request.WebRequest;
 //import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -52,18 +56,18 @@ public class BaseResponseExceptionHandler {//extends ResponseEntityExceptionHand
         }
     }
 
-    @XmlRootElement(name = "exception")
+    @JacksonXmlRootElement(localName = "exception")
     protected class ExceptionEntity {
 
-        @XmlElement(name = "path")
+        @JacksonXmlProperty(localName = "path")
         private String path;
-        @XmlElement(name = "code")
+        @JacksonXmlProperty(localName = "code")
         private Integer code;
-        @XmlElement(name = "error")
+        @JacksonXmlProperty(localName = "error")
         private String error;
-        @XmlElement(name = "message")
+        @JacksonXmlProperty(localName = "message")
         private String message;
-        @XmlElement(name = "timestamp")
+        @JacksonXmlProperty(localName = "timestamp")
         private Long timestamp;
 
         public ExceptionEntity() {
@@ -128,6 +132,8 @@ public class BaseResponseExceptionHandler {//extends ResponseEntityExceptionHand
     protected final Logger LOGGER = LoggerFactory.getLogger(BaseResponseExceptionHandler.class);
 
     @ExceptionHandler({ResourceAlreadyExistException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.CONFLICT)
     protected ResponseEntity<?> handle(final HttpServletRequest req, final ResourceAlreadyExistException ex) {
         LOGGER.error(ex.getMessage());
         String url = req.getRequestURI().substring(req.getContextPath().length());
@@ -135,6 +141,8 @@ public class BaseResponseExceptionHandler {//extends ResponseEntityExceptionHand
     }
 
     @ExceptionHandler({BadRequestException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ResponseEntity<?> handle(final HttpServletRequest req, final BadRequestException ex) {
         LOGGER.error(ex.getMessage());
         String url = req.getRequestURI().substring(req.getContextPath().length());
@@ -142,6 +150,8 @@ public class BaseResponseExceptionHandler {//extends ResponseEntityExceptionHand
     }
 
     @ExceptionHandler({ResourceNotFoundException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     protected ResponseEntity<?> handle(final HttpServletRequest req, final ResourceNotFoundException ex) {
         LOGGER.error(ex.getMessage());
         String url = req.getRequestURI().substring(req.getContextPath().length());
@@ -152,7 +162,13 @@ public class BaseResponseExceptionHandler {//extends ResponseEntityExceptionHand
 //    protected ResponseEntity<?> handleNotFound(Exception ex, WebRequest request) {
 //        return handleExceptionInternal(ex, "Resource not found", new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 //    }
+//    @ExceptionHandler({ResourceNotFoundException.class, ConstraintViolationException.class, DataIntegrityViolationException.class})
+//    public ResponseEntity<Object> handleBadRequest(Exception ex, WebRequest request) {
+//        return handleExceptionInternal(ex, ex.getLocalizedMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+//    }
     @ExceptionHandler({EmptyContentException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     protected ResponseEntity<?> handle(final HttpServletRequest req, final EmptyContentException ex) {
         LOGGER.error(ex.getMessage());
         String url = req.getRequestURI().substring(req.getContextPath().length());
@@ -160,13 +176,17 @@ public class BaseResponseExceptionHandler {//extends ResponseEntityExceptionHand
     }
 
     @ExceptionHandler({TypeMismatchException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
     protected ResponseEntity<?> handle(final HttpServletRequest req, final TypeMismatchException ex) {
         LOGGER.error(ex.getMessage());
         String url = req.getRequestURI().substring(req.getContextPath().length());
         return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.BAD_MEDIA_TYPE, ex.getMessage()), HttpStatus.UNSUPPORTED_MEDIA_TYPE);
     }
 
-    @ExceptionHandler({MethodArgumentNotValidException.class})
+    @ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class, DataIntegrityViolationException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ResponseEntity<?> handle(final HttpServletRequest req, final MethodArgumentNotValidException ex) {
         LOGGER.error(ex.getMessage());
         String url = req.getRequestURI().substring(req.getContextPath().length());
@@ -174,6 +194,8 @@ public class BaseResponseExceptionHandler {//extends ResponseEntityExceptionHand
     }
 
     @ExceptionHandler({MissingPathVariableException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ResponseEntity<?> handle(final HttpServletRequest req, final MissingPathVariableException ex) {
         LOGGER.error(ex.getMessage());
         String url = req.getRequestURI().substring(req.getContextPath().length());
@@ -181,6 +203,8 @@ public class BaseResponseExceptionHandler {//extends ResponseEntityExceptionHand
     }
 
     @ExceptionHandler({HttpRequestMethodNotSupportedException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     protected ResponseEntity<?> handle(final HttpServletRequest req, final HttpRequestMethodNotSupportedException ex) {
         LOGGER.error(ex.getMessage());
         String url = req.getRequestURI().substring(req.getContextPath().length());
@@ -188,6 +212,8 @@ public class BaseResponseExceptionHandler {//extends ResponseEntityExceptionHand
     }
 
     @ExceptionHandler({HttpMessageNotReadableException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ResponseEntity<?> handle(final HttpServletRequest req, final HttpMessageNotReadableException ex) {
         LOGGER.error(ex.getMessage());
         String url = req.getRequestURI().substring(req.getContextPath().length());
@@ -195,6 +221,8 @@ public class BaseResponseExceptionHandler {//extends ResponseEntityExceptionHand
     }
 
     @ExceptionHandler({HttpMediaTypeNotSupportedException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
     protected ResponseEntity<?> handle(final HttpServletRequest req, final HttpMediaTypeNotSupportedException ex) {
         LOGGER.error(ex.getMessage());
         String url = req.getRequestURI().substring(req.getContextPath().length());
@@ -202,6 +230,8 @@ public class BaseResponseExceptionHandler {//extends ResponseEntityExceptionHand
     }
 
     @ExceptionHandler({ServiceException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected ResponseEntity<?> handle(final HttpServletRequest req, final ServiceException ex) {
         LOGGER.error(ex.getMessage());
         String url = req.getRequestURI().substring(req.getContextPath().length());

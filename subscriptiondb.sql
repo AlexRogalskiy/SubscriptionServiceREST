@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
+Source Server         : 192.168.99.100
 Source Server Version : 50616
 Source Host           : localhost:3306
 Source Database       : subscriptiondb
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2017-08-17 16:58:13
+Date: 2017-09-04 15:14:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -22,7 +22,9 @@ DROP TABLE IF EXISTS `subscriptions`;
 CREATE TABLE `subscriptions` (
   `subscription_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `created_at` datetime NOT NULL,
+  `created_by` varchar(255) NOT NULL,
   `modified_at` datetime DEFAULT NULL,
+  `modified_by` varchar(255) DEFAULT NULL,
   `expired_at` datetime DEFAULT NULL,
   `name` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL,
@@ -33,9 +35,9 @@ CREATE TABLE `subscriptions` (
 -- ----------------------------
 -- Records of subscriptions
 -- ----------------------------
-INSERT INTO `subscriptions` VALUES ('1', '2018-12-12 00:00:00', null, '2018-12-12 00:00:00', 'subscription1', 'PREMIUM');
-INSERT INTO `subscriptions` VALUES ('2', '2018-11-12 00:00:00', null, '2018-11-12 00:00:00', 'subscription2', 'ADVANCED');
-INSERT INTO `subscriptions` VALUES ('3', '2018-10-12 00:00:00', null, '2018-10-12 00:00:00', 'subscription3', 'STANDARD');
+INSERT INTO `subscriptions` VALUES ('1', '2018-12-12 00:00:00', 'admin', null, null, '2018-12-12 00:00:00', 'subscription1', 'PREMIUM');
+INSERT INTO `subscriptions` VALUES ('2', '2018-11-12 00:00:00', 'admin', null, null, '2018-11-12 00:00:00', 'subscription2', 'ADVANCED');
+INSERT INTO `subscriptions` VALUES ('3', '2018-10-12 00:00:00', 'admin', null, null, '2018-10-12 00:00:00', 'subscription3', 'STANDARD');
 
 -- ----------------------------
 -- Table structure for `users`
@@ -44,7 +46,9 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `user_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `created_at` datetime NOT NULL,
+  `created_by` varchar(255) NOT NULL,
   `modified_at` datetime DEFAULT NULL,
+  `modified_by` varchar(255) DEFAULT NULL,
   `age` int(11) DEFAULT NULL,
   `login` varchar(255) NOT NULL,
   `rating` double NOT NULL,
@@ -57,9 +61,9 @@ CREATE TABLE `users` (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('1', '2017-04-18 00:00:00', null, '25', 'user1@gmail.com', '1', '2017-04-18 00:00:00', 'UNVERIFIED');
-INSERT INTO `users` VALUES ('2', '2017-04-30 00:00:00', null, '26', 'user2@gmail.com', '1', '2017-04-30 00:00:00', 'ACTIVE');
-INSERT INTO `users` VALUES ('3', '2017-01-30 00:00:00', null, '27', 'user3@gmail.com', '1', '2017-01-30 00:00:00', 'BLOCKED');
+INSERT INTO `users` VALUES ('1', '2017-04-18 00:00:00', 'user1@gmail.com', null, null, '25', 'user1@gmail.com', '1', '2017-04-18 00:00:00', 'UNVERIFIED');
+INSERT INTO `users` VALUES ('2', '2017-04-30 00:00:00', 'user2@gmail.com', null, null, '26', 'user2@gmail.com', '1', '2017-04-30 00:00:00', 'ACTIVE');
+INSERT INTO `users` VALUES ('3', '2017-01-30 00:00:00', 'user3@gmail.com', null, null, '27', 'user3@gmail.com', '1', '2017-01-30 00:00:00', 'BLOCKED');
 
 -- ----------------------------
 -- Table structure for `user_sub_orders`
@@ -67,7 +71,9 @@ INSERT INTO `users` VALUES ('3', '2017-01-30 00:00:00', null, '27', 'user3@gmail
 DROP TABLE IF EXISTS `user_sub_orders`;
 CREATE TABLE `user_sub_orders` (
   `created_at` datetime NOT NULL,
+  `created_by` varchar(255) NOT NULL,
   `modified_at` datetime DEFAULT NULL,
+  `modified_by` varchar(255) DEFAULT NULL,
   `expired_at` datetime DEFAULT NULL,
   `subscribed_at` datetime NOT NULL,
   `user_id` bigint(20) NOT NULL,
@@ -81,7 +87,7 @@ CREATE TABLE `user_sub_orders` (
 -- ----------------------------
 -- Records of user_sub_orders
 -- ----------------------------
-INSERT INTO `user_sub_orders` VALUES ('2017-12-12 00:00:00', null, '2018-05-12 00:00:00', '2017-12-12 00:00:00', '1', '1');
-INSERT INTO `user_sub_orders` VALUES ('2017-09-12 00:00:00', null, '2018-09-12 00:00:00', '2017-09-12 00:00:00', '1', '2');
-INSERT INTO `user_sub_orders` VALUES ('2017-10-25 00:00:00', null, '2018-04-25 00:00:00', '2017-10-25 00:00:00', '3', '2');
-INSERT INTO `user_sub_orders` VALUES ('2017-08-30 00:00:00', null, '2017-08-30 00:00:00', '2017-08-30 00:00:00', '2', '3');
+INSERT INTO `user_sub_orders` VALUES ('2017-12-12 00:00:00', 'user1@gmail.com', null, null, '2018-05-12 00:00:00', '2017-12-12 00:00:00', '1', '1');
+INSERT INTO `user_sub_orders` VALUES ('2017-09-12 00:00:00', 'user1@gmail.com', null, null, '2018-09-12 00:00:00', '2017-09-12 00:00:00', '1', '2');
+INSERT INTO `user_sub_orders` VALUES ('2017-10-25 00:00:00', 'user3@gmail.com', null, null, '2018-04-25 00:00:00', '2017-10-25 00:00:00', '3', '2');
+INSERT INTO `user_sub_orders` VALUES ('2017-08-30 00:00:00', 'user2@gmail.com', null, null, '2017-08-30 00:00:00', '2017-08-30 00:00:00', '2', '3');

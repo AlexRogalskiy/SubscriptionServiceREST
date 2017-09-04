@@ -12,6 +12,7 @@ import javax.persistence.Temporal;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  *
@@ -34,6 +35,7 @@ public abstract class BaseEntity implements Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date modifiedAt;
 
+    @NotBlank
     @Column(name = "created_by", nullable = false, updatable = false)
     private String createdBy;
 

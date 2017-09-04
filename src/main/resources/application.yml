@@ -3,7 +3,7 @@ server:
   contextPath: /newsletterSub
   basePath: http://localhost
   error:
-      #path: /error
+      path: /error
       whitelabel:
           enabled: false
 security:
@@ -12,6 +12,20 @@ security:
 ---
 spring:
   profiles: prod
+  resources:
+    #staticLocations: classpath:/static/
+    cachePeriod: 0
+  application:
+      name: REST API newsletter subscription
+      thymeleaf:
+          cache: false
+          enabled: true
+          prefix: classpath:/templates/
+          suffix: .html
+          checkTemplateLocation: true
+          mode: LEGACYHTML5
+          encoding: UTF-8
+          contentType: text/html
   main:
       banner-mode: "off"
 datasource:
@@ -33,6 +47,20 @@ datasource:
 ---
 spring:
   profiles: local, default
+  resources:
+    #staticLocations: classpath:/static/
+    cachePeriod: 0
+  application:
+      name: REST API newsletter subscription
+      thymeleaf:
+          cache: false
+          enabled: true
+          prefix: classpath:/templates/
+          suffix: .html
+          checkTemplateLocation: true
+          mode: LEGACYHTML5
+          encoding: UTF-8
+          contentType: text/html
   main:
       banner-mode: "console"
 datasource:

@@ -3,6 +3,7 @@ package com.wildbeeslabs.rest.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -26,9 +27,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.UniqueConstraint;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.validation.constraints.Min;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
 
 /**
  *
@@ -44,7 +46,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 })
 @Inheritance(strategy = InheritanceType.JOINED)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@XmlRootElement(name = "user")
+@JacksonXmlRootElement(localName = "user")
 public class User extends BaseEntity implements Serializable {
 
     @Id
@@ -53,15 +55,17 @@ public class User extends BaseEntity implements Serializable {
     @Column(name = "user_id", unique = true, nullable = false)
     private Long id;
 
-    @NotEmpty
+    @NotBlank
     @Column(name = "login", nullable = false, unique = true, updatable = false)
     @JacksonXmlProperty(localName = "login")
     private String login;
 
+    @Range(min = 0, max = 150)
     @Column(name = "age", nullable = true)
     @JacksonXmlProperty(localName = "age")
     private Integer age;
 
+    @Min(1)
     @Column(name = "rating", precision = 10, scale = 2, nullable = false)
     @JacksonXmlProperty(localName = "rating")
     private Double rating;

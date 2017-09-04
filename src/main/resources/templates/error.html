@@ -1,0 +1,30 @@
+<html lang="en">
+    <head>
+        <title>Error</title>
+        <meta charset="UTF-8" />
+        <meta name="description" content="REST API Newsletter Subscription" />
+        <meta name="keywords" content="REST,Newsletter,Subscription" />
+        <meta name="author" content="Alexander R." />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />-->
+        <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    </head>
+    <body>
+
+        <div class="error">
+            <div>
+                <h2>Sometimes it happens!</h2>
+                <b>
+                    [<span th:text="${status}">status</span>]
+                    <span th:text="${error}">error</span>
+                </b>
+                <p>
+                    It appears that something went wrong or the page does not exist anymore.<br />
+                    The Website is temporarily unable to service the current request. Please check back later.
+                </p>
+                <!--<p th:text="${message}">message</p>-->
+            </div>
+        </div>
+    </body>
+
+</html>

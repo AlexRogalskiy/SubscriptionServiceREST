@@ -1,6 +1,7 @@
 package com.wildbeeslabs.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -17,7 +18,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
             joinColumns = @JoinColumn(name = "subscription_id", referencedColumnName = "subscription_id", nullable = false))})
 @Inheritance(strategy = InheritanceType.JOINED)
 @SuppressWarnings({"ConsistentAccessType", "IdDefinedInHierarchy"})
-@XmlRootElement(name = "userSubOrder")
+@JacksonXmlRootElement(localName = "userSubOrder")
 public class UserSubOrder extends BaseEntity implements Serializable {
 
     @Id
