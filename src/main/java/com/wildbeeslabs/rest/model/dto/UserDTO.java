@@ -3,16 +3,16 @@ package com.wildbeeslabs.rest.model.dto;
 import com.wildbeeslabs.rest.model.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.wildbeeslabs.rest.model.User.UserStatusType;
+import com.wildbeeslabs.rest.utils.DateUtils;
 
-import java.text.ParseException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.TimeZone;
 
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -39,6 +39,7 @@ public class UserDTO extends BaseDTO {
     @JacksonXmlProperty(localName = "rating")
     private Double rating;
     @JacksonXmlProperty(localName = "registeredAt")
+    @JsonProperty("registeredAt")
     private String registeredDate;
     @JacksonXmlProperty(localName = "status")
     private UserStatusType status;
@@ -79,14 +80,12 @@ public class UserDTO extends BaseDTO {
         this.rating = rating;
     }
 
-    public Date getRegisteredDateConverted(final String timezone) throws ParseException {
-        getDefaultDateFormat().setTimeZone(TimeZone.getTimeZone(timezone));
-        return getDefaultDateFormat().parse(this.registeredDate);
+    public Date getRegisteredDate() {
+        return (Objects.nonNull(this.registeredDate)) ? DateUtils.strToDate(this.registeredDate) : null;
     }
 
-    public void setRegisteredDate(final Date date, final String timezone) {
-        getDefaultDateFormat().setTimeZone(TimeZone.getTimeZone(timezone));
-        this.registeredDate = getDefaultDateFormat().format(date);
+    public void setRegisteredDate(final Date date) {
+        this.registeredDate = (Objects.nonNull(date)) ? DateUtils.dateToStr(date) : null;
     }
 
     public UserStatusType getStatus() {

@@ -70,7 +70,7 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
         if (userList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(userList.stream().map(item -> convertToDTO(item, this.dtoClass)).collect(Collectors.toList()), HttpStatus.OK);
+        return new ResponseEntity<>(userList.stream().map(item -> convertToDTO(item, getDtoClass())).collect(Collectors.toList()), HttpStatus.OK);
     }
 
     /**
@@ -143,5 +143,15 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
     @Override
     protected UserService<T> getDefaultService() {
         return userService;
+    }
+
+    @Override
+    protected Class<T> getEntityClass() {
+        return (Class<T>) User.class;
+    }
+
+    @Override
+    protected Class<E> getDtoClass() {
+        return (Class<E>) UserDTO.class;
     }
 }

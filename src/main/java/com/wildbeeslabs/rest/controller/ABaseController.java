@@ -7,11 +7,11 @@ import com.wildbeeslabs.rest.model.dto.BaseDTO;
 import com.wildbeeslabs.rest.service.interfaces.BaseService;
 
 import java.beans.PropertyEditorSupport;
-import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 
 import org.slf4j.Logger;
@@ -40,18 +40,10 @@ public abstract class ABaseController<T extends BaseEntity, E extends BaseDTO> i
      */
     protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
-    protected final Class<T> entityClass;
-    protected final Class<E> dtoClass;
-
     @Autowired
     protected MessageSource messageSource;
     @Autowired
     protected ModelMapper modelMapper;
-
-    public ABaseController() {
-        this.entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-        this.dtoClass = (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-    }
 
     protected String getLocaleMessage(final String message) {
         Locale locale = LocaleContextHolder.getLocale();
@@ -65,7 +57,7 @@ public abstract class ABaseController<T extends BaseEntity, E extends BaseDTO> i
         if (items.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(items.stream().map(item -> convertToDTO(item, this.dtoClass)).collect(Collectors.toList()), HttpStatus.OK);
+        return new ResponseEntity<>(items.stream().map(item -> convertToDTO(item, getDtoClass())).collect(Collectors.toList()), HttpStatus.OK);
     }
 
     @Override
@@ -75,13 +67,13 @@ public abstract class ABaseController<T extends BaseEntity, E extends BaseDTO> i
         if (Objects.isNull(item)) {
             throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.item.id"), id));
         }
-        return new ResponseEntity<>(convertToDTO(item, this.dtoClass), HttpStatus.OK);
+        return new ResponseEntity<>(convertToDTO(item, getDtoClass()), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<?> create(final E itemDto) {
         LOGGER.info("Creating item {}", itemDto);
-        T itemEntity = convertToEntity(itemDto, this.entityClass);
+        T itemEntity = convertToEntity(itemDto, getEntityClass());
         if (getDefaultService().isExist(itemEntity)) {
             throw new ResourceAlreadyExistException(String.format(getLocaleMessage("error.already.exist.item")));
         }
@@ -96,9 +88,9 @@ public abstract class ABaseController<T extends BaseEntity, E extends BaseDTO> i
         if (Objects.isNull(currentItem)) {
             throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.item.id"), id));
         }
-        T itemEntity = convertToEntity(itemDto, this.entityClass);
+        T itemEntity = convertToEntity(itemDto, getEntityClass());
         getDefaultService().merge(currentItem, itemEntity);
-        return new ResponseEntity<>(convertToDTO(currentItem, this.dtoClass), HttpStatus.OK);
+        return new ResponseEntity<>(convertToDTO(currentItem, getDtoClass()), HttpStatus.OK);
     }
 
     @Override
@@ -137,26 +129,28 @@ public abstract class ABaseController<T extends BaseEntity, E extends BaseDTO> i
         }
     }
 
-//    protected E convertToDTO(final T itemEntity, final Class<E> clazz) {
+//    protected E convertToDTO(final T itemEntity, final Class<? extends E> clazz) {
 //        E itemDto = modelMapper.map(itemEntity, clazz);
-//        //itemDTO.setSubmissionDate(item.getSubmissionDate(), userService.getCurrentUser().getPreference().getTimezone());
 //        return itemDto;
 //        //return this.convertToDTO(itemEntity, clazz);
 //    }
-    protected <M, N> N convertToDTO(final M itemEntity, final Class<N> clazz) {
+
+    protected <M, N> N convertToDTO(final M itemEntity, final Class<? extends N> clazz) {
         N itemDto = modelMapper.map(itemEntity, clazz);
-        //itemDTO.setSubmissionDate(item.getSubmissionDate(), userService.getCurrentUser().getPreference().getTimezone());
         return itemDto;
     }
 
-//    protected T convertToEntity(final E itemDto, final Class<T> clazz) throws ParseException {
+//    protected T convertToEntity(final E itemDto, final Class<? extends T> clazz) {
 //        T itemEntity = modelMapper.map(itemDto, clazz);
-//        //post.setSubmissionDate(postDto.getSubmissionDateConverted(userService.getCurrentUser().getPreference().getTimezone()));
 //        return itemEntity;
 //    }
-    protected <N, M> M convertToEntity(final N itemDto, final Class<M> clazz) {
+
+    protected <N, M> M convertToEntity(final N itemDto, final Class<? extends M> clazz) {
         M itemEntity = modelMapper.map(itemDto, clazz);
-        //post.setSubmissionDate(postDto.getSubmissionDateConverted(userService.getCurrentUser().getPreference().getTimezone()));
         return itemEntity;
     }
+
+    abstract protected Class<T> getEntityClass();
+
+    abstract protected Class<E> getDtoClass();
 }

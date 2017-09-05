@@ -1,12 +1,12 @@
 package com.wildbeeslabs.rest.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.wildbeeslabs.rest.utils.DateUtils;
 
-import java.text.ParseException;
 import java.util.Date;
 import java.util.Objects;
-import java.util.TimeZone;
 
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -30,8 +30,10 @@ public class UserSubOrderDTO extends BaseDTO {
     //@JsonManagedReference(value = "subOrderToSubscription")
     private SubscriptionDTO subscription;
     @JacksonXmlProperty(localName = "subscribedAt")
+    @JsonProperty("subscribedAt")
     private String subscribedDate;
     @JacksonXmlProperty(localName = "expiredAt")
+    @JsonProperty("expiredAt")
     private String expiredDate;
 
     public UserDTO getUser() {
@@ -50,24 +52,20 @@ public class UserSubOrderDTO extends BaseDTO {
         this.subscription = subscription;
     }
 
-    public Date getSubscribedDateConverted(final String timezone) throws ParseException {
-        getDefaultDateFormat().setTimeZone(TimeZone.getTimeZone(timezone));
-        return getDefaultDateFormat().parse(this.subscribedDate);
+    public Date getSubscribedDate() {
+        return (Objects.nonNull(this.subscribedDate)) ? DateUtils.strToDate(this.subscribedDate) : null;
     }
 
-    public void setSubscribedDate(final Date date, final String timezone) {
-        getDefaultDateFormat().setTimeZone(TimeZone.getTimeZone(timezone));
-        this.subscribedDate = getDefaultDateFormat().format(date);
+    public void setSubscribedDate(final Date date) {
+        this.subscribedDate = (Objects.nonNull(date)) ? DateUtils.dateToStr(date) : null;
     }
 
-    public Date getExpiredDateConverted(final String timezone) throws ParseException {
-        getDefaultDateFormat().setTimeZone(TimeZone.getTimeZone(timezone));
-        return getDefaultDateFormat().parse(this.expiredDate);
+    public Date getExpiredDate() {
+        return (Objects.nonNull(this.expiredDate)) ? DateUtils.strToDate(this.expiredDate) : null;
     }
 
-    public void setExpiredDate(final Date date, final String timezone) {
-        getDefaultDateFormat().setTimeZone(TimeZone.getTimeZone(timezone));
-        this.expiredDate = getDefaultDateFormat().format(date);
+    public void setExpiredDate(final Date date) {
+        this.expiredDate = (Objects.nonNull(date)) ? DateUtils.dateToStr(date) : null;
     }
 
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")

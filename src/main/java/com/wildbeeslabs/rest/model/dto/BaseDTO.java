@@ -1,17 +1,14 @@
 package com.wildbeeslabs.rest.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.wildbeeslabs.rest.utils.DateUtils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
-import java.util.TimeZone;
 
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
 
 /**
  *
@@ -25,16 +22,11 @@ import javax.persistence.Transient;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "DEFAULT_DATE_FORMATTER"})
 public abstract class BaseDTO {
 
-    /**
-     * Default date formatter
-     */
-    @Transient
-    @JsonIgnore
-    private static final SimpleDateFormat DEFAULT_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
     @JacksonXmlProperty(localName = "createdAt")
+    @JsonProperty("createdAt")
     private String createdDate;
     @JacksonXmlProperty(localName = "modifiedAt")
+    @JsonProperty("modifiedAt")
     private String modifiedDate;
     @JacksonXmlProperty(localName = "createdBy")
     private String createdBy;
@@ -57,28 +49,20 @@ public abstract class BaseDTO {
         this.modifiedBy = modifiedBy;
     }
 
-    public Date getCreatedDateConverted(final String timezone) throws ParseException {
-        DEFAULT_DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone(timezone));
-        return DEFAULT_DATE_FORMATTER.parse(this.createdDate);
+    public Date getCreatedDate() {
+        return (Objects.nonNull(this.createdDate)) ? DateUtils.strToDate(this.createdDate) : null;
     }
 
-    public void setCreatedDate(final Date date, final String timezone) {
-        DEFAULT_DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone(timezone));
-        this.createdDate = DEFAULT_DATE_FORMATTER.format(date);
+    public void setCreatedDate(final Date date) {
+        this.createdDate = (Objects.nonNull(date)) ? DateUtils.dateToStr(date) : null;
     }
 
-    public Date getModifiedDateConverted(final String timezone) throws ParseException {
-        DEFAULT_DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone(timezone));
-        return DEFAULT_DATE_FORMATTER.parse(this.modifiedDate);
+    public Date getModifiedDate() {
+        return (Objects.nonNull(this.modifiedDate)) ? DateUtils.strToDate(this.modifiedDate) : null;
     }
 
-    public void setModifiedDate(final Date date, final String timezone) {
-        DEFAULT_DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone(timezone));
-        this.modifiedDate = DEFAULT_DATE_FORMATTER.format(date);
-    }
-
-    protected SimpleDateFormat getDefaultDateFormat() {
-        return BaseDTO.DEFAULT_DATE_FORMATTER;
+    public void setModifiedDate(final Date date) {
+        this.modifiedDate = (Objects.nonNull(date)) ? DateUtils.dateToStr(date) : null;
     }
 
     @Override

@@ -7,11 +7,6 @@ import com.wildbeeslabs.rest.controller.SubscriptionController;
 import com.wildbeeslabs.rest.controller.UserController;
 import com.wildbeeslabs.rest.controller.UserSubscriptionController;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.junit.runner.RunWith;
 
 import org.slf4j.Logger;
@@ -42,25 +37,6 @@ abstract public class BaseControllerTest {
      */
     @Value("#{'${server.basePath}'.concat(':').concat('${server.port}').concat('${server.contextPath}')}")
     protected String REST_SERVICE_URI;
-
-    /**
-     * Default date format
-     */
-    protected static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
-
-    protected Date parseDate(final String date) {
-        return this.parseDate(date, DATE_FORMAT);
-    }
-
-    protected Date parseDate(final String date, final String format) {
-        try {
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            return df.parse(date);
-        } catch (ParseException ex) {
-            LOGGER.error("ERROR: cannot parse input date={} by format={}", date, format);
-            return null;
-        }
-    }
 
     protected String getObjectAsString(final Object obj) {
         ObjectMapper mapper = new ObjectMapper();

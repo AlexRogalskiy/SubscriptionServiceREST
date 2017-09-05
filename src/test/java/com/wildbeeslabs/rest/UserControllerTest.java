@@ -5,7 +5,7 @@ import static com.jayway.restassured.RestAssured.given;
 import com.jayway.restassured.http.ContentType;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.dto.UserDTO;
-import java.util.Calendar;
+import com.wildbeeslabs.rest.utils.DateUtils;
 
 import java.util.Objects;
 
@@ -62,10 +62,10 @@ public class UserControllerTest extends BaseControllerTest {
         final UserDTO user = new UserDTO();
         user.setAge(25);
         user.setCreatedBy("user18@gmail.com");
-        user.setCreatedDate(parseDate("2017-04-18 00:00:00"), Calendar.getInstance().getTimeZone().getID());
+        user.setCreatedDate(DateUtils.strToDate("2017-04-18 00:00:00"));
         user.setLogin("user18@gmail.com");
         user.setRating(1.00);
-        user.setRegisteredDate(parseDate("2017-04-18 00:00:00"), Calendar.getInstance().getTimeZone().getID());
+        user.setRegisteredDate(DateUtils.strToDate("2017-04-18 00:00:00"));
         user.setStatus(User.UserStatusType.UNVERIFIED);
 
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123")

@@ -7,8 +7,8 @@ import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
 import com.wildbeeslabs.rest.model.dto.UserDTO;
 import com.wildbeeslabs.rest.model.dto.UserSubOrderDTO;
+import com.wildbeeslabs.rest.utils.DateUtils;
 
-import java.util.Calendar;
 import java.util.Objects;
 
 import static junit.framework.TestCase.assertTrue;
@@ -39,9 +39,9 @@ public class UserSubscriptionControllerTest extends BaseControllerTest {
 
         final UserSubOrderDTO userSubOrder = new UserSubOrderDTO();
         userSubOrder.setUser(user1);
-        userSubOrder.setCreatedBy(user1.getLogin());
         userSubOrder.setSubscription(subscription3);
-        userSubOrder.setSubscribedDate(parseDate("2017-05-28 00:00:00"), Calendar.getInstance().getTimeZone().getID());
+        userSubOrder.setCreatedBy(user1.getLogin());
+        userSubOrder.setSubscribedDate(DateUtils.strToDate("2017-05-28 00:00:00"));
 
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123")
                 .body(userSubOrder)

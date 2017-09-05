@@ -101,7 +101,7 @@ public class UserSubscriptionController<T extends UserSubOrder, E extends UserSu
         if (Objects.isNull(currentOrder)) {
             throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.order.item.user.subscription.id"), userItem.getId(), subscriptionItem.getId()));
         }
-        return new ResponseEntity<>(convertToDTO(currentOrder, this.dtoClass), HttpStatus.OK);
+        return new ResponseEntity<>(convertToDTO(currentOrder, getDtoClass()), HttpStatus.OK);
     }
 
     /**
@@ -116,7 +116,7 @@ public class UserSubscriptionController<T extends UserSubOrder, E extends UserSu
     @ResponseBody
     public ResponseEntity<?> createSubscriptionByUserId(@PathVariable("userId") Long userId, @RequestBody E orderDto, UriComponentsBuilder ucBuilder) {
         LOGGER.info("Creating subscription order by user id {}", userId);
-        T orderEntity = convertToEntity(orderDto, this.entityClass);
+        T orderEntity = convertToEntity(orderDto, getEntityClass());
         if (Objects.isNull(orderEntity)) {
             throw new BadRequestException(String.format(getLocaleMessage("error.no.order.item")));
         }
@@ -155,7 +155,7 @@ public class UserSubscriptionController<T extends UserSubOrder, E extends UserSu
     @ResponseBody
     public ResponseEntity<?> updateSubscriptionsByUserIdAndSubscriptionId(@PathVariable("userId") Long userId, @PathVariable("subscriptionId") Long subscriptionId, @RequestBody E orderDto) {
         LOGGER.info("Updating subscription order by subscription id {} and user id {}", subscriptionId, userId);
-        T orderEntity = convertToEntity(orderDto, this.entityClass);
+        T orderEntity = convertToEntity(orderDto, getEntityClass());
         if (Objects.isNull(orderEntity)) {
             throw new BadRequestException(String.format(getLocaleMessage("error.no.order.item")));
         }
@@ -174,7 +174,7 @@ public class UserSubscriptionController<T extends UserSubOrder, E extends UserSu
             throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.order.item.user.subscription.id"), userItem.getId(), subscriptionItem.getId()));
         }
         getDefaultService().merge(currentOrder, orderEntity);
-        return new ResponseEntity<>(convertToDTO(currentOrder, this.dtoClass), HttpStatus.OK);
+        return new ResponseEntity<>(convertToDTO(currentOrder, getDtoClass()), HttpStatus.OK);
     }
 
     /**
@@ -260,5 +260,15 @@ public class UserSubscriptionController<T extends UserSubOrder, E extends UserSu
     @Override
     protected UserSubOrderService<T> getDefaultService() {
         return userSubOrderService;
+    }
+
+    @Override
+    protected Class<T> getEntityClass() {
+        return (Class<T>) UserSubOrder.class;
+    }
+
+    @Override
+    protected Class<E> getDtoClass() {
+        return (Class<E>) UserSubOrderDTO.class;
     }
 }

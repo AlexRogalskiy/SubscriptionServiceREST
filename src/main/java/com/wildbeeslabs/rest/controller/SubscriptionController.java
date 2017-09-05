@@ -118,4 +118,14 @@ public class SubscriptionController<T extends Subscription, E extends Subscripti
     protected SubscriptionService<T> getDefaultService() {
         return subscriptionService;
     }
+
+    @Override
+    protected Class<T> getEntityClass() {
+        return (Class<T>) Subscription.class;
+    }
+
+    @Override
+    protected Class<E> getDtoClass() {
+        return (Class<E>) SubscriptionDTO.class;
+    }
 }
