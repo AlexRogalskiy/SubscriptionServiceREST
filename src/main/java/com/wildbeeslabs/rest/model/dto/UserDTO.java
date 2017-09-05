@@ -7,10 +7,12 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.wildbeeslabs.rest.model.User.UserStatusType;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TimeZone;
 
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -24,7 +26,7 @@ import javax.persistence.InheritanceType;
  * @since 2017-08-08
  */
 @Inheritance(strategy = InheritanceType.JOINED)
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "subOrders"})
 @JacksonXmlRootElement(localName = "user")
 public class UserDTO extends BaseDTO {
 
@@ -37,7 +39,7 @@ public class UserDTO extends BaseDTO {
     @JacksonXmlProperty(localName = "rating")
     private Double rating;
     @JacksonXmlProperty(localName = "registeredAt")
-    private Date registeredAt;
+    private String registeredDate;
     @JacksonXmlProperty(localName = "status")
     private UserStatusType status;
     //@JsonBackReference(value = "userOrderToUser")
@@ -77,12 +79,14 @@ public class UserDTO extends BaseDTO {
         this.rating = rating;
     }
 
-    public Date getRegisteredAt() {
-        return registeredAt;
+    public Date getRegisteredDateConverted(final String timezone) throws ParseException {
+        getDefaultDateFormat().setTimeZone(TimeZone.getTimeZone(timezone));
+        return getDefaultDateFormat().parse(this.registeredDate);
     }
 
-    public void setRegisteredAt(final Date registeredAt) {
-        this.registeredAt = registeredAt;
+    public void setRegisteredDate(final Date date, final String timezone) {
+        getDefaultDateFormat().setTimeZone(TimeZone.getTimeZone(timezone));
+        this.registeredDate = getDefaultDateFormat().format(date);
     }
 
     public UserStatusType getStatus() {
@@ -129,7 +133,7 @@ public class UserDTO extends BaseDTO {
         if (!Objects.equals(this.rating, other.rating)) {
             return false;
         }
-        if (!Objects.equals(this.registeredAt, other.registeredAt)) {
+        if (!Objects.equals(this.registeredDate, other.registeredDate)) {
             return false;
         }
         return this.status == other.status;
@@ -142,13 +146,13 @@ public class UserDTO extends BaseDTO {
         hash = 29 * hash + Objects.hashCode(this.login);
         hash = 29 * hash + Objects.hashCode(this.age);
         hash = 29 * hash + Objects.hashCode(this.rating);
-        hash = 29 * hash + Objects.hashCode(this.registeredAt);
+        hash = 29 * hash + Objects.hashCode(this.registeredDate);
         hash = 29 * hash + Objects.hashCode(this.status);
         return hash;
     }
 
     @Override
     public String toString() {
-        return String.format("UserDTO {id: %d, login: %s, age: %d, rating: %f, status: %s, registeredAt: %s, inherited: %s}", this.id, this.login, this.age, this.rating, this.status, this.registeredAt, super.toString());
+        return String.format("UserDTO {id: %d, login: %s, age: %d, rating: %f, status: %s, registeredAt: %s, inherited: %s}", this.id, this.login, this.age, this.rating, this.status, this.registeredDate, super.toString());
     }
 }

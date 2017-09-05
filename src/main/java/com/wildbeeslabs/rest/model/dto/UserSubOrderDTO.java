@@ -2,7 +2,6 @@ package com.wildbeeslabs.rest.model.dto;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import static com.wildbeeslabs.rest.model.dto.BaseDTO.DEFAULT_DATE_FORMATTER;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -52,23 +51,23 @@ public class UserSubOrderDTO extends BaseDTO {
     }
 
     public Date getSubscribedDateConverted(final String timezone) throws ParseException {
-        DEFAULT_DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone(timezone));
-        return DEFAULT_DATE_FORMATTER.parse(this.subscribedDate);
+        getDefaultDateFormat().setTimeZone(TimeZone.getTimeZone(timezone));
+        return getDefaultDateFormat().parse(this.subscribedDate);
     }
 
-    public void setDubscribedDate(final Date date, final String timezone) {
-        DEFAULT_DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone(timezone));
-        this.subscribedDate = DEFAULT_DATE_FORMATTER.format(date);
+    public void setSubscribedDate(final Date date, final String timezone) {
+        getDefaultDateFormat().setTimeZone(TimeZone.getTimeZone(timezone));
+        this.subscribedDate = getDefaultDateFormat().format(date);
     }
 
     public Date getExpiredDateConverted(final String timezone) throws ParseException {
-        DEFAULT_DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone(timezone));
-        return DEFAULT_DATE_FORMATTER.parse(this.expiredDate);
+        getDefaultDateFormat().setTimeZone(TimeZone.getTimeZone(timezone));
+        return getDefaultDateFormat().parse(this.expiredDate);
     }
 
     public void setExpiredDate(final Date date, final String timezone) {
-        DEFAULT_DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone(timezone));
-        this.expiredDate = DEFAULT_DATE_FORMATTER.format(date);
+        getDefaultDateFormat().setTimeZone(TimeZone.getTimeZone(timezone));
+        this.expiredDate = getDefaultDateFormat().format(date);
     }
 
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")

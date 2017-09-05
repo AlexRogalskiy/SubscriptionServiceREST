@@ -4,6 +4,8 @@ import static com.jayway.restassured.RestAssured.given;
 
 import com.jayway.restassured.http.ContentType;
 import com.wildbeeslabs.rest.model.Subscription;
+import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
+import java.util.Calendar;
 
 import java.util.Date;
 import java.util.Objects;
@@ -56,8 +58,8 @@ public class SubscriptionControllerTest extends BaseControllerTest {
 
     @Test
     public void testAddSubscription() {
-        final Subscription subscription = new Subscription();
-        subscription.setExpireAt(new Date());
+        final SubscriptionDTO subscription = new SubscriptionDTO();
+        subscription.setExpiredDate(new Date(), Calendar.getInstance().getTimeZone().getID());
         subscription.setCreatedBy("admin");
         subscription.setName("Guest Group");
         subscription.setType(Subscription.SubscriptionStatusType.STANDARD);
@@ -73,13 +75,13 @@ public class SubscriptionControllerTest extends BaseControllerTest {
 
     @Test
     public void testUpdateSubscription() {
-        final Subscription subscription1 = given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/subscription/1").as(Subscription.class);
+        final SubscriptionDTO subscription1 = given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/subscription/1").as(SubscriptionDTO.class);
 
         assertTrue(Objects.nonNull(subscription1));
         assertTrue(Objects.equals("subscription1", subscription1.getName()));
         assertTrue(Objects.equals(Subscription.SubscriptionStatusType.PREMIUM, subscription1.getType()));
 
-        subscription1.setExpireAt(parseDate("2019-04-18 00:00:00"));
+        subscription1.setExpiredDate(parseDate("2019-04-18 00:00:00"), Calendar.getInstance().getTimeZone().getID());
 
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123")
                 .body(subscription1)

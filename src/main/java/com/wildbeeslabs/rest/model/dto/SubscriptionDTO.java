@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.wildbeeslabs.rest.model.Subscription.SubscriptionStatusType;
-import static com.wildbeeslabs.rest.model.dto.BaseDTO.DEFAULT_DATE_FORMATTER;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -27,7 +26,7 @@ import javax.persistence.InheritanceType;
  * @since 2017-08-08
  */
 @Inheritance(strategy = InheritanceType.JOINED)
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "userOrders"})
 @JacksonXmlRootElement(localName = "subscription")
 public class SubscriptionDTO extends BaseDTO {
 
@@ -60,14 +59,14 @@ public class SubscriptionDTO extends BaseDTO {
         this.name = name;
     }
 
-    public Date getModifiedDateConverted(final String timezone) throws ParseException {
-        DEFAULT_DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone(timezone));
-        return DEFAULT_DATE_FORMATTER.parse(this.expiredDate);
+    public Date getExpiredDateConverted(final String timezone) throws ParseException {
+        getDefaultDateFormat().setTimeZone(TimeZone.getTimeZone(timezone));
+        return getDefaultDateFormat().parse(this.expiredDate);
     }
 
-    public void setModifiedDate(final Date date, final String timezone) {
-        DEFAULT_DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone(timezone));
-        this.expiredDate = DEFAULT_DATE_FORMATTER.format(date);
+    public void setExpiredDate(final Date date, final String timezone) {
+        getDefaultDateFormat().setTimeZone(TimeZone.getTimeZone(timezone));
+        this.expiredDate = getDefaultDateFormat().format(date);
     }
 
     public SubscriptionStatusType getType() {

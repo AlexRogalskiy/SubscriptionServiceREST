@@ -4,6 +4,8 @@ import static com.jayway.restassured.RestAssured.given;
 
 import com.jayway.restassured.http.ContentType;
 import com.wildbeeslabs.rest.model.User;
+import com.wildbeeslabs.rest.model.dto.UserDTO;
+import java.util.Calendar;
 
 import java.util.Objects;
 
@@ -57,14 +59,13 @@ public class UserControllerTest extends BaseControllerTest {
 
     @Test
     public void testAddUser() {
-        final User user = new User();
+        final UserDTO user = new UserDTO();
         user.setAge(25);
         user.setCreatedBy("user18@gmail.com");
-        user.setCreatedAt(parseDate("2017-04-18 00:00:00"));
+        user.setCreatedDate(parseDate("2017-04-18 00:00:00"), Calendar.getInstance().getTimeZone().getID());
         user.setLogin("user18@gmail.com");
-        user.setModifiedAt(null);
         user.setRating(1.00);
-        user.setRegisteredAt(parseDate("2017-04-18 00:00:00"));
+        user.setRegisteredDate(parseDate("2017-04-18 00:00:00"), Calendar.getInstance().getTimeZone().getID());
         user.setStatus(User.UserStatusType.UNVERIFIED);
 
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123")
@@ -78,7 +79,7 @@ public class UserControllerTest extends BaseControllerTest {
 
     @Test
     public void testUpdateUser() {
-        final User user1 = given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/user/1").as(User.class);
+        final UserDTO user1 = given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/user/1").as(UserDTO.class);
 
         assertTrue(Objects.nonNull(user1));
         assertTrue(Objects.equals("user1@gmail.com", user1.getLogin()));

@@ -1,5 +1,7 @@
 package com.wildbeeslabs.rest.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 import java.text.ParseException;
@@ -9,6 +11,7 @@ import java.util.Objects;
 import java.util.TimeZone;
 
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 /**
  *
@@ -19,12 +22,15 @@ import javax.persistence.MappedSuperclass;
  * @since 2017-08-08
  */
 @MappedSuperclass
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "DEFAULT_DATE_FORMATTER"})
 public abstract class BaseDTO {
 
     /**
      * Default date formatter
      */
-    protected static final SimpleDateFormat DEFAULT_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    @Transient
+    @JsonIgnore
+    private static final SimpleDateFormat DEFAULT_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @JacksonXmlProperty(localName = "createdAt")
     private String createdDate;
@@ -69,6 +75,10 @@ public abstract class BaseDTO {
     public void setModifiedDate(final Date date, final String timezone) {
         DEFAULT_DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone(timezone));
         this.modifiedDate = DEFAULT_DATE_FORMATTER.format(date);
+    }
+
+    protected SimpleDateFormat getDefaultDateFormat() {
+        return BaseDTO.DEFAULT_DATE_FORMATTER;
     }
 
     @Override

@@ -4,9 +4,11 @@ import static com.jayway.restassured.RestAssured.given;
 import com.jayway.restassured.http.ContentType;
 
 import com.wildbeeslabs.rest.model.Subscription;
-import com.wildbeeslabs.rest.model.User;
-import com.wildbeeslabs.rest.model.UserSubOrder;
+import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
+import com.wildbeeslabs.rest.model.dto.UserDTO;
+import com.wildbeeslabs.rest.model.dto.UserSubOrderDTO;
 
+import java.util.Calendar;
 import java.util.Objects;
 
 import static junit.framework.TestCase.assertTrue;
@@ -27,19 +29,19 @@ public class UserSubscriptionControllerTest extends BaseControllerTest {
 
     @Test
     public void testAddUserSubscription() {
-        final User user1 = given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/user/1").as(User.class);
-        final Subscription subscription3 = given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/subscription/3").as(Subscription.class);
+        final UserDTO user1 = given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/user/1").as(UserDTO.class);
+        final SubscriptionDTO subscription3 = given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/subscription/3").as(SubscriptionDTO.class);
 
         assertTrue(Objects.equals("user1@gmail.com", user1.getLogin()));
         //assertTrue(Objects.equals(User.UserStatusType.UNVERIFIED, user1.getStatus()));
         assertTrue(Objects.equals("subscription3", subscription3.getName()));
         assertTrue(Objects.equals(Subscription.SubscriptionStatusType.STANDARD, subscription3.getType()));
 
-        final UserSubOrder userSubOrder = new UserSubOrder();
+        final UserSubOrderDTO userSubOrder = new UserSubOrderDTO();
         userSubOrder.setUser(user1);
         userSubOrder.setCreatedBy(user1.getLogin());
         userSubOrder.setSubscription(subscription3);
-        userSubOrder.setSubscribedAt(parseDate("2017-05-28 00:00:00"));
+        userSubOrder.setSubscribedDate(parseDate("2017-05-28 00:00:00"), Calendar.getInstance().getTimeZone().getID());
 
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123")
                 .body(userSubOrder)
