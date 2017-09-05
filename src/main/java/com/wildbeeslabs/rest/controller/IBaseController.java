@@ -10,16 +10,17 @@ import org.springframework.http.ResponseEntity;
  * @version 1.0.0
  * @since 2017-08-08
  * @param <T>
+ * @param <E>
  */
-public interface IBaseController<T> {
+public interface IBaseController<T, E> {
 
     ResponseEntity<?> getAll();
 
     ResponseEntity<?> getById(final Long id);
 
-    ResponseEntity<?> create(final T item);
+    ResponseEntity<?> create(final E item);
 
-    ResponseEntity<?> update(final Long id, final T item);
+    ResponseEntity<?> update(final Long id, final E item);
 
     ResponseEntity<?> delete(final Long id);
 

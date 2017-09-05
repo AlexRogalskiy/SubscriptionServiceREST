@@ -6,12 +6,16 @@ import com.wildbeeslabs.rest.exception.ResourceNotFoundException;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.UserSubOrder;
+import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
+import com.wildbeeslabs.rest.model.dto.UserDTO;
 import com.wildbeeslabs.rest.service.interfaces.SubscriptionService;
 import com.wildbeeslabs.rest.service.interfaces.UserService;
 import com.wildbeeslabs.rest.service.interfaces.UserSubOrderService;
+import com.wildbeeslabs.rest.model.dto.UserSubOrderDTO;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,11 +38,12 @@ import org.springframework.web.util.UriComponentsBuilder;
  * @version 1.0.0
  * @since 2017-08-08
  * @param <T>
+ * @param <E>
  */
 @RestController
 @Validated
 @RequestMapping("/api")
-public class UserSubscriptionController<T extends UserSubOrder> extends ABaseController<T> {
+public class UserSubscriptionController<T extends UserSubOrder, E extends UserSubOrderDTO> extends ABaseController<T, E> {
 
     @Autowired
     private SubscriptionService<Subscription> subscriptionService;
@@ -70,7 +75,7 @@ public class UserSubscriptionController<T extends UserSubOrder> extends ABaseCon
         if (subscriptions.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(subscriptions, HttpStatus.OK);
+        return new ResponseEntity<>(subscriptions.stream().map(item -> convertToDTO(item, SubscriptionDTO.class)).collect(Collectors.toList()), HttpStatus.OK);
     }
 
     /**
@@ -96,44 +101,45 @@ public class UserSubscriptionController<T extends UserSubOrder> extends ABaseCon
         if (Objects.isNull(currentOrder)) {
             throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.order.item.user.subscription.id"), userItem.getId(), subscriptionItem.getId()));
         }
-        return new ResponseEntity<>(currentOrder, HttpStatus.OK);
+        return new ResponseEntity<>(convertToDTO(currentOrder, this.dtoClass), HttpStatus.OK);
     }
 
     /**
      * Create new subscription order entity by user ID
      *
      * @param userId - user identifier
-     * @param order - subscription order entity
+     * @param orderDto - subscription order data transfer object
      * @param ucBuilder - URI component builder
      * @return response status code
      */
     @RequestMapping(value = "/user/{userId}/subscription", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public ResponseEntity<?> createSubscriptionByUserId(@PathVariable("userId") Long userId, @RequestBody T order, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<?> createSubscriptionByUserId(@PathVariable("userId") Long userId, @RequestBody E orderDto, UriComponentsBuilder ucBuilder) {
         LOGGER.info("Creating subscription order by user id {}", userId);
-        if (Objects.isNull(order)) {
+        T orderEntity = convertToEntity(orderDto, this.entityClass);
+        if (Objects.isNull(orderEntity)) {
             throw new BadRequestException(String.format(getLocaleMessage("error.no.order.item")));
         }
-        if (Objects.isNull(order.getSubscription())) {
+        if (Objects.isNull(orderEntity.getSubscription())) {
             throw new BadRequestException(String.format(getLocaleMessage("error.no.subscription.item")));
         }
         User userItem = userService.findById(userId);
         if (Objects.isNull(userItem)) {
             throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.user.item.id"), userId));
         }
-        Subscription subscriptionItem = subscriptionService.findById(order.getSubscription().getId());
+        Subscription subscriptionItem = subscriptionService.findById(orderEntity.getSubscription().getId());
         if (Objects.isNull(subscriptionItem)) {
-            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.subscription.item.id"), order.getSubscription().getId()));
+            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.subscription.item.id"), orderEntity.getSubscription().getId()));
         }
-        order.setSubscription(subscriptionItem);
-        order.setUser(userItem);
+        orderEntity.setSubscription(subscriptionItem);
+        orderEntity.setUser(userItem);
 
-        if (getDefaultService().isExist(order)) {
-            throw new ResourceAlreadyExistException(String.format(getLocaleMessage("error.already.exist.order.item"), order.getPk()));
+        if (getDefaultService().isExist(orderEntity)) {
+            throw new ResourceAlreadyExistException(String.format(getLocaleMessage("error.already.exist.order.item"), orderEntity.getPk()));
         }
         //userItem.getSubOrders().add(order);
         //userService.save(userItem);
-        getDefaultService().save(order);
+        getDefaultService().save(orderEntity);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -142,14 +148,15 @@ public class UserSubscriptionController<T extends UserSubOrder> extends ABaseCon
      *
      * @param userId - user identifier
      * @param subscriptionId - subscription identifier
-     * @param order - subscription order entity
+     * @param orderDto - subscription order data transfer object
      * @return updated subscription order entity
      */
     @RequestMapping(value = "/user/{userId}/subscription/{subscriptionId}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public ResponseEntity<?> updateSubscriptionsByUserIdAndSubscriptionId(@PathVariable("userId") Long userId, @PathVariable("subscriptionId") Long subscriptionId, @RequestBody T order) {
+    public ResponseEntity<?> updateSubscriptionsByUserIdAndSubscriptionId(@PathVariable("userId") Long userId, @PathVariable("subscriptionId") Long subscriptionId, @RequestBody E orderDto) {
         LOGGER.info("Updating subscription order by subscription id {} and user id {}", subscriptionId, userId);
-        if (Objects.isNull(order)) {
+        T orderEntity = convertToEntity(orderDto, this.entityClass);
+        if (Objects.isNull(orderEntity)) {
             throw new BadRequestException(String.format(getLocaleMessage("error.no.order.item")));
         }
         User userItem = userService.findById(userId);
@@ -166,8 +173,8 @@ public class UserSubscriptionController<T extends UserSubOrder> extends ABaseCon
         if (Objects.isNull(currentOrder)) {
             throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.order.item.user.subscription.id"), userItem.getId(), subscriptionItem.getId()));
         }
-        getDefaultService().merge(currentOrder, order);
-        return new ResponseEntity<>(currentOrder, HttpStatus.OK);
+        getDefaultService().merge(currentOrder, orderEntity);
+        return new ResponseEntity<>(convertToDTO(currentOrder, this.dtoClass), HttpStatus.OK);
     }
 
     /**
@@ -242,7 +249,7 @@ public class UserSubscriptionController<T extends UserSubOrder> extends ABaseCon
         if (users.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        return new ResponseEntity<>(users.stream().map(item -> convertToDTO(item, UserDTO.class)).collect(Collectors.toList()), HttpStatus.OK);
     }
 
     /**

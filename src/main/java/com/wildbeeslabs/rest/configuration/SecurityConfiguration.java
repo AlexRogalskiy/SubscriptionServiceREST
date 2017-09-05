@@ -1,5 +1,7 @@
 package com.wildbeeslabs.rest.configuration;
 
+//import com.wildbeeslabs.rest.handler.CustomAccessDeniedHandler;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +24,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @Order(SecurityProperties.BASIC_AUTH_ORDER)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+//    @Autowired
+//    private CustomAccessDeniedHandler accessDeniedHandler;
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
@@ -41,11 +45,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(final HttpSecurity http) throws Exception {
         http.csrf().disable().httpBasic().realmName("REST API")
                 .and().authorizeRequests()
-                .antMatchers("/api/*").hasAnyRole("USER", "ADMIN", "DBA")
-                .antMatchers("/*").permitAll()
+                .antMatchers("/api/**").hasAnyRole("USER", "ADMIN", "DBA")
+                .antMatchers("/**").permitAll()
                 //.and().formLogin().loginPage("/login")
                 //.usernameParameter("ssid").passwordParameter("password")
-                //.and().exceptionHandling().accessDeniedPage("/prohibited");
+                //.and().exceptionHandling().accessDeniedPage("/denied")
+                //.and().exceptionHandling().accessDeniedHandler(accessDeniedHandler)
                 .and().headers().cacheControl().disable()
                 .and().logout();
     }

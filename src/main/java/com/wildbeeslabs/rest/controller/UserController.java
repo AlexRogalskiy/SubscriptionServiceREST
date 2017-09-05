@@ -3,10 +3,12 @@ package com.wildbeeslabs.rest.controller;
 import com.wildbeeslabs.rest.service.interfaces.UserService;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.Subscription;
+import com.wildbeeslabs.rest.model.dto.UserDTO;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -34,11 +36,12 @@ import org.springframework.web.util.UriComponentsBuilder;
  * @version 1.0.0
  * @since 2017-08-08
  * @param <T>
+ * @param <E>
  */
 @RestController
 @Validated
 @RequestMapping("/api")
-public class UserController<T extends User> extends ABaseController<T> {
+public class UserController<T extends User, E extends UserDTO> extends ABaseController<T, E> {
 
     @Autowired
     private UserService<T> userService;
@@ -67,7 +70,7 @@ public class UserController<T extends User> extends ABaseController<T> {
         if (userList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(userList, HttpStatus.OK);
+        return new ResponseEntity<>(userList.stream().map(item -> convertToDTO(item, this.dtoClass)).collect(Collectors.toList()), HttpStatus.OK);
     }
 
     /**
@@ -85,27 +88,27 @@ public class UserController<T extends User> extends ABaseController<T> {
     /**
      * Create new user entity
      *
-     * @param user - user data
+     * @param userDto - user data transfer object
      * @param ucBuilder - URI component builder
      * @return response status code
      */
     @RequestMapping(value = "/user", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public ResponseEntity<?> createUser(@RequestBody T user, UriComponentsBuilder ucBuilder) {
-        return super.create(user);
+    public ResponseEntity<?> createUser(@RequestBody E userDto, UriComponentsBuilder ucBuilder) {
+        return super.create(userDto);
     }
 
     /**
      * Update user entity
      *
      * @param id - user identifier
-     * @param user - user entity
+     * @param userDto - user data transfer object
      * @return updated user entity
      */
     @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @RequestBody T user) {
-        return super.update(id, user);
+    public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @RequestBody E userDto) {
+        return super.update(id, userDto);
     }
 
     /**

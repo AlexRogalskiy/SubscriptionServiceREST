@@ -101,8 +101,8 @@ public class UserControllerTest extends BaseControllerTest {
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123")
                 .when().delete(REST_SERVICE_URI + "/api/user/4").then()
                 .statusCode(403);
-        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("dba", "dba123")
-                .when().delete(REST_SERVICE_URI + "/api/user/4").then()
-                .statusCode(200);
+//        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("dba", "dba123")
+//                .when().delete(REST_SERVICE_URI + "/api/user/4").then()
+//                .statusCode(200);
     }
 }

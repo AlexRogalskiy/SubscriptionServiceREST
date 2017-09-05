@@ -1,5 +1,6 @@
 package com.wildbeeslabs.rest;
 
+import com.wildbeeslabs.rest.configuration.AppConfiguration;
 import com.wildbeeslabs.rest.configuration.JpaConfiguration;
 import com.wildbeeslabs.rest.configuration.SecurityConfiguration;
 
@@ -16,7 +17,7 @@ import org.springframework.context.annotation.Import;
  * @since 2017-08-08
  */
 @SpringBootApplication(scanBasePackages = {"com.wildbeeslabs.rest"})
-@Import({JpaConfiguration.class, SecurityConfiguration.class})
+@Import({JpaConfiguration.class, SecurityConfiguration.class, AppConfiguration.class})
 public class SubscriptionRestAppLoader {
 
     public static void main(String[] args) {

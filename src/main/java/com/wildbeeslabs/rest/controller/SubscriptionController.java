@@ -2,6 +2,7 @@ package com.wildbeeslabs.rest.controller;
 
 import com.wildbeeslabs.rest.service.interfaces.SubscriptionService;
 import com.wildbeeslabs.rest.model.Subscription;
+import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,11 +26,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @version 1.0.0
  * @since 2017-08-08
  * @param <T>
+ * @param <E>
  */
 @RestController
 @Validated
 @RequestMapping("/api")
-public class SubscriptionController<T extends Subscription> extends ABaseController<T> {
+public class SubscriptionController<T extends Subscription, E extends SubscriptionDTO> extends ABaseController<T, E> {
 
     @Autowired
     private SubscriptionService<T> subscriptionService;
@@ -60,27 +62,27 @@ public class SubscriptionController<T extends Subscription> extends ABaseControl
     /**
      * Create new subscription entity
      *
-     * @param subscription - subscription data
+     * @param subscriptionDto - subscription data transfer object
      * @param ucBuilder - URI component builder
      * @return response status code
      */
     @RequestMapping(value = "/subscription", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public ResponseEntity<?> createSubscription(@RequestBody T subscription, UriComponentsBuilder ucBuilder) {
-        return super.create(subscription);
+    public ResponseEntity<?> createSubscription(@RequestBody E subscriptionDto, UriComponentsBuilder ucBuilder) {
+        return super.create(subscriptionDto);
     }
 
     /**
      * Update subscription entity by ID
      *
      * @param id - subscription identifier
-     * @param subscription - subscription entity
+     * @param subscriptionDto - subscription data transfer object
      * @return updated subscription entity
      */
     @RequestMapping(value = "/subscription/{id}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public ResponseEntity<?> updateSubscription(@PathVariable("id") Long id, @RequestBody T subscription) {
-        return super.update(id, subscription);
+    public ResponseEntity<?> updateSubscription(@PathVariable("id") Long id, @RequestBody E subscriptionDto) {
+        return super.update(id, subscriptionDto);
     }
 
     /**

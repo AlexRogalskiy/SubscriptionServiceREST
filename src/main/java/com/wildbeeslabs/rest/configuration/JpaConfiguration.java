@@ -50,10 +50,6 @@ public class JpaConfiguration {
         return new PropertySourcesPlaceholderConfigurer();
     }
 
-//    @Bean
-//    public MethodValidationPostProcessor methodValidationPostProcessor() {
-//        return new MethodValidationPostProcessor();
-//    }
     @Bean
     @Primary
     @ConfigurationProperties(prefix = "datasource.subscriptionapp")

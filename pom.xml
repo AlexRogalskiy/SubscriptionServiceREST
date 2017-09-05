@@ -26,7 +26,7 @@
         <springframework.version>4.3.10.RELEASE</springframework.version>
         <springsecurity.version>4.2.3.RELEASE</springsecurity.version>
         <apache.commons.version>3.5</apache.commons.version>
-        
+        <org.modelmapper.verswion>1.1.0</org.modelmapper.verswion>
         <docker.image.prefix>rest-api</docker.image.prefix>
     </properties>
     
@@ -183,7 +183,12 @@
             <groupId>org.springframework.boot</groupId> 
             <artifactId>spring-boot-starter-security</artifactId> 
         </dependency>
-        
+        <!-- DTO -->
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>${org.modelmapper.verswion}</version>
+        </dependency>
         
         <dependency>
             <groupId>com.jayway.restassured</groupId>
