@@ -1,5 +1,6 @@
 package com.wildbeeslabs.rest.controller;
 
+import java.io.Serializable;
 import org.springframework.http.ResponseEntity;
 
 /**
@@ -12,7 +13,7 @@ import org.springframework.http.ResponseEntity;
  * @param <T>
  * @param <E>
  */
-public interface IBaseController<T, E> {
+public interface IBaseController<T extends Serializable, E extends Serializable> {
 
     ResponseEntity<?> getAll();
 

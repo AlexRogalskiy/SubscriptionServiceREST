@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.MappedSuperclass;
@@ -18,7 +19,7 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public abstract class BaseDTO {
+public abstract class BaseDTO implements Serializable {
 
     @JacksonXmlProperty(localName = "createdAt")
     @JsonProperty("createdAt")
