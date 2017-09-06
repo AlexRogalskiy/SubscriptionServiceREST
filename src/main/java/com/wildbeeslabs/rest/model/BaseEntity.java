@@ -1,5 +1,6 @@
 package com.wildbeeslabs.rest.model;
 
+import com.wildbeeslabs.rest.utils.DateUtils;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -52,20 +53,35 @@ public abstract class BaseEntity implements Serializable {
         this.modifiedAt = new Date();
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+//    public Date getCreatedAt() {
+//        return createdAt;
+//    }
+//
+//    public void setCreatedAt(final Date createdAt) {
+//        this.createdAt = createdAt;
+//    }
+//
+//    public Date getModifiedAt() {
+//        return modifiedAt;
+//    }
+//
+//    public void setModifiedAt(final Date modifiedAt) {
+//        this.modifiedAt = modifiedAt;
+//    }
+    public String getCreatedAt() {
+        return (Objects.nonNull(this.createdAt)) ? DateUtils.dateToStr(this.createdAt) : null;
     }
 
-    public void setCreatedAt(final Date createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedAt(final String str) {
+        this.createdAt = (Objects.nonNull(str)) ? DateUtils.strToDate(str) : null;
     }
 
-    public Date getModifiedAt() {
-        return modifiedAt;
+    public String getModifiedAt() {
+        return (Objects.nonNull(this.modifiedAt)) ? DateUtils.dateToStr(this.modifiedAt) : null;
     }
 
-    public void setModifiedAt(final Date modifiedAt) {
-        this.modifiedAt = modifiedAt;
+    public void setModifiedAt(final String str) {
+        this.modifiedAt = (Objects.nonNull(str)) ? DateUtils.strToDate(str) : null;
     }
 
     public String getCreatedBy() {

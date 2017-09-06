@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.wildbeeslabs.rest.utils.DateUtils;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -123,12 +124,19 @@ public class User extends BaseEntity implements Serializable {
         this.rating = rating;
     }
 
-    public Date getRegisteredAt() {
-        return registeredAt;
+//    public Date getRegisteredAt() {
+//        return registeredAt;
+//    }
+//
+//    public void setRegisteredAt(final Date registeredAt) {
+//        this.registeredAt = registeredAt;
+//    }
+    public String getRegisteredAt() {
+        return (Objects.nonNull(this.registeredAt)) ? DateUtils.dateToStr(this.registeredAt) : null;
     }
 
-    public void setRegisteredAt(final Date registeredAt) {
-        this.registeredAt = registeredAt;
+    public void setRegisteredAt(final String str) {
+        this.registeredAt = (Objects.nonNull(str)) ? DateUtils.strToDate(str) : null;
     }
 
     public UserStatusType getStatus() {

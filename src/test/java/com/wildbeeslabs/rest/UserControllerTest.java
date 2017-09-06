@@ -5,7 +5,6 @@ import static com.jayway.restassured.RestAssured.given;
 import com.jayway.restassured.http.ContentType;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.dto.UserDTO;
-import com.wildbeeslabs.rest.utils.DateUtils;
 
 import java.util.Objects;
 
@@ -49,10 +48,10 @@ public class UserControllerTest extends BaseControllerTest {
                 .body("createdBy", equalTo("user2@gmail.com"))
                 .body("age", equalTo(26))
                 .body("id", equalTo(2))
-                .body("createdAt", equalTo(1493499600000L))
+                .body("createdAt", equalTo("2017-04-30 00:00:00"))
                 .body("modifiedAt", nullValue())
                 .body("rating", equalTo(1.0f))
-                .body("registeredAt", equalTo(1493499600000L))
+                .body("registeredAt", equalTo("2017-04-30 00:00:00"))
                 .body("status", equalTo(User.UserStatusType.ACTIVE.toString()))
                 .statusCode(200);
     }
@@ -62,10 +61,10 @@ public class UserControllerTest extends BaseControllerTest {
         final UserDTO user = new UserDTO();
         user.setAge(25);
         user.setCreatedBy("user18@gmail.com");
-        user.setCreatedDate(DateUtils.strToDate("2017-04-18 00:00:00"));
+        user.setCreatedAt("2017-04-18 00:00:00");
         user.setLogin("user18@gmail.com");
         user.setRating(1.00);
-        user.setRegisteredDate(DateUtils.strToDate("2017-04-18 00:00:00"));
+        user.setRegisteredAt("2017-04-18 00:00:00");
         user.setStatus(User.UserStatusType.UNVERIFIED);
 
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123")

@@ -2,6 +2,7 @@ package com.wildbeeslabs.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.wildbeeslabs.rest.utils.DateUtils;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -79,20 +80,35 @@ public class UserSubOrder extends BaseEntity implements Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date expiredAt;
 
-    public Date getSubscribedAt() {
-        return subscribedAt;
+//    public Date getSubscribedAt() {
+//        return subscribedAt;
+//    }
+//
+//    public void setSubscribedAt(final Date subscribedAt) {
+//        this.subscribedAt = subscribedAt;
+//    }
+//
+//    public Date getExpiredAt() {
+//        return expiredAt;
+//    }
+//
+//    public void setExpiredAt(final Date expiredAt) {
+//        this.expiredAt = expiredAt;
+//    }
+    public String getSubscribedAt() {
+        return (Objects.nonNull(this.subscribedAt)) ? DateUtils.dateToStr(this.subscribedAt) : null;
     }
 
-    public void setSubscribedAt(final Date subscribedAt) {
-        this.subscribedAt = subscribedAt;
+    public void setSubscribedAt(final String str) {
+        this.subscribedAt = (Objects.nonNull(str)) ? DateUtils.strToDate(str) : null;
     }
 
-    public Date getExpiredAt() {
-        return expiredAt;
+    public String getExpiredAt() {
+        return (Objects.nonNull(this.expiredAt)) ? DateUtils.dateToStr(this.expiredAt) : null;
     }
 
-    public void setExpiredAt(final Date expiredAt) {
-        this.expiredAt = expiredAt;
+    public void setExpiredAt(final String str) {
+        this.expiredAt = (Objects.nonNull(str)) ? DateUtils.strToDate(str) : null;
     }
 
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")

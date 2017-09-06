@@ -2,8 +2,10 @@ package com.wildbeeslabs.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.wildbeeslabs.rest.utils.DateUtils;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -61,6 +63,7 @@ public class Subscription extends BaseEntity implements Serializable {
     @Column(name = "expired_at", nullable = true)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     @JacksonXmlProperty(localName = "expireAt")
+    @JsonProperty("expireAt")
     private Date expireAt;
 
     @Enumerated(EnumType.STRING)
@@ -95,12 +98,19 @@ public class Subscription extends BaseEntity implements Serializable {
         this.name = name;
     }
 
-    public Date getExpireAt() {
-        return expireAt;
+//    public Date getExpireAt() {
+//        return expireAt;
+//    }
+//
+//    public void setExpireAt(final Date expireAt) {
+//        this.expireAt = expireAt;
+//    }
+    public String getExpireAt() {
+        return (Objects.nonNull(this.expireAt)) ? DateUtils.dateToStr(this.expireAt) : null;
     }
 
-    public void setExpireAt(final Date expireAt) {
-        this.expireAt = expireAt;
+    public void setExpireAt(final String str) {
+        this.expireAt = (Objects.nonNull(str)) ? DateUtils.strToDate(str) : null;
     }
 
     public SubscriptionStatusType getType() {

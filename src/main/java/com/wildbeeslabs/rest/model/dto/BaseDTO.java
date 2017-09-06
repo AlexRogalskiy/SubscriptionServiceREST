@@ -3,9 +3,7 @@ package com.wildbeeslabs.rest.model.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.wildbeeslabs.rest.utils.DateUtils;
 
-import java.util.Date;
 import java.util.Objects;
 
 import javax.persistence.MappedSuperclass;
@@ -19,15 +17,15 @@ import javax.persistence.MappedSuperclass;
  * @since 2017-08-08
  */
 @MappedSuperclass
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "DEFAULT_DATE_FORMATTER"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public abstract class BaseDTO {
 
     @JacksonXmlProperty(localName = "createdAt")
     @JsonProperty("createdAt")
-    private String createdDate;
+    private String createdAt;
     @JacksonXmlProperty(localName = "modifiedAt")
     @JsonProperty("modifiedAt")
-    private String modifiedDate;
+    private String modifiedAt;
     @JacksonXmlProperty(localName = "createdBy")
     private String createdBy;
     @JacksonXmlProperty(localName = "modifiedBy")
@@ -49,22 +47,37 @@ public abstract class BaseDTO {
         this.modifiedBy = modifiedBy;
     }
 
-    public Date getCreatedDate() {
-        return (Objects.nonNull(this.createdDate)) ? DateUtils.strToDate(this.createdDate) : null;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreatedDate(final Date date) {
-        this.createdDate = (Objects.nonNull(date)) ? DateUtils.dateToStr(date) : null;
+    public void setCreatedAt(final String createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Date getModifiedDate() {
-        return (Objects.nonNull(this.modifiedDate)) ? DateUtils.strToDate(this.modifiedDate) : null;
+    public String getModifiedAt() {
+        return modifiedAt;
     }
 
-    public void setModifiedDate(final Date date) {
-        this.modifiedDate = (Objects.nonNull(date)) ? DateUtils.dateToStr(date) : null;
+    public void setModifiedAt(final String modifiedAt) {
+        this.modifiedAt = modifiedAt;
     }
 
+//    public Date getCreatedDate() {
+//        return (Objects.nonNull(this.createdDate)) ? DateUtils.strToDate(this.createdDate) : null;
+//    }
+//
+//    public void setCreatedDate(final Date date) {
+//        this.createdDate = (Objects.nonNull(date)) ? DateUtils.dateToStr(date) : null;
+//    }
+//
+//    public Date getModifiedDate() {
+//        return (Objects.nonNull(this.modifiedDate)) ? DateUtils.strToDate(this.modifiedDate) : null;
+//    }
+//
+//    public void setModifiedDate(final Date date) {
+//        this.modifiedDate = (Objects.nonNull(date)) ? DateUtils.dateToStr(date) : null;
+//    }
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -80,17 +93,17 @@ public abstract class BaseDTO {
         if (!Objects.equals(this.modifiedBy, other.modifiedBy)) {
             return false;
         }
-        if (!Objects.equals(this.createdDate, other.createdDate)) {
+        if (!Objects.equals(this.createdAt, other.createdAt)) {
             return false;
         }
-        return Objects.equals(this.modifiedDate, other.modifiedDate);
+        return Objects.equals(this.modifiedAt, other.modifiedAt);
     }
 
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 53 * hash + Objects.hashCode(this.createdDate);
-        hash = 53 * hash + Objects.hashCode(this.modifiedDate);
+        hash = 53 * hash + Objects.hashCode(this.createdAt);
+        hash = 53 * hash + Objects.hashCode(this.modifiedAt);
         hash = 53 * hash + Objects.hashCode(this.createdBy);
         hash = 53 * hash + Objects.hashCode(this.modifiedBy);
         return hash;
@@ -98,6 +111,6 @@ public abstract class BaseDTO {
 
     @Override
     public String toString() {
-        return String.format("BaseDTO {createdAt: %s, createdAt: %s, createdBy: %s, modifiedBy: %s}", this.createdDate, this.modifiedDate, this.createdBy, this.modifiedBy);
+        return String.format("BaseDTO {createdAt: %s, createdAt: %s, createdBy: %s, modifiedBy: %s}", this.createdAt, this.modifiedAt, this.createdBy, this.modifiedBy);
     }
 }

@@ -116,7 +116,7 @@ public class UserServiceImpl<T extends User> implements UserService<T> {
     @Override
     public void merge(final T itemTo, final T itemFrom) {
         itemTo.setAge(itemFrom.getAge());
-        itemTo.setModifiedAt(new Date());
+//        itemTo.setModifiedAt(new Date());
         itemTo.setModifiedBy(itemFrom.getModifiedBy());
         itemTo.setRating(itemFrom.getRating());
         itemTo.setStatus(itemFrom.getStatus());

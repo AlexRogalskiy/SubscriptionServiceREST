@@ -90,7 +90,7 @@ public class SubscriptionServiceImpl<T extends Subscription> implements Subscrip
     @Override
     public void merge(final T itemTo, final T itemFrom) {
         itemTo.setExpireAt(itemFrom.getExpireAt());
-        itemTo.setModifiedAt(new Date());
+//        itemTo.setModifiedAt(new Date());
         itemTo.setModifiedBy(itemFrom.getModifiedBy());
         itemTo.setName(itemFrom.getName());
         itemTo.setType(itemFrom.getType());

@@ -82,7 +82,7 @@ public class UserSubOrderServiceImpl<T extends UserSubOrder> implements UserSubO
     public void merge(final T itemTo, final T itemFrom) {
         itemTo.setExpiredAt(itemFrom.getExpiredAt());
         itemTo.setSubscribedAt(itemFrom.getSubscribedAt());
-        itemTo.setModifiedAt(new Date());
+//        itemTo.setModifiedAt(new Date());
         itemTo.setModifiedBy(itemFrom.getModifiedBy());
         update(itemTo);
     }

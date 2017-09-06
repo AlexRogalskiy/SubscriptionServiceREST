@@ -3,9 +3,7 @@ package com.wildbeeslabs.rest.model.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import com.wildbeeslabs.rest.utils.DateUtils;
 
-import java.util.Date;
 import java.util.Objects;
 
 import javax.persistence.Inheritance;
@@ -31,10 +29,10 @@ public class UserSubOrderDTO extends BaseDTO {
     private SubscriptionDTO subscription;
     @JacksonXmlProperty(localName = "subscribedAt")
     @JsonProperty("subscribedAt")
-    private String subscribedDate;
+    private String subscribedAt;
     @JacksonXmlProperty(localName = "expiredAt")
     @JsonProperty("expiredAt")
-    private String expiredDate;
+    private String expiredAt;
 
     public UserDTO getUser() {
         return user;
@@ -52,22 +50,37 @@ public class UserSubOrderDTO extends BaseDTO {
         this.subscription = subscription;
     }
 
-    public Date getSubscribedDate() {
-        return (Objects.nonNull(this.subscribedDate)) ? DateUtils.strToDate(this.subscribedDate) : null;
+    public String getSubscribedAt() {
+        return subscribedAt;
     }
 
-    public void setSubscribedDate(final Date date) {
-        this.subscribedDate = (Objects.nonNull(date)) ? DateUtils.dateToStr(date) : null;
+    public void setSubscribedAt(final String subscribedAt) {
+        this.subscribedAt = subscribedAt;
     }
 
-    public Date getExpiredDate() {
-        return (Objects.nonNull(this.expiredDate)) ? DateUtils.strToDate(this.expiredDate) : null;
+    public String getExpiredAt() {
+        return expiredAt;
     }
 
-    public void setExpiredDate(final Date date) {
-        this.expiredDate = (Objects.nonNull(date)) ? DateUtils.dateToStr(date) : null;
+    public void setExpiredAt(final String expiredAt) {
+        this.expiredAt = expiredAt;
     }
 
+//    public Date getSubscribedDate() {
+//        return (Objects.nonNull(this.subscribedDate)) ? DateUtils.strToDate(this.subscribedDate) : null;
+//    }
+//
+//    public void setSubscribedDate(final Date date) {
+//        this.subscribedDate = (Objects.nonNull(date)) ? DateUtils.dateToStr(date) : null;
+//    }
+//
+//    public Date getExpiredDate() {
+//        return (Objects.nonNull(this.expiredDate)) ? DateUtils.strToDate(this.expiredDate) : null;
+//    }
+//
+//    public void setExpiredDate(final Date date) {
+//        this.expiredDate = (Objects.nonNull(date)) ? DateUtils.dateToStr(date) : null;
+//    }
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(Object obj) {
@@ -75,22 +88,22 @@ public class UserSubOrderDTO extends BaseDTO {
             return false;
         }
         final UserSubOrderDTO other = (UserSubOrderDTO) obj;
-        if (!Objects.equals(this.subscribedDate, other.subscribedDate)) {
+        if (!Objects.equals(this.subscribedAt, other.subscribedAt)) {
             return false;
         }
-        return Objects.equals(this.expiredDate, other.expiredDate);
+        return Objects.equals(this.expiredAt, other.expiredAt);
     }
 
     @Override
     public int hashCode() {
         int hash = super.hashCode();
-        hash = 23 * hash + Objects.hashCode(this.subscribedDate);
-        hash = 23 * hash + Objects.hashCode(this.expiredDate);
+        hash = 23 * hash + Objects.hashCode(this.subscribedAt);
+        hash = 23 * hash + Objects.hashCode(this.expiredAt);
         return hash;
     }
 
     @Override
     public String toString() {
-        return String.format("UserSubOrderDTO {user: %s, subscription: %s, subscribedAt: %s, expiredAt: %s, inherited: %s}", this.user, this.subscription, this.subscribedDate, this.expiredDate, super.toString());
+        return String.format("UserSubOrderDTO {user: %s, subscription: %s, subscribedAt: %s, expiredAt: %s, inherited: %s}", this.user, this.subscription, this.subscribedAt, this.expiredAt, super.toString());
     }
 }

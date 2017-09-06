@@ -3,13 +3,10 @@ package com.wildbeeslabs.rest.model.dto;
 import com.wildbeeslabs.rest.model.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.wildbeeslabs.rest.model.Subscription.SubscriptionStatusType;
-import com.wildbeeslabs.rest.utils.DateUtils;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -35,8 +32,7 @@ public class SubscriptionDTO extends BaseDTO {
     @JacksonXmlProperty(localName = "name")
     private String name;
     @JacksonXmlProperty(localName = "expireAt")
-    @JsonProperty("expireAt")
-    private String expiredDate;
+    private String expireAt;
     @JacksonXmlProperty(localName = "type")
     private SubscriptionStatusType type;
     //@JsonBackReference(value = "subOrderToSubscription")
@@ -60,14 +56,21 @@ public class SubscriptionDTO extends BaseDTO {
         this.name = name;
     }
 
-    public Date getExpiredDate() {
-        return (Objects.nonNull(this.expiredDate)) ? DateUtils.strToDate(this.expiredDate) : null;
+    public String getExpireAt() {
+        return expireAt;
     }
 
-    public void setExpiredDate(final Date date) {
-        this.expiredDate = (Objects.nonNull(date)) ? DateUtils.dateToStr(date) : null;
+    public void setExpireAt(final String expireAt) {
+        this.expireAt = expireAt;
     }
 
+//    public Date getExpireAt() {
+//        return (Objects.nonNull(this.expireAt)) ? DateUtils.strToDate(this.expireAt) : null;
+//    }
+//
+//    public void setExpireAt(final Date date) {
+//        this.expireAt = (Objects.nonNull(date)) ? DateUtils.dateToStr(date) : null;
+//    }
     public SubscriptionStatusType getType() {
         return type;
     }
@@ -109,7 +112,7 @@ public class SubscriptionDTO extends BaseDTO {
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        return Objects.equals(this.expiredDate, other.expiredDate);
+        return Objects.equals(this.expireAt, other.expireAt);
     }
 
     @Override
@@ -117,13 +120,13 @@ public class SubscriptionDTO extends BaseDTO {
         int hash = 5;
         hash = 79 * hash + Objects.hashCode(this.id);
         hash = 79 * hash + Objects.hashCode(this.name);
-        hash = 79 * hash + Objects.hashCode(this.expiredDate);
+        hash = 79 * hash + Objects.hashCode(this.expireAt);
         hash = 79 * hash + Objects.hashCode(this.type);
         return hash;
     }
 
     @Override
     public String toString() {
-        return String.format("SubscriptionDTO {id: %d, name: %s, expireAt: %s, type: %s, inherited: %s}", this.id, this.name, this.expiredDate, this.type, super.toString());
+        return String.format("SubscriptionDTO {id: %d, name: %s, expireAt: %s, type: %s, inherited: %s}", this.id, this.name, this.expireAt, this.type, super.toString());
     }
 }

@@ -5,8 +5,6 @@ import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.UserSubOrder;
 import com.wildbeeslabs.rest.service.HibernateSessionService;
 
-import java.util.Date;
-
 //import org.hibernate.HibernateException;
 import org.hibernate.Session;
 //import org.hibernate.SessionFactory;
@@ -29,12 +27,12 @@ public class UsersSubscriptionsDBTest {
         session.beginTransaction();
 
         Subscription groupAdmin = new Subscription();
-        groupAdmin.setExpireAt(new Date());
+        groupAdmin.setExpireAt("2017-05-28 00:00:00");
         groupAdmin.setName("Administrator Group");
         groupAdmin.setType(Subscription.SubscriptionStatusType.PREMIUM);
 
         Subscription groupGuest = new Subscription();
-        groupGuest.setExpireAt(new Date());
+        groupGuest.setExpireAt("2017-05-28 00:00:00");
         groupGuest.setName("Guest Group");
         groupGuest.setType(Subscription.SubscriptionStatusType.STANDARD);
 
@@ -51,19 +49,19 @@ public class UsersSubscriptionsDBTest {
         user2.setStatus(User.UserStatusType.ACTIVE);
 
         UserSubOrder userSubOrder1 = new UserSubOrder();
-        userSubOrder1.setCreatedAt(new Date());
+        userSubOrder1.setCreatedAt("2017-05-28 00:00:00");
         userSubOrder1.setExpiredAt(null);
         userSubOrder1.setSubscription(groupAdmin);
         userSubOrder1.setUser(user1);
 
         UserSubOrder userSubOrder2 = new UserSubOrder();
-        userSubOrder2.setCreatedAt(new Date());
+        userSubOrder2.setCreatedAt("2017-05-28 00:00:00");
         userSubOrder2.setExpiredAt(null);
         userSubOrder2.setSubscription(groupGuest);
         userSubOrder2.setUser(user1);
 
         UserSubOrder userSubOrder3 = new UserSubOrder();
-        userSubOrder3.setCreatedAt(new Date());
+        userSubOrder3.setCreatedAt("2017-05-28 00:00:00");
         userSubOrder3.setExpiredAt(null);
         userSubOrder3.setSubscription(groupAdmin);
         userSubOrder3.setUser(user2);
