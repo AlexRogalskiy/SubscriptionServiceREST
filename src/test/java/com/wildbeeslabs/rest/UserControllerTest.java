@@ -48,6 +48,8 @@ public class UserControllerTest extends BaseControllerTest {
                 .body("name", equalTo("user2"))
                 .body("createdBy", equalTo("user2@gmail.com"))
                 .body("age", equalTo(26))
+                .body("phone", equalTo("+79211234567"))
+                .body("gender", equalTo(User.UserGenderType.MALE.toString()))
                 .body("id", equalTo(2))
                 .body("createdAt", equalTo("2017-04-30 00:00:00"))
                 .body("modifiedAt", nullValue())
@@ -66,7 +68,9 @@ public class UserControllerTest extends BaseControllerTest {
         user.setRegisteredAt("2016-04-18 00:00:00");
         user.setLogin("user18@gmail.com");
         user.setName("user1");
+        user.setGender(User.UserGenderType.MALE);
         user.setRating(1.00);
+        user.setPhone("+79211234567");
         user.setRegisteredAt("2017-04-18 00:00:00");
         user.setStatus(User.UserStatusType.UNVERIFIED);
 

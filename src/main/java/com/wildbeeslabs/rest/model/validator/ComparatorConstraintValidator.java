@@ -28,26 +28,34 @@ import java.util.Objects;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class ComparatorConstraintValidator implements ConstraintValidator<Comparator, Integer> {
+/**
+ *
+ * Comparator constraint validation implementation
+ *
+ * @author Alex
+ * @version 1.0.0
+ * @since 2017-08-08
+ */
+public final class ComparatorConstraintValidator implements ConstraintValidator<Comparator, Integer> {
 
     private Integer annotationComparator;
 
     @Override
-    public void initialize(Comparator comparator) {
+    public void initialize(final Comparator comparator) {
         this.annotationComparator = comparator.value();
     }
 
     @Override
-    public boolean isValid(Integer comparatorField, ConstraintValidatorContext cxt) {
+    public boolean isValid(final Integer comparatorField, final ConstraintValidatorContext cxt) {
         if (Objects.isNull(comparatorField)) {
             return true;
         }
-        int value = comparatorField.compareTo(annotationComparator);
-        if (value <= 0) {
-            return true;
+        boolean isValid = (comparatorField.compareTo(this.annotationComparator) <= 0);
+        if (!isValid) {
+            cxt.disableDefaultConstraintViolation();
+            cxt.buildConstraintViolationWithTemplate(String.format("ERROR: incorrect value={%d} (expected less or equal={%d})", comparatorField, this.annotationComparator)).addConstraintViolation();
         }
-        return false;
+        return isValid;
         //return Objects.equals(comparatorField, annotationComparator);
     }
-
 }

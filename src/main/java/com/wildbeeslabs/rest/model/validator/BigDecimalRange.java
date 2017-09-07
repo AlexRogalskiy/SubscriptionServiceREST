@@ -24,9 +24,11 @@
 package com.wildbeeslabs.rest.model.validator;
 
 import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Target;
 
 import javax.validation.Constraint;
@@ -34,22 +36,27 @@ import javax.validation.Payload;
 
 /**
  *
- * Phone constraint annotation
+ * BigDecimal range constraint annotation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
  */
+@Target({METHOD, FIELD, ANNOTATION_TYPE})
+@Retention(RUNTIME)
+@Constraint(validatedBy = BigDecimalRangeValidator.class)
 @Documented
-@Constraint(validatedBy = PhoneConstraintValidator.class)
-@Target({ElementType.METHOD, ElementType.FIELD})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Phone {
+public @interface BigDecimalRange {
 
-    public String message() default "{com.wildbeeslabs.rest.model.validator.Phone.message}";
+    public String message() default "{com.wildbeeslabs.rest.model.validator.BigDecimalRange.message}";
 
     public Class<?>[] groups() default {};
 
     public Class<? extends Payload>[] payload() default {};
 
+    long minPrecision() default Long.MIN_VALUE;
+
+    long maxPrecision() default Long.MAX_VALUE;
+
+    int scale() default 0;
 }

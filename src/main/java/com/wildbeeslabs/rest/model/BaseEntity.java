@@ -36,7 +36,7 @@ public abstract class BaseEntity implements Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date modifiedAt;
 
-    @NotBlank(message = "Please provide user owner of a new record")
+    @NotBlank(message = "Field <createdBy> cannot be blank")
     @Column(name = "created_by", nullable = false, updatable = false)
     private String createdBy;
 

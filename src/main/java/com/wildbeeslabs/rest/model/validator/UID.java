@@ -34,7 +34,7 @@ import javax.validation.Payload;
 
 /**
  *
- * UIDValidator annotation
+ * UID constraint annotation
  *
  * @author Alex
  * @version 1.0.0

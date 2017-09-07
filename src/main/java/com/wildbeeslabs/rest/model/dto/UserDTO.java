@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.wildbeeslabs.rest.model.User.UserGenderType;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -36,8 +37,12 @@ public class UserDTO extends BaseDTO {
     private String name;
     @JacksonXmlProperty(localName = "age")
     private Integer age;
+    @JacksonXmlProperty(localName = "phone")
+    private String phone;
     @JacksonXmlProperty(localName = "rating")
     private Double rating;
+    @JacksonXmlProperty(localName = "gender")
+    private UserGenderType gender;
     @JacksonXmlProperty(localName = "registeredAt")
     @JsonProperty("registeredAt")
     private String registeredAt;
@@ -80,12 +85,28 @@ public class UserDTO extends BaseDTO {
         this.age = age;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(final String phone) {
+        this.phone = phone;
+    }
+
     public Double getRating() {
         return rating;
     }
 
     public void setRating(final Double rating) {
         this.rating = rating;
+    }
+
+    public UserGenderType getGender() {
+        return gender;
+    }
+
+    public void setGender(final UserGenderType gender) {
+        this.gender = gender;
     }
 
     public String getRegisteredAt() {
@@ -147,7 +168,13 @@ public class UserDTO extends BaseDTO {
         if (!Objects.equals(this.age, other.age)) {
             return false;
         }
+        if (!Objects.equals(this.phone, other.phone)) {
+            return false;
+        }
         if (!Objects.equals(this.rating, other.rating)) {
+            return false;
+        }
+        if (this.gender != other.gender) {
             return false;
         }
         if (!Objects.equals(this.registeredAt, other.registeredAt)) {
@@ -163,7 +190,9 @@ public class UserDTO extends BaseDTO {
         hash = 29 * hash + Objects.hashCode(this.login);
         hash = 29 * hash + Objects.hashCode(this.name);
         hash = 29 * hash + Objects.hashCode(this.age);
+        hash = 29 * hash + Objects.hashCode(this.phone);
         hash = 29 * hash + Objects.hashCode(this.rating);
+        hash = 29 * hash + Objects.hashCode(this.gender);
         hash = 29 * hash + Objects.hashCode(this.registeredAt);
         hash = 29 * hash + Objects.hashCode(this.status);
         return hash;
@@ -171,6 +200,6 @@ public class UserDTO extends BaseDTO {
 
     @Override
     public String toString() {
-        return String.format("UserDTO {id: %d, login: %s, name: %s, age: %d, rating: %f, status: %s, registeredAt: %s, inherited: %s}", this.id, this.login, this.name, this.age, this.rating, this.status, this.registeredAt, super.toString());
+        return String.format("UserDTO {id: %d, login: %s, name: %s, age: %d, phone: %s, rating: %f, gender: %s, status: %s, registeredAt: %s, inherited: %s}", this.id, this.login, this.name, this.age, this.phone, this.rating, this.gender, this.status, this.registeredAt, super.toString());
     }
 }

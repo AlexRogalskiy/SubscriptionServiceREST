@@ -1,13 +1,16 @@
 package com.wildbeeslabs.rest.model;
 
 import com.wildbeeslabs.rest.utils.DateUtils;
+import com.wildbeeslabs.rest.model.validator.Phone;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.wildbeeslabs.rest.model.validator.BigDecimalRange;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
@@ -29,7 +32,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
@@ -59,27 +61,45 @@ public class User extends BaseEntity implements Serializable {
     @Column(name = "user_id", unique = true, nullable = false)
     private Long id;
 
-    @Email
-    @NotBlank(message = "Please provide user login in the following format: user@domain.com")
+    @Email(message = "Field <login> is only allowed in the following format=user@domain.com")
+    @NotBlank(message = "Field <login> cannot be blank")
     @Column(name = "login", nullable = false, unique = true, updatable = false)
     @JacksonXmlProperty(localName = "login")
     private String login;
 
-    @Size(min = 2, max = 50)
-    @NotBlank(message = "Please provide user name")
+    @Size(min = 2, max = 50, message = "Field <name> is only allowed in the following length range=[min={%d}, max={%d}]")
+    @NotBlank(message = "Field <name> cannot be blank")
     @Column(name = "name", nullable = false)
     @JacksonXmlProperty(localName = "name")
     private String name;
 
-    @Range(min = 1, max = 150, message = "Only positive numbers from range [min={%d}, max={%d}] are only allowed for the user age field")
+    @Range(min = 1, max = 150, message = "Field <age> is only allowed in the following range=[min={%d}, max={%d}]")
     @Column(name = "age", nullable = true)
     @JacksonXmlProperty(localName = "age")
     private Integer age;
 
-    @Min(value = 1, message = "Only positive numbers [start={%d}] are only allowed for the user rating field")
+    @Size(min = 5, max = 25, message = "Field <phone> is only allowed in the following length range=[min={%d}, max={%d}]")
+    @Phone(message = "Field <phone> is only allowed in the following format: +[0-9]")
+    @Column(name = "phone", nullable = true)
+    @JacksonXmlProperty(localName = "phone")
+    private String phone;
+
+    @Enumerated(EnumType.STRING)
+    @NotBlank(message = "Field <gender> cannot be blank")
+    @Column(name = "gender", nullable = false)
+    @JacksonXmlProperty(localName = "gender")
+    private UserGenderType gender;
+
+    public static enum UserGenderType {
+        MALE, FEMALE
+    }
+
+    @BigDecimalRange(minPrecision = 1, maxPrecision = 10, scale = 2, message = "Field <rating> is only allowed in the following precision range=[min={%d}, max={%d}], scale max bound={%d}")
+    //@Digits(integer = 10 /*precision*/, fraction = 2 /*scale*/)
+    //@Range(min = 1, max = 100, message = "Field <rating> is only allowed within the following range=[min={%d}, max={%d}]")
     @Column(name = "rating", precision = 10, scale = 2, nullable = false)
     @JacksonXmlProperty(localName = "rating")
-    private Double rating;
+    private BigDecimal rating;
 
     @Column(name = "registered_at", nullable = true, insertable = false)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
@@ -134,11 +154,27 @@ public class User extends BaseEntity implements Serializable {
         this.age = age;
     }
 
-    public Double getRating() {
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(final String phone) {
+        this.phone = phone;
+    }
+
+    public UserGenderType getGender() {
+        return gender;
+    }
+
+    public void setGender(final UserGenderType gender) {
+        this.gender = gender;
+    }
+
+    public BigDecimal getRating() {
         return rating;
     }
 
-    public void setRating(final Double rating) {
+    public void setRating(final BigDecimal rating) {
         this.rating = rating;
     }
 
@@ -201,6 +237,12 @@ public class User extends BaseEntity implements Serializable {
         if (!Objects.equals(this.age, other.age)) {
             return false;
         }
+        if (!Objects.equals(this.phone, other.phone)) {
+            return false;
+        }
+        if (this.gender != other.gender) {
+            return false;
+        }
         if (!Objects.equals(this.rating, other.rating)) {
             return false;
         }
@@ -217,6 +259,8 @@ public class User extends BaseEntity implements Serializable {
         hash = 29 * hash + Objects.hashCode(this.login);
         hash = 29 * hash + Objects.hashCode(this.name);
         hash = 29 * hash + Objects.hashCode(this.age);
+        hash = 29 * hash + Objects.hashCode(this.phone);
+        hash = 29 * hash + Objects.hashCode(this.gender);
         hash = 29 * hash + Objects.hashCode(this.rating);
         hash = 29 * hash + Objects.hashCode(this.registeredAt);
         hash = 29 * hash + Objects.hashCode(this.status);
@@ -225,6 +269,6 @@ public class User extends BaseEntity implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("User {id: %d, login: %s, name: %s, age: %d, rating: %f, status: %s, registeredAt: %s, inherited: %s}", this.id, this.login, this.name, this.age, this.rating, this.status, this.registeredAt, super.toString());
+        return String.format("User {id: %d, login: %s, name: %s, age: %d, phone: %s, gender: %s, rating: %f, status: %s, registeredAt: %s, inherited: %s}", this.id, this.login, this.name, this.age, this.phone, this.gender, this.rating, this.status, this.registeredAt, super.toString());
     }
 }

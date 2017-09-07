@@ -5,6 +5,8 @@ import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.UserSubOrder;
 import com.wildbeeslabs.rest.service.HibernateSessionService;
 
+import java.math.BigDecimal;
+
 //import org.hibernate.HibernateException;
 import org.hibernate.Session;
 //import org.hibernate.SessionFactory;
@@ -39,13 +41,13 @@ public class UsersSubscriptionsDBTest {
         User user1 = new User();
         user1.setAge(56);
         user1.setLogin("Tom");
-        user1.setRating(24.3);
+        user1.setRating(new BigDecimal(24.3));
         user1.setStatus(User.UserStatusType.ACTIVE);
 
         User user2 = new User();
         user2.setAge(65);
         user2.setLogin("Mary");
-        user2.setRating(43.3);
+        user2.setRating(new BigDecimal(43.3));
         user2.setStatus(User.UserStatusType.ACTIVE);
 
         UserSubOrder userSubOrder1 = new UserSubOrder();

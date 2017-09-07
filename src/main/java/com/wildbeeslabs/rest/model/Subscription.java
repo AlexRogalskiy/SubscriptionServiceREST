@@ -55,7 +55,7 @@ public class Subscription extends BaseEntity implements Serializable {
     @Column(name = "subscription_id", unique = true, nullable = false)
     private Long id;
 
-    @NotBlank(message = "Please provide subscription name")
+    @NotBlank(message = "Field <name> cannot be blank")
     @Column(name = "name", nullable = false, unique = true)
     @JacksonXmlProperty(localName = "name")
     private String name;

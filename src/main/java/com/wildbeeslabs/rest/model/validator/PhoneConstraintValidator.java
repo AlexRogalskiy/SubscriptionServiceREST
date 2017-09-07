@@ -29,7 +29,7 @@ import javax.validation.ConstraintValidatorContext;
 
 /**
  *
- * PhoneValidator constraint implementation
+ * Phone constraint validation implementation
  *
  * @author Alex
  * @version 1.0.0
@@ -37,16 +37,22 @@ import javax.validation.ConstraintValidatorContext;
  */
 public class PhoneConstraintValidator implements ConstraintValidator<Phone, String> {
 
+    private static final String DEFAULT_FORMAT = "\\+[0-9]+";
+
     @Override
-    public void initialize(Phone String) {
+    public void initialize(final Phone phone) {
     }
 
     @Override
-    public boolean isValid(String phoneField, ConstraintValidatorContext cxt) {
+    public boolean isValid(final String phoneField, final ConstraintValidatorContext cxt) {
         if (Objects.isNull(phoneField)) {
-            return false;
+            return true;
         }
-        return phoneField.matches("[0-9()-]*");
+        boolean isValid = phoneField.matches(DEFAULT_FORMAT);
+        if (!isValid) {
+            cxt.disableDefaultConstraintViolation();
+            cxt.buildConstraintViolationWithTemplate(String.format("ERROR: incorrect phone={%s} (expected format={%s})", phoneField, PhoneConstraintValidator.DEFAULT_FORMAT)).addConstraintViolation();
+        }
+        return isValid;
     }
-
 }

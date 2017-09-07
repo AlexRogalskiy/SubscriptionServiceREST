@@ -45,9 +45,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class BaseResponseExceptionHandler {//extends ResponseEntityExceptionHandler {
 
     public enum ResponseStatusCode {
-        ALREADY_EXIST(101),
+        RESOURCE_ALREADY_EXIST(101),
         BAD_REQUEST(102),
-        NOT_FOUND(103),
+        RESOURCE_NOT_FOUND(103),
         EMPTY_CONTENT(104),
         SERVICE_ERROR(105),
         BAD_MEDIA_TYPE(106),
@@ -147,7 +147,7 @@ public class BaseResponseExceptionHandler {//extends ResponseEntityExceptionHand
     protected ResponseEntity<?> handle(final HttpServletRequest req, final ResourceAlreadyExistException ex) {
         LOGGER.error(ex.getMessage());
         String url = req.getRequestURI().substring(req.getContextPath().length());
-        return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.ALREADY_EXIST, ex.getMessage()), HttpStatus.CONFLICT);
+        return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.RESOURCE_ALREADY_EXIST, ex.getMessage()), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler({BadRequestException.class})
@@ -165,7 +165,7 @@ public class BaseResponseExceptionHandler {//extends ResponseEntityExceptionHand
     protected ResponseEntity<?> handle(final HttpServletRequest req, final ResourceNotFoundException ex) {
         LOGGER.error(ex.getMessage());
         String url = req.getRequestURI().substring(req.getContextPath().length());
-        return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.NOT_FOUND, ex.getMessage()), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.RESOURCE_NOT_FOUND, ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({EmptyContentException.class})
@@ -190,6 +190,15 @@ public class BaseResponseExceptionHandler {//extends ResponseEntityExceptionHand
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ResponseEntity<?> handle(final HttpServletRequest req, final MethodArgumentNotValidException ex) {
+        LOGGER.error(ex.getMessage());
+        String url = req.getRequestURI().substring(req.getContextPath().length());
+        return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.BAD_REQUEST, ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({javax.validation.ConstraintViolationException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ResponseEntity<?> handle(final HttpServletRequest req, final javax.validation.ConstraintViolationException ex) {
         LOGGER.error(ex.getMessage());
         String url = req.getRequestURI().substring(req.getContextPath().length());
         return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.BAD_REQUEST, ex.getMessage()), HttpStatus.BAD_REQUEST);

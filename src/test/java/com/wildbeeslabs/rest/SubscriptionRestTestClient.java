@@ -1,6 +1,7 @@
 package com.wildbeeslabs.rest;
 
 import com.wildbeeslabs.rest.model.User;
+import java.math.BigDecimal;
 
 import java.net.URI;
 import java.nio.charset.Charset;
@@ -70,7 +71,7 @@ public class SubscriptionRestTestClient {
         User user = new User();
         user.setAge(12);
         user.setLogin("Sarah");
-        user.setRating(24.3);
+        user.setRating(new BigDecimal(24.3));
         user.setStatus(User.UserStatusType.ACTIVE);
 
         URI uri = restTemplate.postForLocation(REST_SERVICE_URI + "/user", user, User.class);
