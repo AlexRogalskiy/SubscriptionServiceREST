@@ -1,12 +1,12 @@
 package com.wildbeeslabs.rest.model.dto;
 
-import com.wildbeeslabs.rest.model.*;
+import com.wildbeeslabs.rest.model.User.UserStatusType;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import com.wildbeeslabs.rest.model.User.UserStatusType;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -32,6 +32,8 @@ public class UserDTO extends BaseDTO {
     private Long id;
     @JacksonXmlProperty(localName = "login")
     private String login;
+    @JacksonXmlProperty(localName = "name")
+    private String name;
     @JacksonXmlProperty(localName = "age")
     private Integer age;
     @JacksonXmlProperty(localName = "rating")
@@ -44,7 +46,7 @@ public class UserDTO extends BaseDTO {
     //@JsonBackReference(value = "userOrderToUser")
     @JsonIgnore
     @JacksonXmlProperty(localName = "subscriptions")
-    private final Set<UserSubOrder> subOrders = new HashSet<>();
+    private final Set<UserSubOrderDTO> subOrders = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -60,6 +62,14 @@ public class UserDTO extends BaseDTO {
 
     public void setLogin(final String login) {
         this.login = login;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
     }
 
     public Integer getAge() {
@@ -101,18 +111,18 @@ public class UserDTO extends BaseDTO {
         this.status = status;
     }
 
-    public Set<UserSubOrder> getSubOrders() {
+    public Set<UserSubOrderDTO> getSubOrders() {
         return subOrders;
     }
 
-    public void setSubOrders(final Set<UserSubOrder> subOrders) {
+    public void setSubOrders(final Set<UserSubOrderDTO> subOrders) {
         this.subOrders.clear();
         if (Objects.nonNull(subOrders)) {
             this.subOrders.addAll(subOrders);
         }
     }
 
-    public void addSubscription(final UserSubOrder subOrder) {
+    public void addSubscription(final UserSubOrderDTO subOrder) {
         if (Objects.nonNull(subOrder)) {
             this.subOrders.add(subOrder);
         }
@@ -126,6 +136,9 @@ public class UserDTO extends BaseDTO {
         }
         final UserDTO other = (UserDTO) obj;
         if (!Objects.equals(this.login, other.login)) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
             return false;
         }
         if (!Objects.equals(this.id, other.id)) {
@@ -148,6 +161,7 @@ public class UserDTO extends BaseDTO {
         int hash = super.hashCode();
         hash = 29 * hash + Objects.hashCode(this.id);
         hash = 29 * hash + Objects.hashCode(this.login);
+        hash = 29 * hash + Objects.hashCode(this.name);
         hash = 29 * hash + Objects.hashCode(this.age);
         hash = 29 * hash + Objects.hashCode(this.rating);
         hash = 29 * hash + Objects.hashCode(this.registeredAt);
@@ -157,6 +171,6 @@ public class UserDTO extends BaseDTO {
 
     @Override
     public String toString() {
-        return String.format("UserDTO {id: %d, login: %s, age: %d, rating: %f, status: %s, registeredAt: %s, inherited: %s}", this.id, this.login, this.age, this.rating, this.status, this.registeredAt, super.toString());
+        return String.format("UserDTO {id: %d, login: %s, name: %s, age: %d, rating: %f, status: %s, registeredAt: %s, inherited: %s}", this.id, this.login, this.name, this.age, this.rating, this.status, this.registeredAt, super.toString());
     }
 }

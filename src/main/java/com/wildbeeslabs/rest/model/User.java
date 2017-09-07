@@ -30,6 +30,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -63,6 +64,12 @@ public class User extends BaseEntity implements Serializable {
     @Column(name = "login", nullable = false, unique = true, updatable = false)
     @JacksonXmlProperty(localName = "login")
     private String login;
+
+    @Size(min = 2, max = 50)
+    @NotBlank(message = "Please provide user name")
+    @Column(name = "name", nullable = false)
+    @JacksonXmlProperty(localName = "name")
+    private String name;
 
     @Range(min = 1, max = 150, message = "Only positive numbers from range [min={%d}, max={%d}] are only allowed for the user age field")
     @Column(name = "age", nullable = true)
@@ -109,6 +116,14 @@ public class User extends BaseEntity implements Serializable {
 
     public void setLogin(final String login) {
         this.login = login;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
     }
 
     public Integer getAge() {
@@ -177,6 +192,9 @@ public class User extends BaseEntity implements Serializable {
         if (!Objects.equals(this.login, other.login)) {
             return false;
         }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
@@ -197,6 +215,7 @@ public class User extends BaseEntity implements Serializable {
         int hash = super.hashCode();
         hash = 29 * hash + Objects.hashCode(this.id);
         hash = 29 * hash + Objects.hashCode(this.login);
+        hash = 29 * hash + Objects.hashCode(this.name);
         hash = 29 * hash + Objects.hashCode(this.age);
         hash = 29 * hash + Objects.hashCode(this.rating);
         hash = 29 * hash + Objects.hashCode(this.registeredAt);
@@ -206,6 +225,6 @@ public class User extends BaseEntity implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("User {id: %d, login: %s, age: %d, rating: %f, status: %s, registeredAt: %s, inherited: %s}", this.id, this.login, this.age, this.rating, this.status, this.registeredAt, super.toString());
+        return String.format("User {id: %d, login: %s, name: %s, age: %d, rating: %f, status: %s, registeredAt: %s, inherited: %s}", this.id, this.login, this.name, this.age, this.rating, this.status, this.registeredAt, super.toString());
     }
 }

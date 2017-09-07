@@ -1,10 +1,10 @@
 package com.wildbeeslabs.rest.model.dto;
 
-import com.wildbeeslabs.rest.model.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import com.wildbeeslabs.rest.model.Subscription.SubscriptionStatusType;
 
 import java.util.HashSet;
@@ -38,7 +38,7 @@ public class SubscriptionDTO extends BaseDTO {
     //@JsonBackReference(value = "subOrderToSubscription")
     @JsonIgnore
     @JacksonXmlProperty(localName = "users")
-    private final Set<UserSubOrder> userOrders = new HashSet<>();
+    private final Set<UserSubOrderDTO> userOrders = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -79,18 +79,18 @@ public class SubscriptionDTO extends BaseDTO {
         this.type = type;
     }
 
-    public Set<UserSubOrder> getUserOrders() {
+    public Set<UserSubOrderDTO> getUserOrders() {
         return userOrders;
     }
 
-    public void setUserOrders(final Set<UserSubOrder> userOrders) {
+    public void setUserOrders(final Set<UserSubOrderDTO> userOrders) {
         this.userOrders.clear();
         if (Objects.nonNull(userOrders)) {
             this.userOrders.addAll(userOrders);
         }
     }
 
-    public void addUserOrder(final UserSubOrder userOrder) {
+    public void addUserOrder(final UserSubOrderDTO userOrder) {
         if (Objects.nonNull(userOrder)) {
             this.userOrders.add(userOrder);
         }
