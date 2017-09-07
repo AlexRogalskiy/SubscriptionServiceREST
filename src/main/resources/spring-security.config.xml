@@ -15,27 +15,24 @@
         -->
         <logout />
         <!-- <access-denied-handler error-page="/error-page" /> -->
-        <!-- <access-denied-handler ref="accessDeniedServiceHandler" /> -->
+        <access-denied-handler ref="customAccessDeniedHandler" />
     </http>
     
-    <http entry-point-ref="restAuthenticationEntryPoint">
+    <http entry-point-ref="customAuthenticationEntryPoint">
         <intercept-url pattern="/api/**" access="ROLE_ADMIN"/>
  
-        <form-login
-            authentication-success-handler-ref="customSuccessHandler"
-            authentication-failure-handler-ref="customFailureHandler"
-        />
+        <form-login authentication-success-handler-ref="customAuthenticationSuccessHandler" authentication-failure-handler-ref="customAuthenticationFailureHandler" />
         <logout />
     </http>
      
-    <!--<beans:bean id="accessDeniedServiceHandler" class="com.wildbeeslabs.rest.handler.AccessDeniedServiceHandler">
+    <!--<beans:bean id="customAccessDeniedHandler" class="com.wildbeeslabs.rest.handler.AccessDeniedServiceHandler">
         <beans:property name="errorPage" value="403" />
     </beans:bean>-->
 
     <global-method-security pre-post-annotations="enabled"/>
  
-    <beans:bean id="customSuccessHandler" class="com.wildbeeslabs.rest.handler.CustomAuthenticationSuccessHandler"/>
-    <beans:bean id="customFailureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler"/>
+    <beans:bean id="customAuthenticationSuccessHandler" class="com.wildbeeslabs.rest.handler.CustomAuthenticationSuccessHandler"/>
+    <beans:bean id="customAuthenticationFailureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler"/>
    
     <authentication-manager alias="authenticationManager">
         <authentication-provider>

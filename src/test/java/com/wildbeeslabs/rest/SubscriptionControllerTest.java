@@ -33,6 +33,7 @@ public class SubscriptionControllerTest extends BaseControllerTest {
 
     @Test
     public void testAuthorizationAccess() {
+        //.auth().digest( ADMIN_USERNAME, ADMIN_PASSWORD )
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/subscriptions").then().statusCode(200);
     }
 
