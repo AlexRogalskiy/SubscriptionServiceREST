@@ -24,29 +24,29 @@
 package com.wildbeeslabs.rest.model.validator;
 
 import java.util.Objects;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 /**
  *
- * PhoneValidator constraint implementation
+ * UIDValidator constraint implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
  */
-public class PhoneConstraintValidator implements ConstraintValidator<Phone, String> {
+public class UIDConstraintValidator implements ConstraintValidator<UID, String> {
 
     @Override
-    public void initialize(Phone String) {
+    public void initialize(UID uid) {
     }
 
     @Override
-    public boolean isValid(String phoneField, ConstraintValidatorContext cxt) {
-        if (Objects.isNull(phoneField)) {
+    public boolean isValid(String uidField, ConstraintValidatorContext cxt) {
+        if (Objects.isNull(uidField)) {
             return false;
         }
-        return phoneField.matches("[0-9()-]*");
+        return uidField.matches("[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}");
     }
-
 }

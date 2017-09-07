@@ -46,10 +46,10 @@ import javax.validation.Payload;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Phone {
 
-    String message() default "{Phone}";
+    public String message() default "{com.wildbeeslabs.rest.model.validator.Phone.message}";
 
-    Class<?>[] groups() default {};
+    public Class<?>[] groups() default {};
 
-    Class<? extends Payload>[] payload() default {};
+    public Class<? extends Payload>[] payload() default {};
 
 }

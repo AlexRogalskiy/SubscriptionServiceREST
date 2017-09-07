@@ -23,30 +23,35 @@
  */
 package com.wildbeeslabs.rest.model.validator;
 
-import java.util.Objects;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import javax.validation.Constraint;
+import javax.validation.Payload;
 
 /**
  *
- * PhoneValidator constraint implementation
+ * ComparatorValidator annotation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
  */
-public class PhoneConstraintValidator implements ConstraintValidator<Phone, String> {
+@Documented
+@Constraint(validatedBy = ComparatorConstraintValidator.class)
+@Target({ElementType.METHOD, ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Comparator {
 
-    @Override
-    public void initialize(Phone String) {
-    }
+    public int value();
 
-    @Override
-    public boolean isValid(String phoneField, ConstraintValidatorContext cxt) {
-        if (Objects.isNull(phoneField)) {
-            return false;
-        }
-        return phoneField.matches("[0-9()-]*");
-    }
+    public String message() default "{com.wildbeeslabs.rest.model.validator.Comparator.message}";
+
+    public Class<?>[] groups() default {};
+
+    public Class<? extends Payload>[] payload() default {};
 
 }

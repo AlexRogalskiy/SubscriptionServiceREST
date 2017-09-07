@@ -84,4 +84,12 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
     }
+
+//    @Bean
+//    public InternalResourceViewResolver viewResolver() {
+//        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+//        resolver.setPrefix("/WEB-INF/view/");
+//        resolver.setSuffix(".html");
+//        return resolver;
+//    }
 }
