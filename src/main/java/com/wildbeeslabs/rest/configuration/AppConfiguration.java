@@ -9,10 +9,6 @@ import org.springframework.context.annotation.Configuration;
 @EnableAutoConfiguration
 public class AppConfiguration {
 
-    //    @Bean
-//    public MethodValidationPostProcessor methodValidationPostProcessor() {
-//        return new MethodValidationPostProcessor();
-//    }
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();

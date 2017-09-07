@@ -3,12 +3,13 @@ package com.wildbeeslabs.rest.controller;
 import com.wildbeeslabs.rest.service.interfaces.SubscriptionService;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+//import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +30,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @param <E>
  */
 @RestController
-@Validated
+//@Validated
 @RequestMapping("/api")
 public class SubscriptionController<T extends Subscription, E extends SubscriptionDTO> extends ABaseController<T, E> {
 
@@ -68,7 +69,7 @@ public class SubscriptionController<T extends Subscription, E extends Subscripti
      */
     @RequestMapping(value = "/subscription", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public ResponseEntity<?> createSubscription(@RequestBody E subscriptionDto, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<?> createSubscription(@RequestBody @Valid E subscriptionDto, UriComponentsBuilder ucBuilder) {
         return super.create(subscriptionDto);
     }
 
@@ -81,7 +82,7 @@ public class SubscriptionController<T extends Subscription, E extends Subscripti
      */
     @RequestMapping(value = "/subscription/{id}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public ResponseEntity<?> updateSubscription(@PathVariable("id") Long id, @RequestBody E subscriptionDto) {
+    public ResponseEntity<?> updateSubscription(@PathVariable("id") Long id, @RequestBody @Valid E subscriptionDto) {
         return super.update(id, subscriptionDto);
     }
 

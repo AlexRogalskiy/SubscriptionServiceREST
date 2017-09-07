@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @version 1.0.0
  * @since 2017-08-08
  */
-@ResponseStatus(HttpStatus.CONFLICT)
+@ResponseStatus(value = HttpStatus.CONFLICT, reason = "Resource already exist")
 public class ResourceAlreadyExistException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;

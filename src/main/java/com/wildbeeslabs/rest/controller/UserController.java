@@ -9,13 +9,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+//import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +40,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  * @param <E>
  */
 @RestController
-@Validated
+//@Validated
 @RequestMapping("/api")
 public class UserController<T extends User, E extends UserDTO> extends ABaseController<T, E> {
 
@@ -94,7 +95,7 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
      */
     @RequestMapping(value = "/user", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public ResponseEntity<?> createUser(@RequestBody E userDto, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<?> createUser(@RequestBody @Valid E userDto, UriComponentsBuilder ucBuilder) {
         return super.create(userDto);
     }
 
@@ -107,7 +108,7 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
      */
     @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @RequestBody E userDto) {
+    public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @RequestBody @Valid E userDto) {
         return super.update(id, userDto);
     }
 

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @version 1.0.0
  * @since 2017-08-08
  */
-@ResponseStatus(HttpStatus.BAD_REQUEST)
+@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Incorrect request parameters")
 public class BadRequestException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;

@@ -1,10 +1,11 @@
 package com.wildbeeslabs.rest.model;
 
+import com.wildbeeslabs.rest.utils.DateUtils;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import com.wildbeeslabs.rest.utils.DateUtils;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -30,6 +31,7 @@ import javax.persistence.Temporal;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Min;
 
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 
@@ -56,17 +58,18 @@ public class User extends BaseEntity implements Serializable {
     @Column(name = "user_id", unique = true, nullable = false)
     private Long id;
 
-    @NotBlank
+    @Email
+    @NotBlank(message = "Please provide user login in the following format: user@domain.com")
     @Column(name = "login", nullable = false, unique = true, updatable = false)
     @JacksonXmlProperty(localName = "login")
     private String login;
 
-    @Range(min = 0, max = 150)
+    @Range(min = 1, max = 150, message = "Only positive numbers from range [min={%d}, max={%d}] are only allowed for the user age field")
     @Column(name = "age", nullable = true)
     @JacksonXmlProperty(localName = "age")
     private Integer age;
 
-    @Min(1)
+    @Min(value = 1, message = "Only positive numbers [start={%d}] are only allowed for the user rating field")
     @Column(name = "rating", precision = 10, scale = 2, nullable = false)
     @JacksonXmlProperty(localName = "rating")
     private Double rating;

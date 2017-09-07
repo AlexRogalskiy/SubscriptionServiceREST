@@ -21,7 +21,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-//import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -168,14 +168,6 @@ public class BaseResponseExceptionHandler {//extends ResponseEntityExceptionHand
         return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.NOT_FOUND, ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 
-//    @ExceptionHandler({ResourceNotFoundException.class})
-//    protected ResponseEntity<?> handleNotFound(Exception ex, WebRequest request) {
-//        return handleExceptionInternal(ex, "Resource not found", new HttpHeaders(), HttpStatus.NOT_FOUND, request);
-//    }
-//    @ExceptionHandler({ResourceNotFoundException.class, ConstraintViolationException.class, DataIntegrityViolationException.class})
-//    public ResponseEntity<Object> handleBadRequest(Exception ex, WebRequest request) {
-//        return handleExceptionInternal(ex, ex.getLocalizedMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
-//    }
     @ExceptionHandler({EmptyContentException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -248,12 +240,12 @@ public class BaseResponseExceptionHandler {//extends ResponseEntityExceptionHand
         return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.SERVICE_ERROR, ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-//    @ExceptionHandler({AccessDeniedException.class})
-//    @ResponseBody
-//    @ResponseStatus(HttpStatus.FORBIDDEN)
-//    public ResponseEntity<?> handle(final HttpServletRequest req, final AccessDeniedException ex) {
-//        LOGGER.error(ex.getMessage());
-//        String url = req.getRequestURI().substring(req.getContextPath().length());
-//        return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.FORBIDDEN, ex.getMessage()), HttpStatus.FORBIDDEN);
-//    }
+    @ExceptionHandler({AccessDeniedException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<?> handle(final HttpServletRequest req, final AccessDeniedException ex) {
+        LOGGER.error(ex.getMessage());
+        String url = req.getRequestURI().substring(req.getContextPath().length());
+        return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.FORBIDDEN, ex.getMessage()), HttpStatus.FORBIDDEN);
+    }
 }

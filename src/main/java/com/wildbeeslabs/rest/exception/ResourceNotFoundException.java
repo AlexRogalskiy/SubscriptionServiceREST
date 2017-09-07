@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @version 1.0.0
  * @since 2017-08-08
  */
-@ResponseStatus(HttpStatus.NOT_FOUND)
+@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Resource not found")
 public class ResourceNotFoundException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;

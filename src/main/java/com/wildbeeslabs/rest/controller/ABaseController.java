@@ -79,6 +79,11 @@ public abstract class ABaseController<T extends BaseEntity, E extends BaseDTO> i
         }
         getDefaultService().save(itemEntity);
         return new ResponseEntity<>(HttpStatus.OK);
+        /*
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/user/{id}").buildAndExpand(id).toUri());
+        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+         */
     }
 
     @Override
@@ -134,7 +139,6 @@ public abstract class ABaseController<T extends BaseEntity, E extends BaseDTO> i
 //        return itemDto;
 //        //return this.convertToDTO(itemEntity, clazz);
 //    }
-
     protected <M, N> N convertToDTO(final M itemEntity, final Class<? extends N> clazz) {
         N itemDto = modelMapper.map(itemEntity, clazz);
         return itemDto;
@@ -144,7 +148,6 @@ public abstract class ABaseController<T extends BaseEntity, E extends BaseDTO> i
 //        T itemEntity = modelMapper.map(itemDto, clazz);
 //        return itemEntity;
 //    }
-
     protected <N, M> M convertToEntity(final N itemDto, final Class<? extends M> clazz) {
         M itemEntity = modelMapper.map(itemDto, clazz);
         return itemEntity;
