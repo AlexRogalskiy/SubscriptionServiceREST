@@ -5,17 +5,13 @@ import com.wildbeeslabs.rest.exception.ResourceNotFoundException;
 import com.wildbeeslabs.rest.model.BaseEntity;
 import com.wildbeeslabs.rest.model.dto.BaseDTO;
 import com.wildbeeslabs.rest.model.dto.BaseDTOListWrapper;
+import com.wildbeeslabs.rest.model.dto.DTOConverter;
 import com.wildbeeslabs.rest.service.interfaces.BaseService;
 
 import java.beans.PropertyEditorSupport;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
-
-import org.modelmapper.ModelMapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +42,7 @@ public abstract class ABaseController<T extends BaseEntity, E extends BaseDTO> i
     @Autowired
     protected MessageSource messageSource;
     @Autowired
-    protected ModelMapper modelMapper;
+    protected DTOConverter dtoConverter;
 
     protected String getLocaleMessage(final String message) {
         Locale locale = LocaleContextHolder.getLocale();
@@ -61,7 +57,7 @@ public abstract class ABaseController<T extends BaseEntity, E extends BaseDTO> i
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         //return new ResponseEntity<>(items.stream().map(item -> convertToDTO(item, getDtoClass())).collect(Collectors.toList()), HttpStatus.OK);
-        return new ResponseEntity<>(convertToDTOList(items, getDtoClass(), getDtoListClass()), HttpStatus.OK);
+        return new ResponseEntity<>(dtoConverter.convertToDTOList(items, getDtoClass(), getDtoListClass()), HttpStatus.OK);
     }
 
     @Override
@@ -71,13 +67,13 @@ public abstract class ABaseController<T extends BaseEntity, E extends BaseDTO> i
         if (Objects.isNull(item)) {
             throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.item.id"), id));
         }
-        return new ResponseEntity<>(convertToDTO(item, getDtoClass()), HttpStatus.OK);
+        return new ResponseEntity<>(dtoConverter.convertToDTO(item, getDtoClass()), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<?> create(final E itemDto) {
         LOGGER.info("Creating item {}", itemDto);
-        T itemEntity = convertToEntity(itemDto, getEntityClass());
+        T itemEntity = dtoConverter.convertToEntity(itemDto, getEntityClass());
         if (getDefaultService().isExist(itemEntity)) {
             throw new ResourceAlreadyExistException(String.format(getLocaleMessage("error.already.exist.item")));
         }
@@ -97,9 +93,9 @@ public abstract class ABaseController<T extends BaseEntity, E extends BaseDTO> i
         if (Objects.isNull(currentItem)) {
             throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.item.id"), id));
         }
-        T itemEntity = convertToEntity(itemDto, getEntityClass());
+        T itemEntity = dtoConverter.convertToEntity(itemDto, getEntityClass());
         getDefaultService().merge(currentItem, itemEntity);
-        return new ResponseEntity<>(convertToDTO(currentItem, getDtoClass()), HttpStatus.OK);
+        return new ResponseEntity<>(dtoConverter.convertToDTO(currentItem, getDtoClass()), HttpStatus.OK);
     }
 
     @Override
@@ -136,46 +132,6 @@ public abstract class ABaseController<T extends BaseEntity, E extends BaseDTO> i
             U item = Enum.valueOf(this.type, capitalized);
             setValue(item);
         }
-    }
-
-//    protected E convertToDTO(final T itemEntity, final Class<? extends E> clazz) {
-//        E itemDto = modelMapper.map(itemEntity, clazz);
-//        return itemDto;
-//        //return this.convertToDTO(itemEntity, clazz);
-//    }
-    protected <M, N> N convertToDTO(final M itemEntity, final Class<? extends N> clazz) {
-        N itemDto = modelMapper.map(itemEntity, clazz);
-        return itemDto;
-    }
-
-    protected <M, N> BaseDTOListWrapper<? extends N> convertToDTOList(final List<? extends M> itemEntityList, final Class<? extends N> clazz, final Class<? extends BaseDTOListWrapper> classListWrapper) {
-        List<? extends N> itemDtoList = itemEntityList.stream()
-                .map(item -> convertToDTO(item, clazz))
-                .collect(Collectors.toCollection(LinkedList::new));
-        BaseDTOListWrapper<N> listWrapper = null;
-        try {
-            listWrapper = classListWrapper.newInstance();
-            listWrapper.setItems(itemDtoList);
-        } catch (InstantiationException | IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ABaseController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return listWrapper;
-    }
-
-//    protected T convertToEntity(final E itemDto, final Class<? extends T> clazz) {
-//        T itemEntity = modelMapper.map(itemDto, clazz);
-//        return itemEntity;
-//    }
-    protected <N, M> M convertToEntity(final N itemDto, final Class<? extends M> clazz) {
-        M itemEntity = modelMapper.map(itemDto, clazz);
-        return itemEntity;
-    }
-
-    protected <N, M> List<? extends M> convertToEntityList(final BaseDTOListWrapper<? extends N> itemDtoList, final Class<? extends M> clazz) {
-        List<M> itemEntityList = itemDtoList.getItems().stream()
-                .map(item -> convertToEntity(item, clazz))
-                .collect(Collectors.toCollection(LinkedList::new));
-        return itemEntityList;
     }
 
     protected abstract Class<? extends T> getEntityClass();

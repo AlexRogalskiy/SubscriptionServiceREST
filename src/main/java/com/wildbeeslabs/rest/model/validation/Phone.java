@@ -21,41 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.rest.model.validator;
+package com.wildbeeslabs.rest.model.validation;
 
-import java.util.Objects;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import javax.validation.Constraint;
+import javax.validation.Payload;
 
 /**
  *
- * Comparator constraint validation implementation
+ * Phone constraint annotation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
  */
-public final class ComparatorConstraintValidator implements ConstraintValidator<Comparator, Integer> {
+@Documented
+@Constraint(validatedBy = PhoneConstraintValidator.class)
+@Target({ElementType.METHOD, ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Phone {
 
-    private Integer annotationComparator;
+    public String message() default "{com.wildbeeslabs.rest.model.validator.Phone.message}";
 
-    @Override
-    public void initialize(final Comparator comparator) {
-        this.annotationComparator = comparator.value();
-    }
+    public Class<?>[] groups() default {};
 
-    @Override
-    public boolean isValid(final Integer comparatorField, final ConstraintValidatorContext cxt) {
-        if (Objects.isNull(comparatorField)) {
-            return true;
-        }
-        boolean isValid = (comparatorField.compareTo(this.annotationComparator) <= 0);
-        if (!isValid) {
-            cxt.disableDefaultConstraintViolation();
-            cxt.buildConstraintViolationWithTemplate(String.format("ERROR: incorrect value={%d} (expected less or equal={%d})", comparatorField, this.annotationComparator)).addConstraintViolation();
-        }
-        return isValid;
-        //return Objects.equals(comparatorField, annotationComparator);
-    }
+    public Class<? extends Payload>[] payload() default {};
+
 }

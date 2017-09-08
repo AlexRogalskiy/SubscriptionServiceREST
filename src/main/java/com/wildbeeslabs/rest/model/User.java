@@ -1,8 +1,8 @@
 package com.wildbeeslabs.rest.model;
 
 import com.wildbeeslabs.rest.utils.DateUtils;
-import com.wildbeeslabs.rest.model.validator.Phone;
-import com.wildbeeslabs.rest.model.validator.BigDecimalRange;
+import com.wildbeeslabs.rest.model.validation.Phone;
+import com.wildbeeslabs.rest.model.validation.BigDecimalRange;
 
 //import com.fasterxml.jackson.annotation.JsonIgnore;
 //import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

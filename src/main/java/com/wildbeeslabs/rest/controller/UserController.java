@@ -4,6 +4,7 @@ import com.wildbeeslabs.rest.service.interfaces.UserService;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.dto.BaseDTOListWrapper;
+//import com.wildbeeslabs.rest.model.dto.DTOConverter;
 import com.wildbeeslabs.rest.model.dto.UserDTO;
 import com.wildbeeslabs.rest.model.dto.UserDTOListWrapper;
 
@@ -72,7 +73,7 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
         if (userList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(convertToDTOList(userList, getDtoClass(), getDtoListClass()), HttpStatus.OK);
+        return new ResponseEntity<>(dtoConverter.convertToDTOList(userList, getDtoClass(), getDtoListClass()), HttpStatus.OK);
     }
 
     /**

@@ -21,37 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.rest.model.validator;
+package com.wildbeeslabs.rest.model.validation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import javax.validation.Constraint;
-import javax.validation.Payload;
+import java.util.Objects;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 
 /**
  *
- * UID constraint annotation
+ * Phone constraint validation implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
  */
-@Documented
-@Constraint(validatedBy = UIDConstraintValidator.class)
-@Target({ElementType.METHOD, ElementType.FIELD})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface UID {
+public class PhoneConstraintValidator implements ConstraintValidator<Phone, String> {
 
-    public String value();
+    private static final String DEFAULT_FORMAT = "\\+[0-9]+";
 
-    public String message() default "{Default UID format: xxxx-xxxx-xxxx-xxxx}";
+    @Override
+    public void initialize(final Phone phone) {
+    }
 
-    public Class<?>[] groups() default {};
-
-    public Class<? extends Payload>[] payload() default {};
-
+    @Override
+    public boolean isValid(final String phoneField, final ConstraintValidatorContext cxt) {
+        if (Objects.isNull(phoneField)) {
+            return true;
+        }
+        boolean isValid = phoneField.matches(DEFAULT_FORMAT);
+        if (!isValid) {
+            cxt.disableDefaultConstraintViolation();
+            cxt.buildConstraintViolationWithTemplate(String.format("ERROR: incorrect phone={%s} (expected format={%s})", phoneField, PhoneConstraintValidator.DEFAULT_FORMAT)).addConstraintViolation();
+        }
+        return isValid;
+    }
 }

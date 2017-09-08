@@ -50,6 +50,12 @@ public final class SecurityUtils {
     public static final String ANONYMOUS_USER = "anonymousUser";
     public static final String SEC_CLIENT = "sec_client";
 
+    /**
+     * Default private constructor
+     */
+    private SecurityUtils() {
+    }
+
     public static User authenticate(final String key, final String uuid) {
         final SecurityPrincipal principal = new SecurityPrincipal(randomAlphabetic(6), randomAlphabetic(6), true, new ArrayList<>(), uuid);
         SecurityContextHolder.getContext().setAuthentication(new RunAsUserToken(key, principal, null, new ArrayList<>(), null));

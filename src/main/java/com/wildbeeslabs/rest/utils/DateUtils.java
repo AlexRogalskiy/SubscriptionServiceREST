@@ -18,6 +18,12 @@ import java.util.TimeZone;
 public final class DateUtils {
 
     /**
+     * Default private constructor
+     */
+    private DateUtils() {
+    }
+
+    /**
      * Default date format pattern
      */
     public static final String DEFAULT_DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";

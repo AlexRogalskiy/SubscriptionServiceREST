@@ -21,39 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.rest.model.validator;
+package com.wildbeeslabs.rest.model.validation;
 
-import java.util.Objects;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import javax.validation.Constraint;
+import javax.validation.Payload;
 
 /**
  *
- * UID constraint validation implementation
+ * UID constraint annotation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
  */
-public class UIDConstraintValidator implements ConstraintValidator<UID, String> {
+@Documented
+@Constraint(validatedBy = UIDConstraintValidator.class)
+@Target({ElementType.METHOD, ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface UID {
 
-    private static final String DEFAULT_FORMAT = "[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}";
+    public String value();
 
-    @Override
-    public void initialize(final UID uid) {
-    }
+    public String message() default "{Default UID format: xxxx-xxxx-xxxx-xxxx}";
 
-    @Override
-    public boolean isValid(final String uidField, final ConstraintValidatorContext cxt) {
-        if (Objects.isNull(uidField)) {
-            return false;
-        }
-        boolean isValid = uidField.matches(DEFAULT_FORMAT);
-        if (!isValid) {
-            cxt.disableDefaultConstraintViolation();
-            cxt.buildConstraintViolationWithTemplate(String.format("ERROR: incorrect uid={%s} (expected format={%s})", uidField, UIDConstraintValidator.DEFAULT_FORMAT)).addConstraintViolation();
-        }
-        return isValid;
-    }
+    public Class<?>[] groups() default {};
+
+    public Class<? extends Payload>[] payload() default {};
+
 }

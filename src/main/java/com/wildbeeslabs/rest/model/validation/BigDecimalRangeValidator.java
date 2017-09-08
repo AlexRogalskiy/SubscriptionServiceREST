@@ -21,37 +21,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.rest.model.validator;
+package com.wildbeeslabs.rest.model.validation;
 
+import java.math.BigDecimal;
 import java.util.Objects;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 /**
  *
- * Phone constraint validation implementation
+ * BigDecimal range constraint validation implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
  */
-public class PhoneConstraintValidator implements ConstraintValidator<Phone, String> {
+public final class BigDecimalRangeValidator implements ConstraintValidator<BigDecimalRange, BigDecimal> {
 
-    private static final String DEFAULT_FORMAT = "\\+[0-9]+";
+    private long maxPrecision;
+    private long minPrecision;
+    private int scale;
 
     @Override
-    public void initialize(final Phone phone) {
+    public void initialize(final BigDecimalRange bigDecimalRange) {
+        this.maxPrecision = bigDecimalRange.maxPrecision();
+        this.minPrecision = bigDecimalRange.minPrecision();
+        this.scale = bigDecimalRange.scale();
     }
 
     @Override
-    public boolean isValid(final String phoneField, final ConstraintValidatorContext cxt) {
-        if (Objects.isNull(phoneField)) {
+    public boolean isValid(final BigDecimal bigDecimalRangeField, final ConstraintValidatorContext cxt) {
+        if (Objects.isNull(bigDecimalRangeField)) {
             return true;
         }
-        boolean isValid = phoneField.matches(DEFAULT_FORMAT);
+        int actualPrecision = bigDecimalRangeField.precision();
+        int actualScale = bigDecimalRangeField.scale();
+        boolean isValid = actualPrecision >= this.minPrecision && actualPrecision <= this.maxPrecision && actualScale <= this.scale;
         if (!isValid) {
             cxt.disableDefaultConstraintViolation();
-            cxt.buildConstraintViolationWithTemplate(String.format("ERROR: incorrect phone={%s} (expected format={%s})", phoneField, PhoneConstraintValidator.DEFAULT_FORMAT)).addConstraintViolation();
+            cxt.buildConstraintViolationWithTemplate(String.format("ERROR: incorrect precision={%d} (expected [min={%d},max={%d}]) or scale={%d} (expected max={%d})", actualPrecision, this.minPrecision, this.maxPrecision, actualScale, this.scale)).addConstraintViolation();
         }
         return isValid;
     }

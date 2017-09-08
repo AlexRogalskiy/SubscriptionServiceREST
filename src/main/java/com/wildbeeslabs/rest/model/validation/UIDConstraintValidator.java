@@ -21,42 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.rest.model.validator;
+package com.wildbeeslabs.rest.model.validation;
 
-import java.lang.annotation.Documented;
-import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import java.lang.annotation.Retention;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-import java.lang.annotation.Target;
+import java.util.Objects;
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 
 /**
  *
- * BigDecimal range constraint annotation
+ * UID constraint validation implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
  */
-@Target({METHOD, FIELD, ANNOTATION_TYPE})
-@Retention(RUNTIME)
-@Constraint(validatedBy = BigDecimalRangeValidator.class)
-@Documented
-public @interface BigDecimalRange {
+public class UIDConstraintValidator implements ConstraintValidator<UID, String> {
 
-    public String message() default "{com.wildbeeslabs.rest.model.validator.BigDecimalRange.message}";
+    private static final String DEFAULT_FORMAT = "[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}";
 
-    public Class<?>[] groups() default {};
+    @Override
+    public void initialize(final UID uid) {
+    }
 
-    public Class<? extends Payload>[] payload() default {};
-
-    long minPrecision() default Long.MIN_VALUE;
-
-    long maxPrecision() default Long.MAX_VALUE;
-
-    int scale() default 0;
+    @Override
+    public boolean isValid(final String uidField, final ConstraintValidatorContext cxt) {
+        if (Objects.isNull(uidField)) {
+            return false;
+        }
+        boolean isValid = uidField.matches(DEFAULT_FORMAT);
+        if (!isValid) {
+            cxt.disableDefaultConstraintViolation();
+            cxt.buildConstraintViolationWithTemplate(String.format("ERROR: incorrect uid={%s} (expected format={%s})", uidField, UIDConstraintValidator.DEFAULT_FORMAT)).addConstraintViolation();
+        }
+        return isValid;
+    }
 }

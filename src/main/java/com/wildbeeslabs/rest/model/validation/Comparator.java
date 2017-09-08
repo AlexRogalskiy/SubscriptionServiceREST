@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.rest.model.validator;
+package com.wildbeeslabs.rest.model.validation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -34,19 +34,21 @@ import javax.validation.Payload;
 
 /**
  *
- * Phone constraint annotation
+ * ComparatorValidator annotation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
  */
 @Documented
-@Constraint(validatedBy = PhoneConstraintValidator.class)
+@Constraint(validatedBy = ComparatorConstraintValidator.class)
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Phone {
+public @interface Comparator {
 
-    public String message() default "{com.wildbeeslabs.rest.model.validator.Phone.message}";
+    public int value();
+
+    public String message() default "{com.wildbeeslabs.rest.model.validator.Comparator.message}";
 
     public Class<?>[] groups() default {};
 
