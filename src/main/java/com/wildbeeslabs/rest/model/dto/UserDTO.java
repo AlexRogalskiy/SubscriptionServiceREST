@@ -31,23 +31,39 @@ public class UserDTO extends BaseDTO {
 
     @JacksonXmlProperty(localName = "id")
     private Long id;
+
     @JacksonXmlProperty(localName = "login")
     private String login;
+
     @JacksonXmlProperty(localName = "name")
     private String name;
+
     @JacksonXmlProperty(localName = "age")
     private Integer age;
+
     @JacksonXmlProperty(localName = "phone")
     private String phone;
+
     @JacksonXmlProperty(localName = "rating")
     private Double rating;
+
     @JacksonXmlProperty(localName = "gender")
     private UserGenderType gender;
+
+    @JacksonXmlProperty(localName = "birthdayAt")
+    @JsonProperty("birthdayAt")
+    private String birthdayAt;
+
     @JacksonXmlProperty(localName = "registeredAt")
     @JsonProperty("registeredAt")
     private String registeredAt;
+
+    @JacksonXmlProperty(localName = "isEnabledSubscription")
+    private Boolean isEnabledSubscription;
+
     @JacksonXmlProperty(localName = "status")
     private UserStatusType status;
+
     //@JsonBackReference(value = "userOrderToUser")
     @JsonIgnore
     @JacksonXmlProperty(localName = "subscriptions")
@@ -109,6 +125,14 @@ public class UserDTO extends BaseDTO {
         this.gender = gender;
     }
 
+    public String getBirthdayAt() {
+        return birthdayAt;
+    }
+
+    public void setBirthdayAt(final String birthdayAt) {
+        this.birthdayAt = birthdayAt;
+    }
+
     public String getRegisteredAt() {
         return registeredAt;
     }
@@ -124,6 +148,14 @@ public class UserDTO extends BaseDTO {
 //    public void setRegisteredDate(final Date date) {
 //        this.registeredDate = (Objects.nonNull(date)) ? DateUtils.dateToStr(date) : null;
 //    }
+    public Boolean getIsEnabledSubscription() {
+        return isEnabledSubscription;
+    }
+
+    public void setIsEnabledSubscription(final Boolean isEnabledSubscription) {
+        this.isEnabledSubscription = isEnabledSubscription;
+    }
+
     public UserStatusType getStatus() {
         return status;
     }
@@ -177,7 +209,13 @@ public class UserDTO extends BaseDTO {
         if (this.gender != other.gender) {
             return false;
         }
+        if (!Objects.equals(this.birthdayAt, other.birthdayAt)) {
+            return false;
+        }
         if (!Objects.equals(this.registeredAt, other.registeredAt)) {
+            return false;
+        }
+        if (!Objects.equals(this.isEnabledSubscription, other.isEnabledSubscription)) {
             return false;
         }
         return this.status == other.status;
@@ -194,12 +232,14 @@ public class UserDTO extends BaseDTO {
         hash = 29 * hash + Objects.hashCode(this.rating);
         hash = 29 * hash + Objects.hashCode(this.gender);
         hash = 29 * hash + Objects.hashCode(this.registeredAt);
+        hash = 29 * hash + Objects.hashCode(this.birthdayAt);
+        hash = 29 * hash + Objects.hashCode(this.isEnabledSubscription);
         hash = 29 * hash + Objects.hashCode(this.status);
         return hash;
     }
 
     @Override
     public String toString() {
-        return String.format("UserDTO {id: %d, login: %s, name: %s, age: %d, phone: %s, rating: %f, gender: %s, status: %s, registeredAt: %s, inherited: %s}", this.id, this.login, this.name, this.age, this.phone, this.rating, this.gender, this.status, this.registeredAt, super.toString());
+        return String.format("UserDTO {id: %d, login: %s, name: %s, age: %d, phone: %s, rating: %f, gender: %s, birthdayAt: %s, isEnabledSubscription: %s, status: %s, registeredAt: %s, inherited: %s}", this.id, this.login, this.name, this.age, this.phone, this.rating, this.gender, this.birthdayAt, this.isEnabledSubscription, this.status, this.registeredAt, super.toString());
     }
 }

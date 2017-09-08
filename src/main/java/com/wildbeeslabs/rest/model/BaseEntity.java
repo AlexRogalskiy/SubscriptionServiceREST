@@ -1,6 +1,7 @@
 package com.wildbeeslabs.rest.model;
 
 import com.wildbeeslabs.rest.utils.DateUtils;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -14,6 +15,7 @@ import javax.persistence.Temporal;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -27,11 +29,13 @@ import org.hibernate.validator.constraints.NotBlank;
 public abstract class BaseEntity implements Serializable {
 
     @CreationTimestamp
+    @DateTimeFormat(pattern = DateUtils.DEFAULT_DATE_FORMAT_PATTERN)
     @Column(name = "created_at", nullable = false, updatable = false)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date createdAt;
 
     @UpdateTimestamp
+    @DateTimeFormat(pattern = DateUtils.DEFAULT_DATE_FORMAT_PATTERN)
     @Column(name = "modified_at", nullable = true, insertable = false)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date modifiedAt;
@@ -53,21 +57,6 @@ public abstract class BaseEntity implements Serializable {
         this.modifiedAt = new Date();
     }
 
-//    public Date getCreatedAt() {
-//        return createdAt;
-//    }
-//
-//    public void setCreatedAt(final Date createdAt) {
-//        this.createdAt = createdAt;
-//    }
-//
-//    public Date getModifiedAt() {
-//        return modifiedAt;
-//    }
-//
-//    public void setModifiedAt(final Date modifiedAt) {
-//        this.modifiedAt = modifiedAt;
-//    }
     public String getCreatedAt() {
         return (Objects.nonNull(this.createdAt)) ? DateUtils.dateToStr(this.createdAt) : null;
     }

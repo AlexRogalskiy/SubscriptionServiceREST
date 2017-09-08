@@ -24,12 +24,15 @@ public class UserSubOrderDTO extends BaseDTO {
     @JacksonXmlProperty(localName = "user")
     //@JsonManagedReference(value = "userOrderToUser")
     private UserDTO user;
+
     @JacksonXmlProperty(localName = "subscription")
     //@JsonManagedReference(value = "subOrderToSubscription")
     private SubscriptionDTO subscription;
+
     @JacksonXmlProperty(localName = "subscribedAt")
     @JsonProperty("subscribedAt")
     private String subscribedAt;
+
     @JacksonXmlProperty(localName = "expiredAt")
     @JsonProperty("expiredAt")
     private String expiredAt;

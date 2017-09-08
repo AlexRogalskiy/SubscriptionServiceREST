@@ -24,11 +24,14 @@ public abstract class BaseDTO implements Serializable {
     @JacksonXmlProperty(localName = "createdAt")
     @JsonProperty("createdAt")
     private String createdAt;
+
     @JacksonXmlProperty(localName = "modifiedAt")
     @JsonProperty("modifiedAt")
     private String modifiedAt;
+
     @JacksonXmlProperty(localName = "createdBy")
     private String createdBy;
+
     @JacksonXmlProperty(localName = "modifiedBy")
     private String modifiedBy;
 

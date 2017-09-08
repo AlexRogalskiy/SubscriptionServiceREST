@@ -19,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -72,29 +73,16 @@ public class UserSubOrder extends BaseEntity implements Serializable {
         getPk().setSubscription(subscription);
     }
 
+    @DateTimeFormat(pattern = DateUtils.DEFAULT_DATE_FORMAT_PATTERN)
     @Column(name = "subscribed_at", nullable = false)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date subscribedAt;
 
+    @DateTimeFormat(pattern = DateUtils.DEFAULT_DATE_FORMAT_PATTERN)
     @Column(name = "expired_at", nullable = true)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date expiredAt;
 
-//    public Date getSubscribedAt() {
-//        return subscribedAt;
-//    }
-//
-//    public void setSubscribedAt(final Date subscribedAt) {
-//        this.subscribedAt = subscribedAt;
-//    }
-//
-//    public Date getExpiredAt() {
-//        return expiredAt;
-//    }
-//
-//    public void setExpiredAt(final Date expiredAt) {
-//        this.expiredAt = expiredAt;
-//    }
     public String getSubscribedAt() {
         return (Objects.nonNull(this.subscribedAt)) ? DateUtils.dateToStr(this.subscribedAt) : null;
     }

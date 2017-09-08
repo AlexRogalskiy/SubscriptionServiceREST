@@ -2,12 +2,12 @@ package com.wildbeeslabs.rest.model;
 
 import com.wildbeeslabs.rest.utils.DateUtils;
 import com.wildbeeslabs.rest.model.validator.Phone;
+import com.wildbeeslabs.rest.model.validator.BigDecimalRange;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import com.wildbeeslabs.rest.model.validator.BigDecimalRange;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -32,11 +32,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -85,7 +88,7 @@ public class User extends BaseEntity implements Serializable {
     private String phone;
 
     @Enumerated(EnumType.STRING)
-    @NotBlank(message = "Field <gender> cannot be blank")
+    @NotNull(message = "Field <gender> cannot be null")
     @Column(name = "gender", nullable = false)
     @JacksonXmlProperty(localName = "gender")
     private UserGenderType gender;
@@ -101,10 +104,22 @@ public class User extends BaseEntity implements Serializable {
     @JacksonXmlProperty(localName = "rating")
     private BigDecimal rating;
 
+    @Past
+    @DateTimeFormat(pattern = DateUtils.DEFAULT_DATE_FORMAT_PATTERN)
+    @Column(name = "birthday_at", nullable = true)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @JacksonXmlProperty(localName = "birthdayAt")
+    private Date birthdayAt;
+
+    @DateTimeFormat(pattern = DateUtils.DEFAULT_DATE_FORMAT_PATTERN)
     @Column(name = "registered_at", nullable = true, insertable = false)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     @JacksonXmlProperty(localName = "registeredAt")
     private Date registeredAt;
+
+    @Column(name = "isEnabledSubscription", nullable = true)
+    @JacksonXmlProperty(localName = "isEnabledSubscription")
+    private Boolean isEnabledSubscription;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
@@ -178,19 +193,28 @@ public class User extends BaseEntity implements Serializable {
         this.rating = rating;
     }
 
-//    public Date getRegisteredAt() {
-//        return registeredAt;
-//    }
-//
-//    public void setRegisteredAt(final Date registeredAt) {
-//        this.registeredAt = registeredAt;
-//    }
+    public String getBirthdayAt() {
+        return (Objects.nonNull(this.birthdayAt)) ? DateUtils.dateToStr(this.birthdayAt) : null;
+    }
+
+    public void setBirthdayAt(final String str) {
+        this.birthdayAt = (Objects.nonNull(str)) ? DateUtils.strToDate(str) : null;
+    }
+
     public String getRegisteredAt() {
         return (Objects.nonNull(this.registeredAt)) ? DateUtils.dateToStr(this.registeredAt) : null;
     }
 
     public void setRegisteredAt(final String str) {
         this.registeredAt = (Objects.nonNull(str)) ? DateUtils.strToDate(str) : null;
+    }
+
+    public Boolean getIsEnabledSubscription() {
+        return isEnabledSubscription;
+    }
+
+    public void setIsEnabledSubscription(final Boolean isEnabledSubscription) {
+        this.isEnabledSubscription = isEnabledSubscription;
     }
 
     public UserStatusType getStatus() {
@@ -246,7 +270,13 @@ public class User extends BaseEntity implements Serializable {
         if (!Objects.equals(this.rating, other.rating)) {
             return false;
         }
+        if (!Objects.equals(this.birthdayAt, other.birthdayAt)) {
+            return false;
+        }
         if (!Objects.equals(this.registeredAt, other.registeredAt)) {
+            return false;
+        }
+        if (!Objects.equals(this.isEnabledSubscription, other.isEnabledSubscription)) {
             return false;
         }
         return this.status == other.status;
@@ -262,13 +292,15 @@ public class User extends BaseEntity implements Serializable {
         hash = 29 * hash + Objects.hashCode(this.phone);
         hash = 29 * hash + Objects.hashCode(this.gender);
         hash = 29 * hash + Objects.hashCode(this.rating);
+        hash = 29 * hash + Objects.hashCode(this.birthdayAt);
         hash = 29 * hash + Objects.hashCode(this.registeredAt);
+        hash = 29 * hash + Objects.hashCode(this.isEnabledSubscription);
         hash = 29 * hash + Objects.hashCode(this.status);
         return hash;
     }
 
     @Override
     public String toString() {
-        return String.format("User {id: %d, login: %s, name: %s, age: %d, phone: %s, gender: %s, rating: %f, status: %s, registeredAt: %s, inherited: %s}", this.id, this.login, this.name, this.age, this.phone, this.gender, this.rating, this.status, this.registeredAt, super.toString());
+        return String.format("User {id: %d, login: %s, name: %s, age: %d, phone: %s, gender: %s, rating: %f, birthdayAt: %s, isEnabledSubscription: %s, status: %s, registeredAt: %s, inherited: %s}", this.id, this.login, this.name, this.age, this.phone, this.gender, this.rating, this.birthdayAt, this.isEnabledSubscription, this.status, this.registeredAt, super.toString());
     }
 }

@@ -31,6 +31,7 @@ import javax.persistence.Temporal;
 import javax.persistence.UniqueConstraint;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -60,6 +61,7 @@ public class Subscription extends BaseEntity implements Serializable {
     @JacksonXmlProperty(localName = "name")
     private String name;
 
+    @DateTimeFormat(pattern = DateUtils.DEFAULT_DATE_FORMAT_PATTERN)
     @Column(name = "expired_at", nullable = true)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     @JacksonXmlProperty(localName = "expireAt")
@@ -98,13 +100,6 @@ public class Subscription extends BaseEntity implements Serializable {
         this.name = name;
     }
 
-//    public Date getExpireAt() {
-//        return expireAt;
-//    }
-//
-//    public void setExpireAt(final Date expireAt) {
-//        this.expireAt = expireAt;
-//    }
     public String getExpireAt() {
         return (Objects.nonNull(this.expireAt)) ? DateUtils.dateToStr(this.expireAt) : null;
     }

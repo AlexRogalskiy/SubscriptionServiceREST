@@ -2,6 +2,7 @@ package com.wildbeeslabs.rest.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -29,12 +30,17 @@ public class SubscriptionDTO extends BaseDTO {
 
     @JacksonXmlProperty(localName = "id")
     private Long id;
+
     @JacksonXmlProperty(localName = "name")
     private String name;
+
     @JacksonXmlProperty(localName = "expireAt")
+    @JsonProperty("expireAt")
     private String expireAt;
+
     @JacksonXmlProperty(localName = "type")
     private SubscriptionStatusType type;
+
     //@JsonBackReference(value = "subOrderToSubscription")
     @JsonIgnore
     @JacksonXmlProperty(localName = "users")
