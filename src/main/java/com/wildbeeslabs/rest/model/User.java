@@ -4,11 +4,10 @@ import com.wildbeeslabs.rest.utils.DateUtils;
 import com.wildbeeslabs.rest.model.validator.Phone;
 import com.wildbeeslabs.rest.model.validator.BigDecimalRange;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
+//import com.fasterxml.jackson.annotation.JsonIgnore;
+//import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+//import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+//import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -54,8 +53,8 @@ import org.springframework.format.annotation.DateTimeFormat;
     @UniqueConstraint(columnNames = "login")
 })
 @Inheritance(strategy = InheritanceType.JOINED)
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@JacksonXmlRootElement(localName = "user")
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//@JacksonXmlRootElement(localName = "user")
 public class User extends BaseEntity implements Serializable {
 
     @Id
@@ -67,30 +66,30 @@ public class User extends BaseEntity implements Serializable {
     @Email(message = "Field <login> is only allowed in the following format=user@domain.com")
     @NotBlank(message = "Field <login> cannot be blank")
     @Column(name = "login", nullable = false, unique = true, updatable = false)
-    @JacksonXmlProperty(localName = "login")
+    //@JacksonXmlProperty(localName = "login")
     private String login;
 
     @Size(min = 2, max = 50, message = "Field <name> is only allowed in the following length range=[min={%d}, max={%d}]")
     @NotBlank(message = "Field <name> cannot be blank")
     @Column(name = "name", nullable = false)
-    @JacksonXmlProperty(localName = "name")
+    //@JacksonXmlProperty(localName = "name")
     private String name;
 
     @Range(min = 1, max = 150, message = "Field <age> is only allowed in the following range=[min={%d}, max={%d}]")
     @Column(name = "age", nullable = true)
-    @JacksonXmlProperty(localName = "age")
+    //@JacksonXmlProperty(localName = "age")
     private Integer age;
 
     @Size(min = 5, max = 25, message = "Field <phone> is only allowed in the following length range=[min={%d}, max={%d}]")
     @Phone(message = "Field <phone> is only allowed in the following format: +[0-9]")
     @Column(name = "phone", nullable = true)
-    @JacksonXmlProperty(localName = "phone")
+    //@JacksonXmlProperty(localName = "phone")
     private String phone;
 
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Field <gender> cannot be null")
     @Column(name = "gender", nullable = false)
-    @JacksonXmlProperty(localName = "gender")
+    //@JacksonXmlProperty(localName = "gender")
     private UserGenderType gender;
 
     public static enum UserGenderType {
@@ -101,29 +100,29 @@ public class User extends BaseEntity implements Serializable {
     //@Digits(integer = 10 /*precision*/, fraction = 2 /*scale*/)
     //@Range(min = 1, max = 100, message = "Field <rating> is only allowed within the following range=[min={%d}, max={%d}]")
     @Column(name = "rating", precision = 10, scale = 2, nullable = false)
-    @JacksonXmlProperty(localName = "rating")
+    //@JacksonXmlProperty(localName = "rating")
     private BigDecimal rating;
 
     @Past
     @DateTimeFormat(pattern = DateUtils.DEFAULT_DATE_FORMAT_PATTERN)
     @Column(name = "birthday_at", nullable = true)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    @JacksonXmlProperty(localName = "birthdayAt")
+    //@JacksonXmlProperty(localName = "birthdayAt")
     private Date birthdayAt;
 
     @DateTimeFormat(pattern = DateUtils.DEFAULT_DATE_FORMAT_PATTERN)
     @Column(name = "registered_at", nullable = true, insertable = false)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    @JacksonXmlProperty(localName = "registeredAt")
+    //@JacksonXmlProperty(localName = "registeredAt")
     private Date registeredAt;
 
     @Column(name = "isEnabledSubscription", nullable = true)
-    @JacksonXmlProperty(localName = "isEnabledSubscription")
+    //@JacksonXmlProperty(localName = "isEnabledSubscription")
     private Boolean isEnabledSubscription;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    @JacksonXmlProperty(localName = "status")
+    //@JacksonXmlProperty(localName = "status")
     private UserStatusType status;
 
     public static enum UserStatusType {
@@ -133,8 +132,8 @@ public class User extends BaseEntity implements Serializable {
     @OneToMany(mappedBy = "pk.user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @Column(name = "subscriptions", nullable = true)
     //@JsonBackReference(value = "userOrderToUser")
-    @JsonIgnore
-    @JacksonXmlProperty(localName = "subscriptions")
+    //@JsonIgnore
+    //@JacksonXmlProperty(localName = "subscriptions")
     private final Set<UserSubOrder> subOrders = new HashSet<>();
 
     public Long getId() {

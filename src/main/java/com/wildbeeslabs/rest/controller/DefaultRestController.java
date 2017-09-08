@@ -24,4 +24,13 @@ public class DefaultRestController {
         model.addAttribute("appName", appName);
         return "home";
     }
+
+//    @RequestMapping(value = "/", method = RequestMethod.POST)
+//    public String submitForm(final @Valid Subscriber subscriber, final BindingResult result, final Model m) {
+//        if (result.hasErrors()) {
+//            return "formPage";
+//        }
+//        m.addAttribute("message", "Successfully saved person: " + subscriber.toString());
+//        return "formPage";
+//    }
 }

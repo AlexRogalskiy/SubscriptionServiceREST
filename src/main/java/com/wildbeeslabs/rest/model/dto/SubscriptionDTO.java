@@ -44,6 +44,7 @@ public class SubscriptionDTO extends BaseDTO {
     //@JsonBackReference(value = "subOrderToSubscription")
     @JsonIgnore
     @JacksonXmlProperty(localName = "users")
+//    @JacksonXmlElementWrapper(localName = "subscriptions", useWrapping = false)
     private final Set<UserSubOrderDTO> userOrders = new HashSet<>();
 
     public Long getId() {

@@ -42,7 +42,7 @@ public class SubscriptionController<T extends Subscription, E extends Subscripti
      *
      * @return list of subscription entities
      */
-    @RequestMapping(value = "/subscriptions", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/subscriptions", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> getAllSubscriptions() {
         return super.getAll();
@@ -54,7 +54,7 @@ public class SubscriptionController<T extends Subscription, E extends Subscripti
      * @param id - subscription identifier
      * @return subscription entity
      */
-    @RequestMapping(value = "/subscription/{id}", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/subscription/{id}", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> getSubscriptionById(@PathVariable("id") Long id) {
         return super.getById(id);
@@ -67,7 +67,7 @@ public class SubscriptionController<T extends Subscription, E extends Subscripti
      * @param ucBuilder - URI component builder
      * @return response status code
      */
-    @RequestMapping(value = "/subscription", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/subscription", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> createSubscription(@RequestBody @Valid E subscriptionDto, UriComponentsBuilder ucBuilder) {
         return super.create(subscriptionDto);
@@ -80,7 +80,7 @@ public class SubscriptionController<T extends Subscription, E extends Subscripti
      * @param subscriptionDto - subscription data transfer object
      * @return updated subscription entity
      */
-    @RequestMapping(value = "/subscription/{id}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/subscription/{id}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> updateSubscription(@PathVariable("id") Long id, @RequestBody @Valid E subscriptionDto) {
         return super.update(id, subscriptionDto);
@@ -92,7 +92,7 @@ public class SubscriptionController<T extends Subscription, E extends Subscripti
      * @param id - subscription identifier
      * @return response status code
      */
-    @RequestMapping(value = "/subscription/{id}", method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/subscription/{id}", method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> deleteSubscription(@PathVariable("id") Long id) {
         return super.delete(id);
@@ -103,7 +103,7 @@ public class SubscriptionController<T extends Subscription, E extends Subscripti
      *
      * @return response status code
      */
-    @RequestMapping(value = "/subscriptions", method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/subscriptions", method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<?> deleteAllSubscriptions() {
@@ -120,11 +120,21 @@ public class SubscriptionController<T extends Subscription, E extends Subscripti
         return subscriptionService;
     }
 
+    /**
+     * Get default entity class instance
+     *
+     * @return entity class instance
+     */
     @Override
     protected Class<T> getEntityClass() {
         return (Class<T>) Subscription.class;
     }
 
+    /**
+     * Get default DTO class instance
+     *
+     * @return entity class instance
+     */
     @Override
     protected Class<E> getDtoClass() {
         return (Class<E>) SubscriptionDTO.class;

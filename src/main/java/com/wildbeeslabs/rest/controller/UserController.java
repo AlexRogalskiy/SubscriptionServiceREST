@@ -8,7 +8,6 @@ import com.wildbeeslabs.rest.model.dto.UserDTO;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +60,7 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
      * @param subDateOrder - date order (before / after)
      * @return list of user entities
      */
-    @RequestMapping(value = "/users", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/users", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> getAllUsers(@RequestParam(name = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date subDate, @RequestParam(name = "type", required = false) Subscription.SubscriptionStatusType subType, @RequestParam(name = "order", required = false, defaultValue = "false") Boolean subDateOrder) {
         LOGGER.info("Fetching all users by subscription date {}, type {}, date order {} (1 - before, 0 - after)", subDate, subType, subDateOrder);
@@ -71,7 +70,7 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
         if (userList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(userList.stream().map(item -> convertToDTO(item, getDtoClass())).collect(Collectors.toList()), HttpStatus.OK);
+        return new ResponseEntity<>(convertToDTOList(userList, getDtoClass()), HttpStatus.OK);
     }
 
     /**
@@ -80,7 +79,7 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
      * @param id - user identifier
      * @return user entity
      */
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> getUserById(@PathVariable("id") Long id) {
         return super.getById(id);
@@ -93,7 +92,7 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
      * @param ucBuilder - URI component builder
      * @return response status code
      */
-    @RequestMapping(value = "/user", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/user", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> createUser(@RequestBody @Valid E userDto, UriComponentsBuilder ucBuilder) {
         return super.create(userDto);
@@ -106,7 +105,7 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
      * @param userDto - user data transfer object
      * @return updated user entity
      */
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @RequestBody @Valid E userDto) {
         return super.update(id, userDto);
@@ -118,7 +117,7 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
      * @param id - user identifier
      * @return response status code
      */
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
         return super.delete(id);
@@ -129,7 +128,7 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
      *
      * @return response status code
      */
-    @RequestMapping(value = "/users", method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/users", method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<?> deleteAllUsers() {
@@ -146,11 +145,21 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
         return userService;
     }
 
+    /**
+     * Get default entity class instance
+     *
+     * @return entity class instance
+     */
     @Override
     protected Class<T> getEntityClass() {
         return (Class<T>) User.class;
     }
 
+    /**
+     * Get default DTO class instance
+     *
+     * @return entity class instance
+     */
     @Override
     protected Class<E> getDtoClass() {
         return (Class<E>) UserDTO.class;

@@ -44,6 +44,10 @@ datasource:
       format_sql: true
       dialect: org.hibernate.dialect.H2Dialect
       globally_quoted_identifiers: true
+      connection:
+          characterEncoding: UTF-8
+          charSet: UTF-8
+          useUnicode: true
 ---
 spring:
   profiles: local, default
@@ -79,3 +83,7 @@ datasource:
       format_sql: true
       dialect: org.hibernate.dialect.MySQLDialect
       globally_quoted_identifiers: true
+      connection:
+        characterEncoding: UTF-8
+        charSet: UTF-8
+        useUnicode: true

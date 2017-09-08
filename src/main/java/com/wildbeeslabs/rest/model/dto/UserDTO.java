@@ -1,13 +1,13 @@
 package com.wildbeeslabs.rest.model.dto;
 
 import com.wildbeeslabs.rest.model.User.UserStatusType;
+import com.wildbeeslabs.rest.model.User.UserGenderType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import com.wildbeeslabs.rest.model.User.UserGenderType;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -58,7 +58,7 @@ public class UserDTO extends BaseDTO {
     @JsonProperty("registeredAt")
     private String registeredAt;
 
-    @JacksonXmlProperty(localName = "isEnabledSubscription")
+    @JacksonXmlProperty(localName = "enableSubscription")
     private Boolean isEnabledSubscription;
 
     @JacksonXmlProperty(localName = "status")
@@ -67,6 +67,7 @@ public class UserDTO extends BaseDTO {
     //@JsonBackReference(value = "userOrderToUser")
     @JsonIgnore
     @JacksonXmlProperty(localName = "subscriptions")
+    //@JacksonXmlElementWrapper(localName = "subscriptions", useWrapping = false)
     private final Set<UserSubOrderDTO> subOrders = new HashSet<>();
 
     public Long getId() {
