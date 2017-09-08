@@ -153,8 +153,8 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
      * @return entity class instance
      */
     @Override
-    protected Class<T> getEntityClass() {
-        return (Class<T>) User.class;
+    protected Class<? extends T> getEntityClass() {
+        return (Class<? extends T>) User.class;
     }
 
     /**
@@ -163,8 +163,8 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
      * @return entity class instance
      */
     @Override
-    protected Class<E> getDtoClass() {
-        return (Class<E>) UserDTO.class;
+    protected Class<? extends E> getDtoClass() {
+        return (Class<? extends E>) UserDTO.class;
     }
 
     @Override

@@ -128,8 +128,8 @@ public class SubscriptionController<T extends Subscription, E extends Subscripti
      * @return entity class instance
      */
     @Override
-    protected Class<T> getEntityClass() {
-        return (Class<T>) Subscription.class;
+    protected Class<? extends T> getEntityClass() {
+        return (Class<? extends T>) Subscription.class;
     }
 
     /**
@@ -138,8 +138,8 @@ public class SubscriptionController<T extends Subscription, E extends Subscripti
      * @return entity class instance
      */
     @Override
-    protected Class<E> getDtoClass() {
-        return (Class<E>) SubscriptionDTO.class;
+    protected Class<? extends E> getDtoClass() {
+        return (Class<? extends E>) SubscriptionDTO.class;
     }
 
     @Override

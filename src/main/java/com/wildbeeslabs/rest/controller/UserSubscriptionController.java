@@ -274,8 +274,8 @@ public class UserSubscriptionController<T extends UserSubOrder, E extends UserSu
      * @return entity class instance
      */
     @Override
-    protected Class<T> getEntityClass() {
-        return (Class<T>) UserSubOrder.class;
+    protected Class<? extends T> getEntityClass() {
+        return (Class<? extends T>) UserSubOrder.class;
     }
 
     /**
@@ -284,8 +284,8 @@ public class UserSubscriptionController<T extends UserSubOrder, E extends UserSu
      * @return entity class instance
      */
     @Override
-    protected Class<E> getDtoClass() {
-        return (Class<E>) UserSubOrderDTO.class;
+    protected Class<? extends E> getDtoClass() {
+        return (Class<? extends E>) UserSubOrderDTO.class;
     }
 
     @Override

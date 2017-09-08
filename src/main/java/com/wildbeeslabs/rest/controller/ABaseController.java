@@ -182,5 +182,7 @@ public abstract class ABaseController<T extends BaseEntity, E extends BaseDTO> i
 
     protected abstract Class<? extends E> getDtoClass();
 
-    protected abstract Class<? extends BaseDTOListWrapper> getDtoListClass();
+    protected Class<? extends BaseDTOListWrapper> getDtoListClass() {
+        return BaseDTOListWrapper.class;
+    }
 }
