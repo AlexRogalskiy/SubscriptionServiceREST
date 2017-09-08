@@ -30,7 +30,7 @@ import java.util.List;
 
 /**
  *
- * UserSubOrderListDTO REST Application Model
+ * UserSubOrderDTOListWrapper REST Application Model
  *
  * @author Alex
  * @version 1.0.0
@@ -38,17 +38,10 @@ import java.util.List;
  * @param <E>
  */
 @JacksonXmlRootElement(localName = "userSubOrders")
-public class UserSubOrderListDTO<E> {
+public class UserSubOrderDTOListWrapper<E> extends BaseDTOListWrapper<E> {
 
     @JacksonXmlElementWrapper(useWrapping = false)
     @JacksonXmlProperty(localName = "userSubOrder")
-    private List<E> items = null;
-
-    public List<E> getItems() {
-        return items;
-    }
-
-    public void setItems(final List<E> items) {
-        this.items = items;
-    }
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass")
+    protected List<? extends E> items = null;
 }

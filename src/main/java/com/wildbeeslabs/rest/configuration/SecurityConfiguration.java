@@ -5,6 +5,7 @@ package com.wildbeeslabs.rest.configuration;
 import com.wildbeeslabs.rest.handler.CustomAccessDeniedHandler;
 import com.wildbeeslabs.rest.handler.CustomAuthenticationSuccessHandler;
 import com.wildbeeslabs.rest.security.CustomAuthenticationEntryPoint;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
@@ -66,22 +67,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(final HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .httpBasic().realmName("REST API")
-//                .exceptionHandling()
-//                .accessDeniedHandler(accessDeniedHandler)
-//                .authenticationEntryPoint(restAuthenticationEntryPoint)
+                //                .exceptionHandling()
+                //                .accessDeniedHandler(accessDeniedHandler)
+                //                .authenticationEntryPoint(restAuthenticationEntryPoint)
                 .and().authorizeRequests()
                 .antMatchers("/api/**").hasAnyRole("USER", "ADMIN", "DBA")
                 .antMatchers("/*").permitAll()
                 //.anyRequest().authenticated()
-                //.and().formLogin().loginPage("/login")
                 //.usernameParameter("ssid").passwordParameter("password")
                 //.and().exceptionHandling().accessDeniedPage("/denied")
-                //.and().exceptionHandling().accessDeniedHandler(accessDeniedHandler)
-                
-//                .antMatchers("/api/**").authenticated()
-//                .and().formLogin().loginPage("/api/login")
-//                .successHandler(authenticationSuccessHandler)
-//                .failureHandler(new SimpleUrlAuthenticationFailureHandler())
+                //                .antMatchers("/api/**").authenticated()
+                //                .and().formLogin().loginPage("/api/login")
+                //                .successHandler(authenticationSuccessHandler)
+                //                .failureHandler(new SimpleUrlAuthenticationFailureHandler())
                 .and().headers().cacheControl().disable()
                 .and().logout();
     }

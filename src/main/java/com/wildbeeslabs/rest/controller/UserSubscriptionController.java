@@ -6,12 +6,16 @@ import com.wildbeeslabs.rest.exception.ResourceNotFoundException;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.UserSubOrder;
+import com.wildbeeslabs.rest.model.dto.BaseDTOListWrapper;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
+import com.wildbeeslabs.rest.model.dto.SubscriptionDTOListWrapper;
 import com.wildbeeslabs.rest.model.dto.UserDTO;
+import com.wildbeeslabs.rest.model.dto.UserDTOListWrapper;
 import com.wildbeeslabs.rest.service.interfaces.SubscriptionService;
 import com.wildbeeslabs.rest.service.interfaces.UserService;
 import com.wildbeeslabs.rest.service.interfaces.UserSubOrderService;
 import com.wildbeeslabs.rest.model.dto.UserSubOrderDTO;
+import com.wildbeeslabs.rest.model.dto.UserSubOrderDTOListWrapper;
 
 import java.util.List;
 import java.util.Objects;
@@ -58,7 +62,7 @@ public class UserSubscriptionController<T extends UserSubOrder, E extends UserSu
      * @param userId - user identifier
      * @return list of subscription entities
      */
-    @RequestMapping(value = "/user/{userId}/subscriptions", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/user/{userId:[\\d]+}/subscriptions", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> getSubscriptionsByUserId(@PathVariable("userId") Long userId) {
         LOGGER.info("Fetching subscriptions by user id {}", userId);
@@ -76,7 +80,7 @@ public class UserSubscriptionController<T extends UserSubOrder, E extends UserSu
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         //return new ResponseEntity<>(subscriptions.stream().map(item -> convertToDTO(item, SubscriptionDTO.class)).collect(Collectors.toList()), HttpStatus.OK);
-        return new ResponseEntity<>(convertToDTOList(subscriptions, SubscriptionDTO.class), HttpStatus.OK);
+        return new ResponseEntity<>(convertToDTOList(subscriptions, SubscriptionDTO.class, SubscriptionDTOListWrapper.class), HttpStatus.OK);
     }
 
     /**
@@ -86,7 +90,7 @@ public class UserSubscriptionController<T extends UserSubOrder, E extends UserSu
      * @param subscriptionId - subscription identifier
      * @return subscription order entity
      */
-    @RequestMapping(value = "/user/{userId}/subscription/{subscriptionId}", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/user/{userId:[\\d]+}/subscription/{subscriptionId:[\\d]+}", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> getSubscriptionsByUserId(@PathVariable("userId") Long userId, @PathVariable("subscriptionId") Long subscriptionId) {
         LOGGER.info("Fetching subscription order by subscription id {} and user id {}", subscriptionId, userId);
@@ -113,7 +117,7 @@ public class UserSubscriptionController<T extends UserSubOrder, E extends UserSu
      * @param ucBuilder - URI component builder
      * @return response status code
      */
-    @RequestMapping(value = "/user/{userId}/subscription", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/user/{userId:[\\d]+}/subscription", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> createSubscriptionByUserId(@PathVariable("userId") Long userId, @RequestBody @Valid E orderDto, UriComponentsBuilder ucBuilder) {
         LOGGER.info("Creating subscription order by user id {}", userId);
@@ -152,7 +156,7 @@ public class UserSubscriptionController<T extends UserSubOrder, E extends UserSu
      * @param orderDto - subscription order data transfer object
      * @return updated subscription order entity
      */
-    @RequestMapping(value = "/user/{userId}/subscription/{subscriptionId}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/user/{userId:[\\d]+}/subscription/{subscriptionId:[\\d]+}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> updateSubscriptionsByUserIdAndSubscriptionId(@PathVariable("userId") Long userId, @PathVariable("subscriptionId") Long subscriptionId, @RequestBody @Valid E orderDto) {
         LOGGER.info("Updating subscription order by subscription id {} and user id {}", subscriptionId, userId);
@@ -185,7 +189,7 @@ public class UserSubscriptionController<T extends UserSubOrder, E extends UserSu
      * @param subscriptionId - subscription identifier
      * @return response status code
      */
-    @RequestMapping(value = "/user/{userId}/subscription/{subscriptionId}", method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/user/{userId:[\\d]+}/subscription/{subscriptionId:[\\d]+}", method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> deleteSubscriptionsByUserId(@PathVariable("userId") Long userId, @PathVariable("subscriptionId") Long subscriptionId) {
         LOGGER.info("Deleting subscription order by subscription id {} and user id {}", subscriptionId, userId);
@@ -211,7 +215,7 @@ public class UserSubscriptionController<T extends UserSubOrder, E extends UserSu
      * @param userId - user identifier
      * @return response status code
      */
-    @RequestMapping(value = "/user/{userId}/subscriptions", method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/user/{userId:[\\d]+}/subscriptions", method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> deleteAllSubscriptions(@PathVariable("userId") Long userId) {
         LOGGER.info("Deleting all subscription orders by user id {}", userId);
@@ -233,7 +237,7 @@ public class UserSubscriptionController<T extends UserSubOrder, E extends UserSu
      * @param subscriptionId - subscription identifier
      * @return list of user entities
      */
-    @RequestMapping(value = "/subscription/{subscriptionId}/users", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/subscription/{subscriptionId:[\\d]+}/users", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> getUsersBySubscriptionId(@PathVariable("subscriptionId") Long subscriptionId) {
         LOGGER.info("Fetching users by subscription id {}", subscriptionId);
@@ -251,7 +255,7 @@ public class UserSubscriptionController<T extends UserSubOrder, E extends UserSu
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         //return new ResponseEntity<>(users.stream().map(item -> convertToDTO(item, UserDTO.class)).collect(Collectors.toList()), HttpStatus.OK);
-        return new ResponseEntity<>(convertToDTOList(users, UserDTO.class), HttpStatus.OK);
+        return new ResponseEntity<>(convertToDTOList(users, UserDTO.class, UserDTOListWrapper.class), HttpStatus.OK);
     }
 
     /**
@@ -282,5 +286,10 @@ public class UserSubscriptionController<T extends UserSubOrder, E extends UserSu
     @Override
     protected Class<E> getDtoClass() {
         return (Class<E>) UserSubOrderDTO.class;
+    }
+
+    @Override
+    protected Class<? extends BaseDTOListWrapper> getDtoListClass() {
+        return UserSubOrderDTOListWrapper.class;
     }
 }

@@ -3,7 +3,9 @@ package com.wildbeeslabs.rest.controller;
 import com.wildbeeslabs.rest.service.interfaces.UserService;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.Subscription;
+import com.wildbeeslabs.rest.model.dto.BaseDTOListWrapper;
 import com.wildbeeslabs.rest.model.dto.UserDTO;
+import com.wildbeeslabs.rest.model.dto.UserDTOListWrapper;
 
 import java.util.Date;
 import java.util.List;
@@ -70,7 +72,7 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
         if (userList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(convertToDTOList(userList, getDtoClass()), HttpStatus.OK);
+        return new ResponseEntity<>(convertToDTOList(userList, getDtoClass(), getDtoListClass()), HttpStatus.OK);
     }
 
     /**
@@ -79,7 +81,7 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
      * @param id - user identifier
      * @return user entity
      */
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/user/{id:[\\d]+}", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> getUserById(@PathVariable("id") Long id) {
         return super.getById(id);
@@ -105,7 +107,7 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
      * @param userDto - user data transfer object
      * @return updated user entity
      */
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/user/{id:[\\d]+}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @RequestBody @Valid E userDto) {
         return super.update(id, userDto);
@@ -117,7 +119,7 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
      * @param id - user identifier
      * @return response status code
      */
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/user/{id:[\\d]+}", method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
         return super.delete(id);
@@ -163,5 +165,10 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
     @Override
     protected Class<E> getDtoClass() {
         return (Class<E>) UserDTO.class;
+    }
+
+    @Override
+    protected Class<? extends BaseDTOListWrapper> getDtoListClass() {
+        return UserDTOListWrapper.class;
     }
 }

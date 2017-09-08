@@ -2,7 +2,9 @@ package com.wildbeeslabs.rest.controller;
 
 import com.wildbeeslabs.rest.service.interfaces.SubscriptionService;
 import com.wildbeeslabs.rest.model.Subscription;
+import com.wildbeeslabs.rest.model.dto.BaseDTOListWrapper;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
+import com.wildbeeslabs.rest.model.dto.SubscriptionDTOListWrapper;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +56,7 @@ public class SubscriptionController<T extends Subscription, E extends Subscripti
      * @param id - subscription identifier
      * @return subscription entity
      */
-    @RequestMapping(value = "/subscription/{id}", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/subscription/{id:[\\d]+}", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> getSubscriptionById(@PathVariable("id") Long id) {
         return super.getById(id);
@@ -80,7 +82,7 @@ public class SubscriptionController<T extends Subscription, E extends Subscripti
      * @param subscriptionDto - subscription data transfer object
      * @return updated subscription entity
      */
-    @RequestMapping(value = "/subscription/{id}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/subscription/{id:[\\d]+}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> updateSubscription(@PathVariable("id") Long id, @RequestBody @Valid E subscriptionDto) {
         return super.update(id, subscriptionDto);
@@ -92,7 +94,7 @@ public class SubscriptionController<T extends Subscription, E extends Subscripti
      * @param id - subscription identifier
      * @return response status code
      */
-    @RequestMapping(value = "/subscription/{id}", method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/subscription/{id:[\\d]+}", method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> deleteSubscription(@PathVariable("id") Long id) {
         return super.delete(id);
@@ -138,5 +140,10 @@ public class SubscriptionController<T extends Subscription, E extends Subscripti
     @Override
     protected Class<E> getDtoClass() {
         return (Class<E>) SubscriptionDTO.class;
+    }
+
+    @Override
+    protected Class<? extends BaseDTOListWrapper> getDtoListClass() {
+        return SubscriptionDTOListWrapper.class;
     }
 }

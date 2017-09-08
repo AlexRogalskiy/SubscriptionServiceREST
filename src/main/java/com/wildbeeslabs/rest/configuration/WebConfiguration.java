@@ -23,12 +23,17 @@
  */
 package com.wildbeeslabs.rest.configuration;
 
+import org.springframework.context.MessageSource;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.MediaType;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 //import org.springframework.http.converter.HttpMessageConverter;
 //import org.springframework.http.converter.StringHttpMessageConverter;
@@ -69,12 +74,14 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 //
 //        return xmlConverter;
 ////    }
-//    @Bean
-//    public MessageSource messageSource() {
-//        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-//        messageSource.setBasename("/src/main/resources");
-//        return messageSource;
-//    }
+    @Bean
+    public MessageSource messageSource() {
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasename("messages");
+        messageSource.setCacheSeconds(1);
+        return messageSource;
+    }
+
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
         configurer.defaultContentType(MediaType.APPLICATION_JSON);
@@ -88,8 +95,14 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 //    @Bean
 //    public InternalResourceViewResolver viewResolver() {
 //        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-//        resolver.setPrefix("/WEB-INF/view/");
+//        resolver.setPrefix("/templates/");
 //        resolver.setSuffix(".html");
 //        return resolver;
 //    }
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        if (!registry.hasMappingForPattern("/static/**")) {
+            registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+        }
+    }
 }

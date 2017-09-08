@@ -1,12 +1,10 @@
 package com.wildbeeslabs.rest.controller;
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.wildbeeslabs.rest.exception.ResourceAlreadyExistException;
 import com.wildbeeslabs.rest.exception.ResourceNotFoundException;
 import com.wildbeeslabs.rest.model.BaseEntity;
 import com.wildbeeslabs.rest.model.dto.BaseDTO;
+import com.wildbeeslabs.rest.model.dto.BaseDTOListWrapper;
 import com.wildbeeslabs.rest.service.interfaces.BaseService;
 
 import java.beans.PropertyEditorSupport;
@@ -14,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -62,7 +61,7 @@ public abstract class ABaseController<T extends BaseEntity, E extends BaseDTO> i
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         //return new ResponseEntity<>(items.stream().map(item -> convertToDTO(item, getDtoClass())).collect(Collectors.toList()), HttpStatus.OK);
-        return new ResponseEntity<>(convertToDTOList(items, getDtoClass()), HttpStatus.OK);
+        return new ResponseEntity<>(convertToDTOList(items, getDtoClass(), getDtoListClass()), HttpStatus.OK);
     }
 
     @Override
@@ -139,22 +138,6 @@ public abstract class ABaseController<T extends BaseEntity, E extends BaseDTO> i
         }
     }
 
-    @JacksonXmlRootElement(localName = "items")
-    protected class DTOListWrapper<E> {
-
-        @JacksonXmlElementWrapper(useWrapping = false)
-        @JacksonXmlProperty(localName = "item")
-        private List<E> items = null;
-
-        public List<E> getItems() {
-            return items;
-        }
-
-        public void setItems(final List<E> items) {
-            this.items = items;
-        }
-    }
-
 //    protected E convertToDTO(final T itemEntity, final Class<? extends E> clazz) {
 //        E itemDto = modelMapper.map(itemEntity, clazz);
 //        return itemDto;
@@ -165,12 +148,17 @@ public abstract class ABaseController<T extends BaseEntity, E extends BaseDTO> i
         return itemDto;
     }
 
-    protected <M, N> DTOListWrapper<? extends N> convertToDTOList(final List<? extends M> itemEntityList, final Class<? extends N> clazz) {
-        List<N> itemDtoList = itemEntityList.stream()
+    protected <M, N> BaseDTOListWrapper<? extends N> convertToDTOList(final List<? extends M> itemEntityList, final Class<? extends N> clazz, final Class<? extends BaseDTOListWrapper> classListWrapper) {
+        List<? extends N> itemDtoList = itemEntityList.stream()
                 .map(item -> convertToDTO(item, clazz))
                 .collect(Collectors.toCollection(LinkedList::new));
-        DTOListWrapper<N> listWrapper = new DTOListWrapper();
-        listWrapper.setItems(itemDtoList);
+        BaseDTOListWrapper<N> listWrapper = null;
+        try {
+            listWrapper = classListWrapper.newInstance();
+            listWrapper.setItems(itemDtoList);
+        } catch (InstantiationException | IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(ABaseController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return listWrapper;
     }
 
@@ -183,14 +171,16 @@ public abstract class ABaseController<T extends BaseEntity, E extends BaseDTO> i
         return itemEntity;
     }
 
-    protected <N, M> List<? extends M> convertToEntityList(final DTOListWrapper<? extends N> itemDtoList, final Class<? extends M> clazz) {
+    protected <N, M> List<? extends M> convertToEntityList(final BaseDTOListWrapper<? extends N> itemDtoList, final Class<? extends M> clazz) {
         List<M> itemEntityList = itemDtoList.getItems().stream()
                 .map(item -> convertToEntity(item, clazz))
                 .collect(Collectors.toCollection(LinkedList::new));
         return itemEntityList;
     }
 
-    abstract protected Class<T> getEntityClass();
+    protected abstract Class<? extends T> getEntityClass();
 
-    abstract protected Class<E> getDtoClass();
+    protected abstract Class<? extends E> getDtoClass();
+
+    protected abstract Class<? extends BaseDTOListWrapper> getDtoListClass();
 }
