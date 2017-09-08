@@ -1,6 +1,7 @@
 package com.wildbeeslabs.rest.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
@@ -19,6 +20,7 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public abstract class BaseDTO implements Serializable {
 
     @JacksonXmlProperty(localName = "createdAt")
