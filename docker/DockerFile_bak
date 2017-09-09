@@ -1,0 +1,15 @@
+# Dockerfile
+FROM openjdk:8-jdk-alpine
+LABEL Description="Newsletter subscription service based on JAVA & SpringBoot as a default repository image" Vendor="WildBeesLabs" Version="1.0"
+
+EXPOSE 8080
+VOLUME /tmp
+
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+ADD . /usr/src/app
+
+RUN mvn install
+#ADD target/rest-api-newsletter-subscription.war app.war
+ENV JAVA_OPTS="-Dspring.profiles.active=local"
+ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /usr/src/app/target/target/rest-api-newsletter-subscription.war" ]

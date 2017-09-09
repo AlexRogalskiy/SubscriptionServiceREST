@@ -1,0 +1,89 @@
+server:
+  port: 8080
+  contextPath: /newsletterSub
+  basePath: http://localhost
+  error:
+      path: /error
+      whitelabel:
+          enabled: false
+#security:
+    #basic:
+        #enabled: true
+---
+spring:
+  profiles: prod
+  resources:
+    #staticLocations: classpath:/static/
+    #cachePeriod: 0
+  application:
+      name: REST API newsletter subscription
+      thymeleaf:
+          cache: false
+          enabled: true
+          prefix: classpath:/templates/
+          suffix: .html
+          checkTemplateLocation: true
+          mode: LEGACYHTML5
+          encoding: UTF-8
+          contentType: text/html
+  main:
+      banner-mode: "off"
+datasource:
+  subscriptionapp:
+    url: jdbc:h2:~/subscriptiondb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+    defaultSchema:
+    maxPoolSize: 20
+    hibernate:
+      hbm2ddl:
+        method: create-drop
+        import_files: subscriptiondb_dml.sql
+      show_sql: true
+      format_sql: true
+      dialect: org.hibernate.dialect.H2Dialect
+      globally_quoted_identifiers: true
+      connection:
+          characterEncoding: UTF-8
+          charSet: UTF-8
+          useUnicode: true
+---
+spring:
+  profiles: local, default
+  resources:
+    #staticLocations: classpath:/static/
+    #cachePeriod: 0
+  application:
+      name: REST API newsletter subscription
+      thymeleaf:
+          cache: false
+          enabled: true
+          prefix: classpath:/templates/
+          suffix: .html
+          checkTemplateLocation: true
+          mode: LEGACYHTML5
+          encoding: UTF-8
+          contentType: text/html
+  main:
+      banner-mode: "console"
+datasource:
+  subscriptionapp:
+    url: jdbc:mysql://localhost:3306/subscriptiondb?createDatabaseIfNotExist=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=UTF-8&characterSetResults=UTF-8
+    username: root
+    password: toor
+    driverClassName: com.mysql.jdbc.Driver
+    defaultSchema:
+    maxPoolSize: 10
+    hibernate:
+      hbm2ddl:
+        method: create-drop
+        import_files: subscriptiondb_dml.sql
+      show_sql: true
+      format_sql: true
+      dialect: org.hibernate.dialect.MySQLDialect
+      globally_quoted_identifiers: true
+      connection:
+        characterEncoding: UTF-8
+        charSet: UTF-8
+        useUnicode: true

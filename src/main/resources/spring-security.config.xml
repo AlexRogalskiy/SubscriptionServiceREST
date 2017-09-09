@@ -1,0 +1,47 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+    http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+      
+    <http auto-config="true" >
+        <intercept-url pattern="/api/**" access="hasRole('USER') or hasRole('ADMIN') and hasRole('DBA')" />
+        <http-basic/>
+        <csrf disabled="true"/>
+        <!--<form-login  login-page="/login"
+                     username-parameter="ssid"
+                     password-parameter="password"
+                     authentication-failure-url="/prohibited" />
+        -->
+        <logout />
+        <!-- <access-denied-handler error-page="/error-page" /> -->
+        <access-denied-handler ref="customAccessDeniedHandler" />
+    </http>
+    
+    <http entry-point-ref="customAuthenticationEntryPoint">
+        <intercept-url pattern="/api/**" access="ROLE_ADMIN"/>
+ 
+        <form-login authentication-success-handler-ref="customAuthenticationSuccessHandler" authentication-failure-handler-ref="customAuthenticationFailureHandler" />
+        <logout />
+    </http>
+     
+    <!--<beans:bean id="customAccessDeniedHandler" class="com.wildbeeslabs.rest.handler.AccessDeniedServiceHandler">
+        <beans:property name="errorPage" value="403" />
+    </beans:bean>-->
+
+    <global-method-security pre-post-annotations="enabled"/>
+ 
+    <beans:bean id="customAuthenticationSuccessHandler" class="com.wildbeeslabs.rest.handler.CustomAuthenticationSuccessHandler"/>
+    <beans:bean id="customAuthenticationFailureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler"/>
+   
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider>
+            <user-service>
+                <user name="user"  password="user123"  authorities="ROLE_USER" />
+                <user name="admin" password="admin123" authorities="ROLE_ADMIN" />
+                <user name="dba"   password="dba123" authorities="ROLE_ADMIN,ROLE_DBA" />
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
+     
+</beans:beans>

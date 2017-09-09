@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm" 
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_2_0.xsd" 
+                 version="2.0">
+
+    <!-- Subscription JPA Named Queries -->
+    <named-query name="Subscription.findByUserId">
+        <query>SELECT o.pk.subscription FROM UserSubOrder o WHERE o.pk.user.id = :userId</query>
+    </named-query>
+    
+    <!-- User JPA Named Queries -->
+    <named-query name="User.findBySubscriptionTypeAndDateBefore">
+        <query>SELECT o.pk.user FROM UserSubOrder o WHERE o.pk.subscription.type = :subType AND o.subscribedAt <= :subDate</query>
+    </named-query>
+    <named-query name="User.findBySubscriptionTypeAndDateAfter">
+        <query>SELECT o.pk.user FROM UserSubOrder o WHERE o.pk.subscription.type = :subType AND o.subscribedAt > :subDate</query>
+    </named-query>
+    <named-query name="User.findByDateBefore">
+        <query>SELECT DISTINCT o.pk.user FROM UserSubOrder o WHERE o.subscribedAt <= :subDate</query>
+    </named-query>
+    <named-query name="User.findByDateAfter">
+        <query>SELECT DISTINCT o.pk.user FROM UserSubOrder o WHERE o.subscribedAt > :subDate</query>
+    </named-query>
+    <named-query name="User.findBySubscriptionType">
+        <query>SELECT o.pk.user FROM UserSubOrder o WHERE o.pk.subscription.type = :subType</query>
+    </named-query>
+    <named-query name="User.findBySubscriptionId">
+        <query>SELECT o.pk.user FROM UserSubOrder o WHERE o.pk.subscription.id = :subscriptionId</query>
+    </named-query>
+    
+    <!-- UserSubOrder JPA Named Queries -->
+    <named-query name="UserSubOrder.findById">
+        <query>SELECT o FROM UserSubOrder o WHERE o.pk = :userSubOrderId</query>
+    </named-query>
+    <named-query name="UserSubOrder.findByUserId">
+        <query>SELECT o FROM UserSubOrder o WHERE o.pk.user.id = :userId</query>
+    </named-query>
+    <named-query name="UserSubOrder.findByUser">
+        <query>SELECT o FROM UserSubOrder o WHERE o.pk.user = :user</query>
+    </named-query>
+    <named-query name="UserSubOrder.findBySubscriptionId">
+        <query>SELECT o FROM UserSubOrder o WHERE o.pk.subscription.id = :subscriptionId</query>
+    </named-query>
+    <named-query name="UserSubOrder.findBySubscription">
+        <query>SELECT o FROM UserSubOrder o WHERE o.pk.subscription = :subscription</query>
+    </named-query>
+    
+    <!-- entity mapping -->
+    <entity class="com.wildbeeslabs.rest.model.User" name="User"></entity>
+    <entity class="com.wildbeeslabs.rest.model.Subscription" name="Subscription"></entity>
+    <entity class="com.wildbeeslabs.rest.model.UserSubOrder" name="UserSubOrder"></entity>
+    <entity class="com.wildbeeslabs.rest.model.UserSubOrderId" name="UserSubOrderId"></entity>
+
+</entity-mappings>
