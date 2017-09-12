@@ -17,7 +17,7 @@ import java.util.List;
  * @since 2017-08-08
  * @param <T>
  */
-public interface UserSubOrderService<T extends UserSubOrder> extends BaseService<T> {
+public interface IUserSubOrderService<T extends UserSubOrder> extends IBaseService<T> {
 
     /**
      * Get subscription order by id (compound primary key)

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @since 2017-08-08
  */
 @ResponseStatus(value = HttpStatus.NO_CONTENT, reason = "Empty content")
-public class EmptyContentException extends RuntimeException {
+public class EmptyContentException extends Exception {
 
     private static final long serialVersionUID = 1L;
 

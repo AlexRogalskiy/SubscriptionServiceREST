@@ -5,7 +5,6 @@ import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.UserSubOrder;
 import com.wildbeeslabs.rest.model.UserSubOrderId;
 import com.wildbeeslabs.rest.repositories.UserSubOrderRepository;
-import com.wildbeeslabs.rest.service.interfaces.UserSubOrderService;
 
 import java.util.Date;
 import java.util.List;
@@ -15,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.wildbeeslabs.rest.service.interfaces.IUserSubOrderService;
 
 /**
  *
@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service("userSubOrderService")
 @Transactional
-public class UserSubOrderServiceImpl<T extends UserSubOrder> implements UserSubOrderService<T> {
+public class UserSubOrderServiceImpl<T extends UserSubOrder> implements IUserSubOrderService<T> {
 
     @Autowired
     private UserSubOrderRepository<T> userSubOrderRepository;

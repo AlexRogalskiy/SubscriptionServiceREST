@@ -21,39 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.rest.model.dto;
+package com.wildbeeslabs.rest.controller.proxy;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.wildbeeslabs.rest.model.Subscription;
+import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
+import com.wildbeeslabs.rest.service.interfaces.ISubscriptionService;
 
-import java.util.List;
+import org.springframework.stereotype.Component;
 
 /**
  *
- * BaseDTOListWrapper REST Application Model
+ * Subscription Proxy Controller implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
+ * @param <T>
  * @param <E>
+ * @param <S>
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JacksonXmlRootElement(localName = "items")
-public class BaseDTOListWrapper<E extends BaseDTO> implements IBaseDTOListWrapper<E> {
+@Component
+public class SubscriptionProxyController<T extends Subscription, E extends SubscriptionDTO, S extends ISubscriptionService<T>> extends ABaseProxyController<T, E, S> {
 
-    @JacksonXmlElementWrapper(useWrapping = false)
-    @JacksonXmlProperty(localName = "item")
-    protected List<? extends E> items = null;
-
-    @Override
-    public List<? extends E> getItems() {
-        return items;
-    }
-
-    @Override
-    public void setItems(final List<? extends E> items) {
-        this.items = items;
-    }
 }

@@ -13,7 +13,7 @@ import java.util.List;
  * @since 2017-08-08
  * @param <T>
  */
-public interface SubscriptionService<T extends Subscription> extends BaseService<T> {
+public interface ISubscriptionService<T extends Subscription> extends IBaseService<T> {
 
     /**
      * Get subscription entity by name

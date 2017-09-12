@@ -23,37 +23,21 @@
  */
 package com.wildbeeslabs.rest.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
- * BaseDTOListWrapper REST Application Model
+ * BaseDTOListWrapper REST interface declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
  * @param <E>
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JacksonXmlRootElement(localName = "items")
-public class BaseDTOListWrapper<E extends BaseDTO> implements IBaseDTOListWrapper<E> {
+public interface IBaseDTOListWrapper<E extends Serializable> extends Serializable {
 
-    @JacksonXmlElementWrapper(useWrapping = false)
-    @JacksonXmlProperty(localName = "item")
-    protected List<? extends E> items = null;
+    List<? extends E> getItems();
 
-    @Override
-    public List<? extends E> getItems() {
-        return items;
-    }
-
-    @Override
-    public void setItems(final List<? extends E> items) {
-        this.items = items;
-    }
+    void setItems(final List<? extends E> items);
 }

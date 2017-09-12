@@ -39,6 +39,9 @@ import org.springframework.dao.annotation.PersistenceExceptionTranslationPostPro
 @EnableTransactionManagement
 public class JpaConfiguration {
 
+//    @PersistenceContext(unitName = "ds2", type = PersistenceContextType.TRANSACTION)
+//    private EntityManager em;
+
     @Autowired
     private Environment environment;
 

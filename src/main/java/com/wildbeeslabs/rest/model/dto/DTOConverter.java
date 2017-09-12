@@ -85,15 +85,6 @@ public final class DTOConverter {
         return this.convertToEntity(itemDtoList, clazz);
     }
 
-    //    protected T convertToEntity(final E itemDto, final Class<? extends T> clazz) {
-//        T itemEntity = modelMapper.map(itemDto, clazz);
-//        return itemEntity;
-//    }
-    //    protected E convertToDTO(final T itemEntity, final Class<? extends E> clazz) {
-//        E itemDto = modelMapper.map(itemEntity, clazz);
-//        return itemDto;
-//        //return this.convertToDTO(itemEntity, clazz);
-//    }
     public <N extends BaseDTO> BaseDTOListWrapper<? extends N> wrap(final List<? extends N> itemDtoList, final Class<? extends BaseDTOListWrapper> classListWrapper) {
         BaseDTOListWrapper<N> listWrapper = null;
         try {

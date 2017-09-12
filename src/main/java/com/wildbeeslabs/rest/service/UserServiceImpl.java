@@ -3,7 +3,6 @@ package com.wildbeeslabs.rest.service;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.repositories.UserRepository;
-import com.wildbeeslabs.rest.service.interfaces.UserService;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.wildbeeslabs.rest.service.interfaces.IUserService;
 
 /**
  *
@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service("userService")
 @Transactional
-public class UserServiceImpl<T extends User> implements UserService<T> {
+public class UserServiceImpl<T extends User> implements IUserService<T> {
 
     @Autowired
     private UserRepository<T> userRepository;

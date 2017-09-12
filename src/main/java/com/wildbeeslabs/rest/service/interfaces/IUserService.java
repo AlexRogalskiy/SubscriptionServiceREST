@@ -15,7 +15,7 @@ import java.util.List;
  * @since 2017-08-08
  * @param <T>
  */
-public interface UserService<T extends User> extends BaseService<T> {
+public interface IUserService<T extends User> extends IBaseService<T> {
 
     /**
      * Get user entity by login

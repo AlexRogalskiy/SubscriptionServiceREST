@@ -21,39 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.rest.model.dto;
+package com.wildbeeslabs.rest.utils;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
-import java.util.List;
+import java.util.Locale;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 /**
  *
- * BaseDTOListWrapper REST Application Model
+ * ResourceUtils implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
- * @param <E>
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JacksonXmlRootElement(localName = "items")
-public class BaseDTOListWrapper<E extends BaseDTO> implements IBaseDTOListWrapper<E> {
+public final class ResourceUtils {
 
-    @JacksonXmlElementWrapper(useWrapping = false)
-    @JacksonXmlProperty(localName = "item")
-    protected List<? extends E> items = null;
-
-    @Override
-    public List<? extends E> getItems() {
-        return items;
+    private ResourceUtils() {
     }
 
-    @Override
-    public void setItems(final List<? extends E> items) {
-        this.items = items;
+    @Autowired
+    private static MessageSource messageSource;
+
+    public static String getLocaleMessage(final String message) {
+        Locale locale = LocaleContextHolder.getLocale();
+        return messageSource.getMessage(message, null, locale);
     }
 }

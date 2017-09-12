@@ -12,7 +12,7 @@ import java.util.List;
  * @since 2017-08-08
  * @param <T>
  */
-public interface BaseService<T extends Serializable> {
+public interface IBaseService<T extends Serializable> {
 
     static enum DateTypeOrder {
         BEFORE, AFTER;

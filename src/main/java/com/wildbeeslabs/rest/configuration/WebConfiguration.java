@@ -33,7 +33,7 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
+//import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 //import org.springframework.http.converter.HttpMessageConverter;
 //import org.springframework.http.converter.StringHttpMessageConverter;

@@ -21,7 +21,7 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public abstract class BaseDTO implements Serializable {
+public abstract class BaseDTO implements IBaseDTO {
 
     @JacksonXmlProperty(localName = "createdAt")
     @JsonProperty("createdAt")

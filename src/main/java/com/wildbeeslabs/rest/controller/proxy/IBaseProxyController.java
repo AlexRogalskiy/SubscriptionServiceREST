@@ -21,39 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.rest.model.dto;
+package com.wildbeeslabs.rest.controller.proxy;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
+import java.io.Serializable;
 import java.util.List;
+import com.wildbeeslabs.rest.service.interfaces.IBaseService;
 
 /**
  *
- * BaseDTOListWrapper REST Application Model
+ * Base Proxy REST Controller declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
+ * @param <T>
  * @param <E>
+ * @param <S>
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JacksonXmlRootElement(localName = "items")
-public class BaseDTOListWrapper<E extends BaseDTO> implements IBaseDTOListWrapper<E> {
+public interface IBaseProxyController<T extends Serializable, E extends Serializable, S extends IBaseService<T>> {
 
-    @JacksonXmlElementWrapper(useWrapping = false)
-    @JacksonXmlProperty(localName = "item")
-    protected List<? extends E> items = null;
+    List<? extends T> getAllItems();
 
-    @Override
-    public List<? extends E> getItems() {
-        return items;
-    }
+    T getItemById(final Long id);
 
-    @Override
-    public void setItems(final List<? extends E> items) {
-        this.items = items;
-    }
+    T createItem(final E itemDto, Class<? extends T> entityClass);
+
+    T updateItem(final Long id, final E itemDto, Class<? extends T> entityClass);
+
+    T deleteItem(final Long id);
+
+    //void deleteItems(final List<E> itemDtoList);
+    void deleteAllItems();
+
+    S getService();
 }

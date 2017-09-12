@@ -1,26 +1,26 @@
 package com.wildbeeslabs.rest.controller;
 
-import com.wildbeeslabs.rest.exception.ResourceAlreadyExistException;
-import com.wildbeeslabs.rest.exception.ResourceNotFoundException;
+//import com.wildbeeslabs.rest.exception.EmptyContentException;
+import com.wildbeeslabs.rest.controller.proxy.IBaseProxyController;
 import com.wildbeeslabs.rest.model.BaseEntity;
 import com.wildbeeslabs.rest.model.dto.BaseDTO;
 import com.wildbeeslabs.rest.model.dto.BaseDTOListWrapper;
+//import com.wildbeeslabs.rest.model.dto.BaseDTOListWrapper;
 import com.wildbeeslabs.rest.model.dto.DTOConverter;
-import com.wildbeeslabs.rest.service.interfaces.BaseService;
 
 import java.beans.PropertyEditorSupport;
 import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import com.wildbeeslabs.rest.service.interfaces.IBaseService;
+//import org.springframework.web.util.UriComponentsBuilder;
+//import org.springframework.http.HttpStatus;
+//import org.springframework.http.ResponseEntity;
 
 /**
  *
@@ -39,83 +39,51 @@ public abstract class ABaseController<T extends BaseEntity, E extends BaseDTO> i
      */
     protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
+//    @Autowired
+//    private IBaseProxyController<? extends T, ? extends E> proxyController;
+//    @Autowired
+//    private MessageSource messageSource;
     @Autowired
-    protected MessageSource messageSource;
-    @Autowired
-    protected DTOConverter dtoConverter;
-
-    protected String getLocaleMessage(final String message) {
-        Locale locale = LocaleContextHolder.getLocale();
-        return messageSource.getMessage(message, null, locale);
-    }
+    private DTOConverter dtoConverter;
 
     @Override
     public ResponseEntity<?> getAll() {
-        LOGGER.info("Fetching all items");
-        List<T> items = getDefaultService().findAll();
+        List<? extends T> items = getProxyController().getAllItems();
         if (items.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(dtoConverter.convertToDTOAndWrap(items, getDtoClass(), getDtoListClass()), HttpStatus.OK);
+        return new ResponseEntity<>(getDTOConverter().convertToDTOAndWrap(items, getDtoClass(), getDtoListClass()), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<?> getById(final Long id) {
-        LOGGER.info("Fetching item by id {}", id);
-        T item = getDefaultService().findById(id);
-        if (Objects.isNull(item)) {
-            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.item.id"), id));
-        }
-        return new ResponseEntity<>(dtoConverter.convertToDTO(item, getDtoClass()), HttpStatus.OK);
+        T item = getProxyController().getItemById(id);
+        return new ResponseEntity<>(getDTOConverter().convertToDTO(item, getDtoClass()), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<?> create(final E itemDto) {
-        LOGGER.info("Creating item {}", itemDto);
-        T itemEntity = dtoConverter.convertToEntity(itemDto, getEntityClass());
-        if (getDefaultService().isExist(itemEntity)) {
-            throw new ResourceAlreadyExistException(String.format(getLocaleMessage("error.already.exist.item")));
-        }
-        getDefaultService().save(itemEntity);
+        T itemEntity = getProxyController().createItem(itemDto, getEntityClass());
         return new ResponseEntity<>(HttpStatus.OK);
-        /*
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/user/{id}").buildAndExpand(id).toUri());
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
-         */
     }
 
     @Override
     public ResponseEntity<?> update(final Long id, final E itemDto) {
-        LOGGER.info("Updating item by id {}", id);
-        T currentItem = getDefaultService().findById(id);
-        if (Objects.isNull(currentItem)) {
-            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.item.id"), id));
-        }
-        T itemEntity = dtoConverter.convertToEntity(itemDto, getEntityClass());
-        getDefaultService().merge(currentItem, itemEntity);
-        return new ResponseEntity<>(dtoConverter.convertToDTO(currentItem, getDtoClass()), HttpStatus.OK);
+        T itemEntity = getProxyController().updateItem(id, itemDto, getEntityClass());
+        return new ResponseEntity<>(getDTOConverter().convertToDTO(itemEntity, getDtoClass()), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<?> delete(final Long id) {
-        LOGGER.info("Deleting item by id {}", id);
-        T item = getDefaultService().findById(id);
-        if (Objects.isNull(item)) {
-            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.item.id"), id));
-        }
-        getDefaultService().deleteById(id);
+        T itemEntity = getProxyController().deleteItem(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<?> deleteAll() {
-        LOGGER.info("Deleting all items");
-        getDefaultService().deleteAll();
+        getProxyController().deleteAllItems();
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-    protected abstract BaseService<T> getDefaultService();
 
     protected static class BaseEnumConverter<U extends Enum<U>> extends PropertyEditorSupport {
 
@@ -127,17 +95,23 @@ public abstract class ABaseController<T extends BaseEntity, E extends BaseDTO> i
 
         @Override
         public void setAsText(final String text) throws IllegalArgumentException {
-            String capitalized = text.toUpperCase();
-            U item = Enum.valueOf(this.type, capitalized);
+            U item = Enum.valueOf(this.type, text.toUpperCase());
             setValue(item);
         }
     }
 
+    //protected abstract IBaseService<T> getDefaultService();
     protected abstract Class<? extends T> getEntityClass();
 
     protected abstract Class<? extends E> getDtoClass();
 
+    protected abstract IBaseProxyController<T, E, ? extends IBaseService<T>> getProxyController();
+
     protected Class<? extends BaseDTOListWrapper> getDtoListClass() {
         return BaseDTOListWrapper.class;
+    }
+
+    protected DTOConverter getDTOConverter() {
+        return this.dtoConverter;
     }
 }

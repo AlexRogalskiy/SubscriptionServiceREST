@@ -21,39 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.rest.model.dto;
+package com.wildbeeslabs.rest.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
-import java.util.List;
+import java.io.Serializable;
 
 /**
  *
- * BaseDTOListWrapper REST Application Model
+ * BaseEntity REST interface declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
- * @param <E>
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JacksonXmlRootElement(localName = "items")
-public class BaseDTOListWrapper<E extends BaseDTO> implements IBaseDTOListWrapper<E> {
+public interface IBaseEntity extends Serializable {
 
-    @JacksonXmlElementWrapper(useWrapping = false)
-    @JacksonXmlProperty(localName = "item")
-    protected List<? extends E> items = null;
-
-    @Override
-    public List<? extends E> getItems() {
-        return items;
-    }
-
-    @Override
-    public void setItems(final List<? extends E> items) {
-        this.items = items;
-    }
 }

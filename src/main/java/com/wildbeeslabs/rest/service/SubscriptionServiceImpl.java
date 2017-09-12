@@ -2,7 +2,6 @@ package com.wildbeeslabs.rest.service;
 
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.repositories.SubscriptionRepository;
-import com.wildbeeslabs.rest.service.interfaces.SubscriptionService;
 
 import java.util.Date;
 import java.util.List;
@@ -12,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.wildbeeslabs.rest.service.interfaces.ISubscriptionService;
 
 /**
  *
@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service("subscriptionService")
 @Transactional
-public class SubscriptionServiceImpl<T extends Subscription> implements SubscriptionService<T> {
+public class SubscriptionServiceImpl<T extends Subscription> implements ISubscriptionService<T> {
 
     @Autowired
     private SubscriptionRepository<T> subscriptionRepository;
