@@ -8,6 +8,7 @@ import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.UserSubOrder;
 import com.wildbeeslabs.rest.model.dto.BaseDTOListWrapper;
+import com.wildbeeslabs.rest.model.dto.IBaseDTOListWrapper;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTOListWrapper;
 import com.wildbeeslabs.rest.model.dto.UserDTO;
@@ -295,7 +296,7 @@ public class UserSubscriptionController<T extends UserSubOrder, E extends UserSu
     }
 
     @Override
-    protected Class<? extends BaseDTOListWrapper> getDtoListClass() {
+    protected Class<? extends IBaseDTOListWrapper> getDtoListClass() {
         return UserSubOrderDTOListWrapper.class;
     }
 

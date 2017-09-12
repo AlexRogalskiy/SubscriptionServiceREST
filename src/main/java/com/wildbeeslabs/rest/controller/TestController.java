@@ -25,7 +25,7 @@ package com.wildbeeslabs.rest.controller;
 
 import com.wildbeeslabs.rest.controller.proxy.IBaseProxyController;
 import com.wildbeeslabs.rest.model.Subscription;
-import com.wildbeeslabs.rest.model.dto.DTOConverter;
+import com.wildbeeslabs.rest.model.dto.converter.DTOConverter;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTOListWrapper;
 import com.wildbeeslabs.rest.service.interfaces.ISubscriptionService;

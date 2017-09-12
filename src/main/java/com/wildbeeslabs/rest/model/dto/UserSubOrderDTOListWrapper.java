@@ -40,7 +40,7 @@ import java.util.List;
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JacksonXmlRootElement(localName = "userSubOrders")
-public class UserSubOrderDTOListWrapper<E> extends BaseDTOListWrapper<E> {
+public class UserSubOrderDTOListWrapper<E extends UserSubOrderDTO> extends BaseDTOListWrapper<E> {
 
     @JacksonXmlElementWrapper(useWrapping = false)
     @JacksonXmlProperty(localName = "userSubOrder")

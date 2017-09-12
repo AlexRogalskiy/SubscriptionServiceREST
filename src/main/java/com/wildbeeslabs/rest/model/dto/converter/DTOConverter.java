@@ -21,10 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.rest.model.dto;
+package com.wildbeeslabs.rest.model.dto.converter;
 
 import com.wildbeeslabs.rest.controller.ABaseController;
-import com.wildbeeslabs.rest.model.BaseEntity;
+import com.wildbeeslabs.rest.model.IBaseEntity;
+import com.wildbeeslabs.rest.model.dto.IBaseDTO;
+import com.wildbeeslabs.rest.model.dto.IBaseDTOListWrapper;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -46,24 +48,24 @@ public final class DTOConverter {
     @Autowired
     private ModelMapper modelMapper;
 
-    public <M extends BaseEntity, N extends BaseDTO> N convertToDTO(final M itemEntity, final Class<? extends N> clazz) {
+    public <M extends IBaseEntity, N extends IBaseDTO> N convertToDTO(final M itemEntity, final Class<? extends N> clazz) {
         N itemDto = modelMapper.map(itemEntity, clazz);
         return itemDto;
     }
 
-    public <M extends BaseEntity, N extends BaseDTO> List<? extends N> convertToDTO(final List<? extends M> itemEntityList, final Class<? extends N> clazz) {
+    public <M extends IBaseEntity, N extends IBaseDTO> List<? extends N> convertToDTO(final List<? extends M> itemEntityList, final Class<? extends N> clazz) {
         List<? extends N> itemDtoList = itemEntityList.stream()
                 .map(item -> convertToDTO(item, clazz))
                 .collect(Collectors.toCollection(LinkedList::new));
         return itemDtoList;
     }
 
-    public <N extends BaseDTO, M extends BaseEntity> M convertToEntity(final N itemDto, final Class<? extends M> clazz) {
+    public <N extends IBaseDTO, M extends IBaseEntity> M convertToEntity(final N itemDto, final Class<? extends M> clazz) {
         M itemEntity = modelMapper.map(itemDto, clazz);
         return itemEntity;
     }
 
-    public <N extends BaseDTO, M extends BaseEntity> List<? extends M> convertToEntity(final List<? extends N> itemDtoList, final Class<? extends M> clazz) {
+    public <N extends IBaseDTO, M extends IBaseEntity> List<? extends M> convertToEntity(final List<? extends N> itemDtoList, final Class<? extends M> clazz) {
         if (Objects.isNull(itemDtoList)) {
             return null;
         }
@@ -73,20 +75,20 @@ public final class DTOConverter {
         return itemEntityList;
     }
 
-    public <N extends BaseDTO> List<? extends N> unwrap(final BaseDTOListWrapper<? extends N> dtoListWrapper) {
+    public <N extends IBaseDTO> List<? extends N> unwrap(final IBaseDTOListWrapper<? extends N> dtoListWrapper) {
         if (Objects.isNull(dtoListWrapper)) {
             return null;
         }
         return dtoListWrapper.getItems();
     }
 
-    public <N extends BaseDTO, M extends BaseEntity> List<? extends M> convertToEntityAndUnwrap(final BaseDTOListWrapper<? extends N> dtoListWrapper, final Class<? extends M> clazz) {
+    public <N extends IBaseDTO, M extends IBaseEntity> List<? extends M> convertToEntityAndUnwrap(final IBaseDTOListWrapper<? extends N> dtoListWrapper, final Class<? extends M> clazz) {
         List<? extends N> itemDtoList = this.unwrap(dtoListWrapper);
         return this.convertToEntity(itemDtoList, clazz);
     }
 
-    public <N extends BaseDTO> BaseDTOListWrapper<? extends N> wrap(final List<? extends N> itemDtoList, final Class<? extends BaseDTOListWrapper> classListWrapper) {
-        BaseDTOListWrapper<N> listWrapper = null;
+    public <N extends IBaseDTO> IBaseDTOListWrapper<? extends N> wrap(final List<? extends N> itemDtoList, final Class<? extends IBaseDTOListWrapper> classListWrapper) {
+        IBaseDTOListWrapper<N> listWrapper = null;
         try {
             listWrapper = classListWrapper.newInstance();
             listWrapper.setItems(itemDtoList);
@@ -96,7 +98,7 @@ public final class DTOConverter {
         return listWrapper;
     }
 
-    public <M extends BaseEntity, N extends BaseDTO> BaseDTOListWrapper<? extends N> convertToDTOAndWrap(final List<? extends M> itemEntityList, final Class<? extends N> clazz, final Class<? extends BaseDTOListWrapper> classListWrapper) {
+    public <M extends IBaseEntity, N extends IBaseDTO> IBaseDTOListWrapper<? extends N> convertToDTOAndWrap(final List<? extends M> itemEntityList, final Class<? extends N> clazz, final Class<? extends IBaseDTOListWrapper> classListWrapper) {
         List<? extends N> itemDtoList = this.convertToDTO(itemEntityList, clazz);
         return this.wrap(itemDtoList, classListWrapper);
     }

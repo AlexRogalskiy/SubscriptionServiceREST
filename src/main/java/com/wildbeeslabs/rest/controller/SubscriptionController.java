@@ -3,6 +3,7 @@ package com.wildbeeslabs.rest.controller;
 import com.wildbeeslabs.rest.controller.proxy.IBaseProxyController;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.dto.BaseDTOListWrapper;
+import com.wildbeeslabs.rest.model.dto.IBaseDTOListWrapper;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTOListWrapper;
 
@@ -176,7 +177,7 @@ public class SubscriptionController<T extends Subscription, E extends Subscripti
      * @return entity class instance
      */
     @Override
-    protected Class<? extends BaseDTOListWrapper> getDtoListClass() {
+    protected Class<? extends IBaseDTOListWrapper> getDtoListClass() {
         return SubscriptionDTOListWrapper.class;
     }
 

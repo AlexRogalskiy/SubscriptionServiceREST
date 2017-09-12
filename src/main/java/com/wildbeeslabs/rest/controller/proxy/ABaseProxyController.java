@@ -25,9 +25,9 @@ package com.wildbeeslabs.rest.controller.proxy;
 
 import com.wildbeeslabs.rest.exception.ResourceAlreadyExistException;
 import com.wildbeeslabs.rest.exception.ResourceNotFoundException;
-import com.wildbeeslabs.rest.model.BaseEntity;
-import com.wildbeeslabs.rest.model.dto.BaseDTO;
-import com.wildbeeslabs.rest.model.dto.DTOConverter;
+import com.wildbeeslabs.rest.model.IBaseEntity;
+import com.wildbeeslabs.rest.model.dto.converter.DTOConverter;
+import com.wildbeeslabs.rest.model.dto.IBaseDTO;
 import com.wildbeeslabs.rest.utils.ResourceUtils;
 
 import java.util.List;
@@ -50,7 +50,7 @@ import com.wildbeeslabs.rest.service.interfaces.IBaseService;
  * @param <E>
  * @param <S>
  */
-public abstract class ABaseProxyController<T extends BaseEntity, E extends BaseDTO, S extends IBaseService<T>> implements IBaseProxyController<T, E, S> {
+public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBaseDTO, S extends IBaseService<T>> implements IBaseProxyController<T, E, S> {
 
     /**
      * Default Logger instance

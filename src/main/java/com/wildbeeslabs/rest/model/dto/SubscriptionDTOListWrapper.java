@@ -40,7 +40,7 @@ import java.util.List;
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JacksonXmlRootElement(localName = "subscriptions")
-public class SubscriptionDTOListWrapper<E> extends BaseDTOListWrapper<E> {
+public class SubscriptionDTOListWrapper<E extends SubscriptionDTO> extends BaseDTOListWrapper<E> {
 
     @JacksonXmlElementWrapper(useWrapping = false)
     @JacksonXmlProperty(localName = "subscription")

@@ -4,6 +4,7 @@ import com.wildbeeslabs.rest.controller.proxy.IBaseProxyController;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.dto.BaseDTOListWrapper;
+import com.wildbeeslabs.rest.model.dto.IBaseDTOListWrapper;
 //import com.wildbeeslabs.rest.model.dto.DTOConverter;
 import com.wildbeeslabs.rest.model.dto.UserDTO;
 import com.wildbeeslabs.rest.model.dto.UserDTOListWrapper;
@@ -182,7 +183,7 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
     }
 
     @Override
-    protected Class<? extends BaseDTOListWrapper> getDtoListClass() {
+    protected Class<? extends IBaseDTOListWrapper> getDtoListClass() {
         return UserDTOListWrapper.class;
     }
 

@@ -3,10 +3,13 @@ package com.wildbeeslabs.rest.controller;
 //import com.wildbeeslabs.rest.exception.EmptyContentException;
 import com.wildbeeslabs.rest.controller.proxy.IBaseProxyController;
 import com.wildbeeslabs.rest.model.BaseEntity;
+import com.wildbeeslabs.rest.model.IBaseEntity;
 import com.wildbeeslabs.rest.model.dto.BaseDTO;
 import com.wildbeeslabs.rest.model.dto.BaseDTOListWrapper;
 //import com.wildbeeslabs.rest.model.dto.BaseDTOListWrapper;
-import com.wildbeeslabs.rest.model.dto.DTOConverter;
+import com.wildbeeslabs.rest.model.dto.converter.DTOConverter;
+import com.wildbeeslabs.rest.model.dto.IBaseDTO;
+import com.wildbeeslabs.rest.model.dto.IBaseDTOListWrapper;
 
 import java.beans.PropertyEditorSupport;
 import java.util.List;
@@ -32,7 +35,7 @@ import com.wildbeeslabs.rest.service.interfaces.IBaseService;
  * @param <T>
  * @param <E>
  */
-public abstract class ABaseController<T extends BaseEntity, E extends BaseDTO> implements IBaseController<T, E> {
+public abstract class ABaseController<T extends IBaseEntity, E extends IBaseDTO> implements IBaseController<T, E> {
 
     /**
      * Default Logger instance
@@ -107,7 +110,7 @@ public abstract class ABaseController<T extends BaseEntity, E extends BaseDTO> i
 
     protected abstract IBaseProxyController<T, E, ? extends IBaseService<T>> getProxyController();
 
-    protected Class<? extends BaseDTOListWrapper> getDtoListClass() {
+    protected Class<? extends IBaseDTOListWrapper> getDtoListClass() {
         return BaseDTOListWrapper.class;
     }
 

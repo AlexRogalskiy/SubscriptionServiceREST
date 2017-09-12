@@ -1,6 +1,7 @@
 package com.wildbeeslabs.rest.repositories;
 
 import com.wildbeeslabs.rest.model.BaseEntity;
+import com.wildbeeslabs.rest.model.IBaseEntity;
 
 import java.util.Date;
 import java.util.List;
@@ -19,7 +20,7 @@ import org.springframework.data.repository.NoRepositoryBean;
  * @param <T>
  */
 @NoRepositoryBean
-public interface BaseRepository<T extends BaseEntity> extends JpaRepository<T, Long> {
+public interface BaseRepository<T extends IBaseEntity> extends JpaRepository<T, Long> {
 
     /**
      * Get list of entities created before (including) particular date
