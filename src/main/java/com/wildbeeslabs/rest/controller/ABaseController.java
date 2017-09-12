@@ -103,12 +103,16 @@ public abstract class ABaseController<T extends IBaseEntity, E extends IBaseDTO>
         }
     }
 
-    //protected abstract IBaseService<T> getDefaultService();
-    protected abstract Class<? extends T> getEntityClass();
+    protected Class<? extends T> getEntityClass() {
+        return (Class<? extends T>) BaseEntity.class;
+    }
 
-    protected abstract Class<? extends E> getDtoClass();
+    protected Class<? extends E> getDtoClass() {
+        return (Class<? extends E>) BaseDTO.class;
+    }
 
     protected abstract IBaseProxyController<T, E, ? extends IBaseService<T>> getProxyController();
+    //protected abstract IBaseService<T> getDefaultService();
 
     protected Class<? extends IBaseDTOListWrapper> getDtoListClass() {
         return BaseDTOListWrapper.class;

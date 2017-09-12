@@ -2,7 +2,6 @@ package com.wildbeeslabs.rest.model;
 
 import com.wildbeeslabs.rest.utils.DateUtils;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -26,7 +25,7 @@ import org.springframework.format.annotation.DateTimeFormat;
  * @since 2017-08-08
  */
 @MappedSuperclass
-public abstract class BaseEntity implements IBaseEntity {
+public class BaseEntity implements IBaseEntity {
 
     @CreationTimestamp
     @DateTimeFormat(pattern = DateUtils.DEFAULT_DATE_FORMAT_PATTERN)
