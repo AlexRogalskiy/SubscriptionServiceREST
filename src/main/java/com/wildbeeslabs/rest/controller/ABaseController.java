@@ -1,29 +1,18 @@
 package com.wildbeeslabs.rest.controller;
 
-//import com.wildbeeslabs.rest.exception.EmptyContentException;
 import com.wildbeeslabs.rest.controller.proxy.IBaseProxyController;
-import com.wildbeeslabs.rest.model.BaseEntity;
+import com.wildbeeslabs.rest.exception.EmptyContentException;
 import com.wildbeeslabs.rest.model.IBaseEntity;
-import com.wildbeeslabs.rest.model.dto.BaseDTO;
-import com.wildbeeslabs.rest.model.dto.BaseDTOListWrapper;
-//import com.wildbeeslabs.rest.model.dto.BaseDTOListWrapper;
-import com.wildbeeslabs.rest.model.dto.converter.DTOConverter;
 import com.wildbeeslabs.rest.model.dto.IBaseDTO;
-import com.wildbeeslabs.rest.model.dto.IBaseDTOListWrapper;
+import com.wildbeeslabs.rest.service.interfaces.IBaseService;
 
 import java.beans.PropertyEditorSupport;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import com.wildbeeslabs.rest.service.interfaces.IBaseService;
-//import org.springframework.web.util.UriComponentsBuilder;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
 
 /**
  *
@@ -37,48 +26,40 @@ import com.wildbeeslabs.rest.service.interfaces.IBaseService;
  */
 public abstract class ABaseController<T extends IBaseEntity, E extends IBaseDTO> implements IBaseController<T, E> {
 
-    /**
-     * Default Logger instance
-     */
-    protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
-
-//    @Autowired
-//    private IBaseProxyController<? extends T, ? extends E> proxyController;
-//    @Autowired
-//    private MessageSource messageSource;
-    @Autowired
-    private DTOConverter dtoConverter;
+//    /**
+//     * Default Logger instance
+//     */
+//    protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @Override
     public ResponseEntity<?> getAll() {
-        List<? extends T> items = getProxyController().getAllItems();
-        if (items.isEmpty()) {
+        try {
+            return new ResponseEntity<>(getProxyController().getAllItems(), HttpStatus.OK);
+        } catch (EmptyContentException ex) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(getDTOConverter().convertToDTOAndWrap(items, getDtoClass(), getDtoListClass()), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<?> getById(final Long id) {
-        T item = getProxyController().getItemById(id);
-        return new ResponseEntity<>(getDTOConverter().convertToDTO(item, getDtoClass()), HttpStatus.OK);
+        return new ResponseEntity<>(getProxyController().getItemById(id), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<?> create(final E itemDto) {
-        T itemEntity = getProxyController().createItem(itemDto, getEntityClass());
+        E itemEntity = getProxyController().createItem(itemDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<?> update(final Long id, final E itemDto) {
-        T itemEntity = getProxyController().updateItem(id, itemDto, getEntityClass());
-        return new ResponseEntity<>(getDTOConverter().convertToDTO(itemEntity, getDtoClass()), HttpStatus.OK);
+        E itemEntity = getProxyController().updateItem(id, itemDto);
+        return new ResponseEntity<>(itemEntity, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<?> delete(final Long id) {
-        T itemEntity = getProxyController().deleteItem(id);
+        E itemEntity = getProxyController().deleteItem(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -103,22 +84,5 @@ public abstract class ABaseController<T extends IBaseEntity, E extends IBaseDTO>
         }
     }
 
-    protected Class<? extends T> getEntityClass() {
-        return (Class<? extends T>) BaseEntity.class;
-    }
-
-    protected Class<? extends E> getDtoClass() {
-        return (Class<? extends E>) BaseDTO.class;
-    }
-
     protected abstract IBaseProxyController<T, E, ? extends IBaseService<T>> getProxyController();
-    //protected abstract IBaseService<T> getDefaultService();
-
-    protected Class<? extends IBaseDTOListWrapper> getDtoListClass() {
-        return BaseDTOListWrapper.class;
-    }
-
-    protected DTOConverter getDTOConverter() {
-        return this.dtoConverter;
-    }
 }

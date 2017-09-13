@@ -50,6 +50,11 @@ public interface UserRepository<T extends User> extends BaseRepository<T> {
     public final static String FIND_USER_BY_SUB_DATE_BEFORE_QUERY = "SELECT DISTINCT o.pk.user FROM UserSubOrder o WHERE o.subscribedAt <= :subDate";
 
     /**
+     * Default query to find subscribed users by date between (including)
+     */
+    public final static String FIND_USER_BY_SUB_DATE_BETWEEN_QUERY = "SELECT DISTINCT o.pk.user FROM UserSubOrder o WHERE o.subscribedAt BETWEEN :startSubDate AND :endSubDate";
+
+    /**
      * Default query to find subscribed users by subscription type
      */
     public final static String FIND_USER_BY_SUB_TYPE_QUERY = "SELECT o.pk.user FROM UserSubOrder o WHERE o.pk.subscription.type = :subType";
@@ -117,4 +122,14 @@ public interface UserRepository<T extends User> extends BaseRepository<T> {
      */
     @Query(FIND_USER_BY_SUB_ID_QUERY)
     List<T> findBySubscriptionId(@Param("subscriptionId") final Long subscriptionId);
+
+    /**
+     * Get list of user entities by subscription date between (including)
+     *
+     * @param startSubDate - request start date (including)
+     * @param endSubDate - request end date (including)
+     * @return list of user entities
+     */
+    @Query(FIND_USER_BY_SUB_DATE_BETWEEN_QUERY)
+    List<T> findByDateBetween(@Param("startSubDate") final Date startSubDate, @Param("endSubDate") final Date endSubDate);
 }

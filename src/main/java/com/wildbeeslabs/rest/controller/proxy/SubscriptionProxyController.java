@@ -23,9 +23,14 @@
  */
 package com.wildbeeslabs.rest.controller.proxy;
 
+import com.wildbeeslabs.rest.exception.EmptyContentException;
 import com.wildbeeslabs.rest.model.Subscription;
+import com.wildbeeslabs.rest.model.dto.IBaseDTOListWrapper;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
+import com.wildbeeslabs.rest.model.dto.SubscriptionDTOListWrapper;
 import com.wildbeeslabs.rest.service.interfaces.ISubscriptionService;
+import com.wildbeeslabs.rest.utils.ResourceUtils;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 
@@ -43,4 +48,42 @@ import org.springframework.stereotype.Component;
 @Component
 public class SubscriptionProxyController<T extends Subscription, E extends SubscriptionDTO, S extends ISubscriptionService<T>> extends ABaseProxyController<T, E, S> {
 
+    public IBaseDTOListWrapper<? extends E> findByUserId(final Long userId) throws EmptyContentException {
+        LOGGER.info("Fetching all subscriptions by user id {}", userId);
+        List<? extends T> items = getService().findByUserId(userId);
+        if (items.isEmpty()) {
+            throw new EmptyContentException(String.format(ResourceUtils.getLocaleMessage("error.no.content")));
+        }
+        return getDTOConverter().convertToDTOAndWrap(items, getDtoClass(), getDtoListClass());
+    }
+
+    /**
+     * Get default entity class
+     *
+     * @return entity class instance
+     */
+    @Override
+    protected Class<? extends T> getEntityClass() {
+        return (Class<? extends T>) Subscription.class;
+    }
+
+    /**
+     * Get default DTO class
+     *
+     * @return entity class instance
+     */
+    @Override
+    protected Class<? extends E> getDtoClass() {
+        return (Class<? extends E>) SubscriptionDTO.class;
+    }
+
+    /**
+     * Get default DTO Wrapper List class
+     *
+     * @return entity class instance
+     */
+    @Override
+    protected Class<? extends IBaseDTOListWrapper> getDtoListClass() {
+        return SubscriptionDTOListWrapper.class;
+    }
 }

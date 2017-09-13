@@ -23,9 +23,19 @@
  */
 package com.wildbeeslabs.rest.controller.proxy;
 
+import com.wildbeeslabs.rest.exception.EmptyContentException;
+import com.wildbeeslabs.rest.exception.ResourceNotFoundException;
+import com.wildbeeslabs.rest.model.Subscription;
+import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.UserSubOrder;
+import com.wildbeeslabs.rest.model.dto.IBaseDTOListWrapper;
 import com.wildbeeslabs.rest.model.dto.UserSubOrderDTO;
+import com.wildbeeslabs.rest.model.dto.UserSubOrderDTOListWrapper;
 import com.wildbeeslabs.rest.service.interfaces.IUserSubOrderService;
+import com.wildbeeslabs.rest.utils.ResourceUtils;
+import java.util.List;
+
+import java.util.Objects;
 
 import org.springframework.stereotype.Component;
 
@@ -43,4 +53,79 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserSubscriptionProxyController<T extends UserSubOrder, E extends UserSubOrderDTO, S extends IUserSubOrderService<T>> extends ABaseProxyController<T, E, S> {
 
+    public E findByUserAndSubscription(final User userItem, final Subscription subscriptionItem) {
+        T item = this.findAllEntityByUserAndSubscription(userItem, subscriptionItem);
+        return getDTOConverter().convertToDTO(item, getDtoClass());
+    }
+
+    public T findAllEntityByUserAndSubscription(final User userItem, final Subscription subscriptionItem) {
+        LOGGER.info("Fetching subscription order by user id {} and subscription id {}", userItem.getId(), subscriptionItem.getId());
+        T currentOrder = getService().findByUserAndSubscription(userItem, subscriptionItem);
+        if (Objects.isNull(currentOrder)) {
+            throw new ResourceNotFoundException(String.format(ResourceUtils.getLocaleMessage("error.no.order.item.user.subscription.id"), userItem.getId(), subscriptionItem.getId()));
+        }
+        return currentOrder;
+    }
+
+    public List<? extends T> findAllEntityByUser(final User userItem) throws EmptyContentException {
+        LOGGER.info("Fetching subscription orders by user id {}", userItem.getId());
+        List<? extends T> items = getService().findByUser(userItem);
+        if (items.isEmpty()) {
+            throw new EmptyContentException(String.format(ResourceUtils.getLocaleMessage("error.no.content")));
+        }
+        return items;
+    }
+
+    public IBaseDTOListWrapper<? extends E> findByUser(final User userItem) throws EmptyContentException {
+        List<? extends T> items = this.findAllEntityByUser(userItem);
+        return getDTOConverter().convertToDTOAndWrap(items, getDtoClass(), getDtoListClass());
+    }
+
+    public E updateEntityItem(final T toItemEntity, final E fromItemDto) {
+        LOGGER.info("Updating item by id {}", toItemEntity.getPk());
+        T fromItemEntity = getDTOConverter().convertToEntity(fromItemDto, getEntityClass());
+        getService().merge(toItemEntity, fromItemEntity);
+        return getDTOConverter().convertToDTO(toItemEntity, getDtoClass());
+    }
+
+    public E deleteEntityItem(final T itemEntity) {
+        LOGGER.info("Deleting item by id {}", itemEntity.getPk());
+        getService().delete(itemEntity);
+        return getDTOConverter().convertToDTO(itemEntity, getDtoClass());
+    }
+
+    public void deleteEntityItems(final List<? extends T> itemEntityList) {
+        LOGGER.info("Deleting items");
+        getService().delete(itemEntityList);
+    }
+
+    /**
+     * Get default entity class instance
+     *
+     * @return entity class instance
+     */
+    @Override
+    protected Class<? extends T> getEntityClass() {
+        return (Class<? extends T>) UserSubOrder.class;
+    }
+
+    /**
+     * Get default DTO class instance
+     *
+     * @return entity class instance
+     */
+    @Override
+    protected Class<? extends E> getDtoClass() {
+        return (Class<? extends E>) UserSubOrderDTO.class;
+    }
+
+    /**
+     * Get default DTO Wrapper List class
+     *
+     * @return entity class instance
+     */
+    @Override
+    protected Class<? extends IBaseDTOListWrapper> getDtoListClass() {
+        return UserSubOrderDTOListWrapper.class;
+    }
 }

@@ -23,7 +23,8 @@
  */
 package com.wildbeeslabs.rest.controller;
 
-import com.wildbeeslabs.rest.controller.proxy.IBaseProxyController;
+import com.wildbeeslabs.rest.controller.proxy.SubscriptionProxyController;
+import com.wildbeeslabs.rest.exception.EmptyContentException;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.dto.converter.DTOConverter;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
@@ -32,19 +33,14 @@ import com.wildbeeslabs.rest.service.interfaces.ISubscriptionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 import javax.validation.Valid;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
@@ -63,7 +59,7 @@ public class TestController<T extends Subscription, E extends SubscriptionDTO> i
     @Autowired
     private DTOConverter dtoConverter;
     @Autowired
-    private IBaseProxyController<T, E, ISubscriptionService<T>> subscriptionProxyController;
+    private SubscriptionProxyController<T, E, ISubscriptionService<T>> subscriptionProxyController;
 
     /**
      * Get list of subscription entities
@@ -74,11 +70,12 @@ public class TestController<T extends Subscription, E extends SubscriptionDTO> i
     @ResponseBody
     @Override
     public ResponseEntity<?> getAll() {
-        List<? extends T> items = subscriptionProxyController.getAllItems();
-        if (items.isEmpty()) {
+        try {
+            List<? extends T> items = subscriptionProxyController.getAllEntityItems();
+            return new ResponseEntity<>(dtoConverter.convertToDTOAndWrap(items, SubscriptionDTO.class, SubscriptionDTOListWrapper.class), HttpStatus.OK);
+        } catch (EmptyContentException ex) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(dtoConverter.convertToDTOAndWrap(items, SubscriptionDTO.class, SubscriptionDTOListWrapper.class), HttpStatus.OK);
     }
 
     /**
@@ -91,7 +88,7 @@ public class TestController<T extends Subscription, E extends SubscriptionDTO> i
     @ResponseBody
     @Override
     public ResponseEntity<?> getById(@PathVariable("id") Long id) {
-        T item = subscriptionProxyController.getItemById(id);
+        T item = subscriptionProxyController.getEntityItemById(id);
         return new ResponseEntity<>(dtoConverter.convertToDTO(item, SubscriptionDTO.class), HttpStatus.OK);
     }
 
@@ -140,7 +137,7 @@ public class TestController<T extends Subscription, E extends SubscriptionDTO> i
     @ResponseBody
     @Override
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-        T item = subscriptionProxyController.deleteItem(id);
+        T item = subscriptionProxyController.deleteEntityItem(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

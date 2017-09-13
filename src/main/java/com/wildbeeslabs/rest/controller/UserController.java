@@ -1,17 +1,15 @@
 package com.wildbeeslabs.rest.controller;
 
 import com.wildbeeslabs.rest.controller.proxy.IBaseProxyController;
+import com.wildbeeslabs.rest.controller.proxy.UserProxyController;
+import com.wildbeeslabs.rest.exception.EmptyContentException;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.Subscription;
-import com.wildbeeslabs.rest.model.dto.BaseDTOListWrapper;
-import com.wildbeeslabs.rest.model.dto.IBaseDTOListWrapper;
-//import com.wildbeeslabs.rest.model.dto.DTOConverter;
 import com.wildbeeslabs.rest.model.dto.UserDTO;
-import com.wildbeeslabs.rest.model.dto.UserDTOListWrapper;
+import com.wildbeeslabs.rest.service.interfaces.IBaseService;
+import com.wildbeeslabs.rest.service.interfaces.IUserService;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Objects;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +17,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,9 +27,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-//import org.springframework.web.util.UriComponentsBuilder;
-import com.wildbeeslabs.rest.service.interfaces.IBaseService;
-import com.wildbeeslabs.rest.service.interfaces.IUserService;
 
 /**
  *
@@ -45,14 +39,11 @@ import com.wildbeeslabs.rest.service.interfaces.IUserService;
  * @param <E>
  */
 @RestController
-//@Validated
 @RequestMapping("/api")
 public class UserController<T extends User, E extends UserDTO> extends ABaseController<T, E> {
 
-//    @Autowired
-//    private IUserService<T> userService;
     @Autowired
-    private IBaseProxyController<T, E, IUserService<T>> userProxyController;
+    private UserProxyController<T, E, IUserService<T>> userProxyController;
 
     @InitBinder
     public void initBinder(final WebDataBinder dataBinder) {
@@ -71,14 +62,11 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
     @RequestMapping(value = "/users", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> getAll(@RequestParam(name = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date subDate, @RequestParam(name = "type", required = false) Subscription.SubscriptionStatusType subType, @RequestParam(name = "order", required = false, defaultValue = "false") Boolean subDateOrder) {
-        LOGGER.info("Fetching all users by subscription date {}, type {}, date order {} (1 - before, 0 - after)", subDate, subType, subDateOrder);
-
-        IUserService.DateTypeOrder dateTypeOrder = Objects.equals(subDateOrder, Boolean.TRUE) ? IUserService.DateTypeOrder.AFTER : IUserService.DateTypeOrder.BEFORE;
-        List<T> userList = userProxyController.getService().findAllBySubscriptionTypeAndDate(subDate, subType, dateTypeOrder);
-        if (userList.isEmpty()) {
+        try {
+            return new ResponseEntity<>(userProxyController.findAllBySubscriptionTypeAndDate(subDate, subType, subDateOrder), HttpStatus.OK);
+        } catch (EmptyContentException ex) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(getDTOConverter().convertToDTOAndWrap(userList, getDtoClass(), getDtoListClass()), HttpStatus.OK);
     }
 
     /**
@@ -151,40 +139,6 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
     @Override
     public ResponseEntity<?> deleteAll() {
         return super.deleteAll();
-    }
-
-//    /**
-//     * Get default user service instance
-//     *
-//     * @return user service instance
-//     */
-//    @Override
-//    protected IUserService<T> getDefaultService() {
-//        return userService;
-//    }
-    /**
-     * Get default entity class instance
-     *
-     * @return entity class instance
-     */
-    @Override
-    protected Class<? extends T> getEntityClass() {
-        return (Class<? extends T>) User.class;
-    }
-
-    /**
-     * Get default DTO class instance
-     *
-     * @return entity class instance
-     */
-    @Override
-    protected Class<? extends E> getDtoClass() {
-        return (Class<? extends E>) UserDTO.class;
-    }
-
-    @Override
-    protected Class<? extends IBaseDTOListWrapper> getDtoListClass() {
-        return UserDTOListWrapper.class;
     }
 
     @Override

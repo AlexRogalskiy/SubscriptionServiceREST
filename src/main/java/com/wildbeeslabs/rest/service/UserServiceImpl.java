@@ -3,6 +3,7 @@ package com.wildbeeslabs.rest.service;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.repositories.UserRepository;
+import com.wildbeeslabs.rest.service.interfaces.IUserService;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.wildbeeslabs.rest.service.interfaces.IUserService;
 
 /**
  *
@@ -99,6 +99,11 @@ public class UserServiceImpl<T extends User> implements IUserService<T> {
     }
 
     @Override
+    public List<T> findAllBySubscriptionDateBetween(final Date startSubDate, final Date endSubDate) {
+        return userRepository.findByDateBetween(startSubDate, endSubDate);
+    }
+
+    @Override
     public List<T> findAllBySubscriptionDate(final Date subDate, final DateTypeOrder dateTypeOrder) {
         if (Objects.equals(dateTypeOrder, DateTypeOrder.BEFORE)) {
             return userRepository.findByDateBefore(subDate);
@@ -116,7 +121,6 @@ public class UserServiceImpl<T extends User> implements IUserService<T> {
     @Override
     public void merge(final T itemTo, final T itemFrom) {
         itemTo.setAge(itemFrom.getAge());
-//        itemTo.setModifiedAt(new Date());
         itemTo.setModifiedBy(itemFrom.getModifiedBy());
         itemTo.setRating(itemFrom.getRating());
         itemTo.setStatus(itemFrom.getStatus());
@@ -125,6 +129,7 @@ public class UserServiceImpl<T extends User> implements IUserService<T> {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN') AND hasRole('DBA')")
     public void delete(final List<? extends T> items) {
         userRepository.delete(items);
     }

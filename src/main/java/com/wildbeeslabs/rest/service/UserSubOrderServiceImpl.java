@@ -82,7 +82,6 @@ public class UserSubOrderServiceImpl<T extends UserSubOrder> implements IUserSub
     public void merge(final T itemTo, final T itemFrom) {
         itemTo.setExpiredAt(itemFrom.getExpiredAt());
         itemTo.setSubscribedAt(itemFrom.getSubscribedAt());
-//        itemTo.setModifiedAt(new Date());
         itemTo.setModifiedBy(itemFrom.getModifiedBy());
         update(itemTo);
     }
@@ -104,7 +103,7 @@ public class UserSubOrderServiceImpl<T extends UserSubOrder> implements IUserSub
 
     @Override
     public T findByUserAndSubscription(final User user, final Subscription subscription) {
-        UserSubOrder order = new UserSubOrder();
+        final UserSubOrder order = new UserSubOrder();
         order.setSubscription(subscription);
         order.setUser(user);
         return this.findById(order.getPk());

@@ -47,6 +47,16 @@ public interface IUserService<T extends User> extends IBaseService<T> {
     List<T> findAllBySubscriptionDate(final Date subDate, final DateTypeOrder dateTypeOrder);
 
     /**
+     * Get list of user entities by subscription date between request period
+     * (including)
+     *
+     * @param startSubDate - start date of period
+     * @param endSubDate - end date of period
+     * @return - list of user entities
+     */
+    List<T> findAllBySubscriptionDateBetween(final Date startSubDate, final Date endSubDate);
+
+    /**
      * Get list of user entities by subscription type
      *
      * @param subType - subscription type

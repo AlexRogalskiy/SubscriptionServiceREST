@@ -23,12 +23,18 @@
  */
 package com.wildbeeslabs.rest.controller.proxy;
 
+import com.wildbeeslabs.rest.exception.EmptyContentException;
 import com.wildbeeslabs.rest.exception.ResourceAlreadyExistException;
 import com.wildbeeslabs.rest.exception.ResourceNotFoundException;
+import com.wildbeeslabs.rest.model.BaseEntity;
 import com.wildbeeslabs.rest.model.IBaseEntity;
+import com.wildbeeslabs.rest.model.dto.BaseDTO;
+import com.wildbeeslabs.rest.model.dto.BaseDTOListWrapper;
 import com.wildbeeslabs.rest.model.dto.converter.DTOConverter;
 import com.wildbeeslabs.rest.model.dto.IBaseDTO;
+import com.wildbeeslabs.rest.model.dto.IBaseDTOListWrapper;
 import com.wildbeeslabs.rest.utils.ResourceUtils;
+import com.wildbeeslabs.rest.service.interfaces.IBaseService;
 
 import java.util.List;
 import java.util.Objects;
@@ -37,7 +43,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import com.wildbeeslabs.rest.service.interfaces.IBaseService;
 
 /**
  *
@@ -63,17 +68,21 @@ public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBas
     protected S service;
 
     @Override
-    public List<? extends T> getAllItems() {
+    public IBaseDTOListWrapper<? extends E> getAllItems() throws EmptyContentException {
+        List<? extends T> items = this.getAllEntityItems();
+        return getDTOConverter().convertToDTOAndWrap(items, getDtoClass(), getDtoListClass());
+    }
+
+    public List<? extends T> getAllEntityItems() throws EmptyContentException {
         LOGGER.info("Fetching all items");
         List<? extends T> items = getService().findAll();
-//        if (items.isEmpty()) {
-//            throw new EmptyContentException(String.format(getLocaleMessage("error.no.content")));
-//        }
+        if (items.isEmpty()) {
+            throw new EmptyContentException(String.format(ResourceUtils.getLocaleMessage("error.no.content")));
+        }
         return items;
     }
 
-    @Override
-    public T getItemById(final Long id) {
+    public T getEntityItemById(final Long id) {
         LOGGER.info("Fetching item by id {}", id);
         T item = getService().findById(id);
         if (Objects.isNull(item)) {
@@ -83,7 +92,12 @@ public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBas
     }
 
     @Override
-    public T createItem(final E itemDto, Class<? extends T> entityClass) {
+    public E getItemById(final Long id) {
+        T item = this.getEntityItemById(id);
+        return getDTOConverter().convertToDTO(item, getDtoClass());
+    }
+
+    public T createItem(final E itemDto, final Class<? extends T> entityClass) {
         LOGGER.info("Creating item {}", itemDto);
         T itemEntity = getDTOConverter().convertToEntity(itemDto, entityClass);
         if (getService().isExist(itemEntity)) {
@@ -94,7 +108,12 @@ public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBas
     }
 
     @Override
-    public T updateItem(final Long id, final E itemDto, Class<? extends T> entityClass) {
+    public E createItem(final E itemDto) {
+        T item = this.createItem(itemDto, getEntityClass());
+        return getDTOConverter().convertToDTO(item, getDtoClass());
+    }
+
+    public T updateItem(final Long id, final E itemDto, final Class<? extends T> entityClass) {
         LOGGER.info("Updating item by id {}", id);
         T currentItem = getService().findById(id);
         if (Objects.isNull(currentItem)) {
@@ -106,7 +125,12 @@ public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBas
     }
 
     @Override
-    public T deleteItem(final Long id) {
+    public E updateItem(final Long id, final E itemDto) {
+        T item = this.updateItem(id, itemDto, getEntityClass());
+        return getDTOConverter().convertToDTO(item, getDtoClass());
+    }
+
+    public T deleteEntityItem(final Long id) {
         LOGGER.info("Deleting item by id {}", id);
         T item = getService().findById(id);
         if (Objects.isNull(item)) {
@@ -114,6 +138,19 @@ public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBas
         }
         getService().deleteById(id);
         return item;
+    }
+
+    @Override
+    public E deleteItem(final Long id) {
+        T item = this.deleteEntityItem(id);
+        return getDTOConverter().convertToDTO(item, getDtoClass());
+    }
+
+    @Override
+    public void deleteItems(final List<? extends E> itemDtoList) {
+        LOGGER.info("Deleting items");
+        List<? extends T> items = getDTOConverter().convertToEntity(itemDtoList, getEntityClass());
+        getService().delete(items);
     }
 
     @Override
@@ -131,7 +168,15 @@ public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBas
         return this.service;
     }
 
-    public void setService(final S service) {
-        this.service = service;
+    protected Class<? extends T> getEntityClass() {
+        return (Class<? extends T>) BaseEntity.class;
+    }
+
+    protected Class<? extends E> getDtoClass() {
+        return (Class<? extends E>) BaseDTO.class;
+    }
+
+    protected Class<? extends IBaseDTOListWrapper> getDtoListClass() {
+        return BaseDTOListWrapper.class;
     }
 }

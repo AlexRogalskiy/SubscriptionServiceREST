@@ -90,7 +90,6 @@ public class SubscriptionServiceImpl<T extends Subscription> implements ISubscri
     @Override
     public void merge(final T itemTo, final T itemFrom) {
         itemTo.setExpireAt(itemFrom.getExpireAt());
-//        itemTo.setModifiedAt(new Date());
         itemTo.setModifiedBy(itemFrom.getModifiedBy());
         itemTo.setName(itemFrom.getName());
         itemTo.setType(itemFrom.getType());
@@ -105,6 +104,7 @@ public class SubscriptionServiceImpl<T extends Subscription> implements ISubscri
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN') AND hasRole('DBA')")
     public void delete(final List<? extends T> items) {
         subscriptionRepository.delete(items);
     }
