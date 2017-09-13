@@ -38,6 +38,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import javax.validation.Valid;
@@ -103,13 +105,11 @@ public class TestController<T extends Subscription, E extends SubscriptionDTO> i
     @Override
     public ResponseEntity<?> create(@RequestBody @Valid E subscriptionDto) {
         T item = subscriptionProxyController.createItem(subscriptionDto, (Class<? extends T>) Subscription.class);
-        /*
-        UriComponentsBuilder bc = UriComponentsBuilder.newInstance();
+        UriComponentsBuilder ucBuilder = UriComponentsBuilder.newInstance();
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/subscription/{id}").buildAndExpand(id).toUri());
+        headers.setLocation(ucBuilder.path("/subscription/{id}").buildAndExpand(item.getId()).toUri());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
-         */
-        return new ResponseEntity<>(HttpStatus.OK);
+        //return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     /**

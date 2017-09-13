@@ -35,4 +35,7 @@ import java.io.Serializable;
  */
 public interface IBaseEntity extends Serializable {
 
+    default Long getId() {
+        return null;
+    }
 }

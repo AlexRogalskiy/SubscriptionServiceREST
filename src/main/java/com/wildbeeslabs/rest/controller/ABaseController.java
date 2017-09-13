@@ -7,12 +7,13 @@ import com.wildbeeslabs.rest.model.dto.IBaseDTO;
 import com.wildbeeslabs.rest.service.interfaces.IBaseService;
 
 import java.beans.PropertyEditorSupport;
+import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  *
@@ -26,10 +27,8 @@ import org.springframework.http.ResponseEntity;
  */
 public abstract class ABaseController<T extends IBaseEntity, E extends IBaseDTO> implements IBaseController<T, E> {
 
-//    /**
-//     * Default Logger instance
-//     */
-//    protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
+    @Autowired
+    protected HttpServletRequest request;
 
     @Override
     public ResponseEntity<?> getAll() {
@@ -48,7 +47,11 @@ public abstract class ABaseController<T extends IBaseEntity, E extends IBaseDTO>
     @Override
     public ResponseEntity<?> create(final E itemDto) {
         E itemEntity = getProxyController().createItem(itemDto);
-        return new ResponseEntity<>(HttpStatus.OK);
+        UriComponentsBuilder ucBuilder = UriComponentsBuilder.newInstance();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path(request.getRequestURI() + "/{id}").buildAndExpand(itemEntity.getId()).toUri());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+        //return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Override

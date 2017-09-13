@@ -24,6 +24,7 @@
 package com.wildbeeslabs.rest.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -43,6 +44,7 @@ import java.util.List;
 @JacksonXmlRootElement(localName = "items")
 public class BaseDTOListWrapper<E extends IBaseDTO> implements IBaseDTOListWrapper<E> {
 
+    @JsonProperty("items")
     @JacksonXmlElementWrapper(useWrapping = false)
     @JacksonXmlProperty(localName = "item")
     protected List<? extends E> items = null;

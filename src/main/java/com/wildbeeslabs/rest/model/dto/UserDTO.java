@@ -72,6 +72,7 @@ public class UserDTO extends BaseDTO {
     //@JacksonXmlElementWrapper(localName = "subscriptions", useWrapping = false)
     private final Set<UserSubOrderDTO> subOrders = new HashSet<>();
 
+    @Override
     public Long getId() {
         return id;
     }

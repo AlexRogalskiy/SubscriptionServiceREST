@@ -24,6 +24,7 @@
 package com.wildbeeslabs.rest.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -42,6 +43,7 @@ import java.util.List;
 @JacksonXmlRootElement(localName = "subscriptions")
 public class SubscriptionDTOListWrapper<E extends SubscriptionDTO> extends BaseDTOListWrapper<E> {
 
+    @JsonProperty("subscriptions")
     @JacksonXmlElementWrapper(useWrapping = false)
     @JacksonXmlProperty(localName = "subscription")
     @SuppressWarnings("FieldNameHidesFieldInSuperclass")

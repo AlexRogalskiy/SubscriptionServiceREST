@@ -34,5 +34,8 @@ import java.io.Serializable;
  * @since 2017-08-08
  */
 public interface IBaseDTO extends Serializable {
-    
+
+    default Long getId() {
+        return null;
+    }
 }

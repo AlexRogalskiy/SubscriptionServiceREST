@@ -159,13 +159,13 @@ public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBas
         getService().deleteAll();
     }
 
-    protected DTOConverter getDTOConverter() {
-        return this.dtoConverter;
-    }
-
     @Override
     public S getService() {
         return this.service;
+    }
+
+    protected DTOConverter getDTOConverter() {
+        return this.dtoConverter;
     }
 
     protected Class<? extends T> getEntityClass() {
