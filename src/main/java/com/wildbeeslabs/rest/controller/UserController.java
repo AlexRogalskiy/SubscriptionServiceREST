@@ -91,11 +91,11 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
     @RequestMapping(value = "/user", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     @Override
-    public ResponseEntity<?> create(@RequestBody @Valid E userDto/*, UriComponentsBuilder ucBuilder*/) {
+    public ResponseEntity<?> create(@RequestBody @Valid E userDto) {
         /*
         UriComponentsBuilder bc = UriComponentsBuilder.newInstance();
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/subscription/{id}").buildAndExpand(id).toUri());
+        headers.setLocation(ucBuilder.path(request.getRequestURI() + "/{id}").buildAndExpand(userDto.getId()).toUri());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
          */
         return super.create(userDto);

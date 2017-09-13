@@ -77,7 +77,7 @@ public class UserControllerTest extends BaseControllerTest {
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123")
                 .body(getObjectAsString(user))
                 .when().post(REST_SERVICE_URI + "/api/user").then()
-                .statusCode(200);
+                .statusCode(201);
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/users").then()
                 .body("login", hasItem("user18@gmail.com"))
                 .statusCode(200);

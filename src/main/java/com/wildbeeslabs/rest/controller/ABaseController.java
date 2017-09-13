@@ -51,7 +51,6 @@ public abstract class ABaseController<T extends IBaseEntity, E extends IBaseDTO>
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path(request.getRequestURI() + "/{id}").buildAndExpand(itemEntity.getId()).toUri());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
-        //return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Override

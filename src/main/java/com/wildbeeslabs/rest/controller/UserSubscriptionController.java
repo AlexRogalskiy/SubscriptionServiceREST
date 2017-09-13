@@ -61,12 +61,12 @@ public class UserSubscriptionController<T extends UserSubOrder, E extends UserSu
     @RequestMapping(value = "/user/{userId:[\\d]+}/subscriptions", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> getSubscriptionsByUserId(@PathVariable("userId") Long userId) {
-        //User userItem = userProxyController.getEntityItemById(userId);
-        /*List<T> subscriptionOrders = getDefaultService().findByUser(userItem);
-        if (subscriptionOrders.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(subscriptionOrders, HttpStatus.OK);*/
+//        User userItem = userProxyController.getEntityItemById(userId);
+//        try {
+//            return new ResponseEntity<>(userSubscriptionProxyController.findByUser(userItem), HttpStatus.OK);
+//        } catch (EmptyContentException ex) {
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
         try {
             return new ResponseEntity<>(subscriptionProxyController.findByUserId(userId), HttpStatus.OK);
         } catch (EmptyContentException ex) {
@@ -171,12 +171,12 @@ public class UserSubscriptionController<T extends UserSubOrder, E extends UserSu
     @RequestMapping(value = "/subscription/{subscriptionId:[\\d]+}/users", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<?> getUsersBySubscriptionId(@PathVariable("subscriptionId") Long subscriptionId) {
-        //Subscription subscriptionItem = subscriptionProxyController.getEntityItemById(subscriptionId);
-        /*List<T> userOrders = getDefaultService().findBySubscription(subscriptionItem);
-        if (userOrders.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(userOrders, HttpStatus.OK);*/
+//        Subscription subscriptionItem = subscriptionProxyController.getEntityItemById(subscriptionId);
+//        try {
+//            return new ResponseEntity<>(userSubscriptionProxyController.findBySubscription(subscriptionItem), HttpStatus.OK);
+//        } catch (EmptyContentException ex) {
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
         try {
             return new ResponseEntity<>(userProxyController.findAllEntityBySubscriptionId(subscriptionId), HttpStatus.OK);
         } catch (EmptyContentException ex) {

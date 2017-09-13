@@ -72,11 +72,11 @@ public class SubscriptionController<T extends Subscription, E extends Subscripti
     @RequestMapping(value = "/subscription", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     @Override
-    public ResponseEntity<?> create(@RequestBody @Valid E subscriptionDto/*, UriComponentsBuilder ucBuilder*/) {
+    public ResponseEntity<?> create(@RequestBody @Valid E subscriptionDto) {
         /*
         UriComponentsBuilder bc = UriComponentsBuilder.newInstance();
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/subscription/{id}").buildAndExpand(id).toUri());
+        headers.setLocation(ucBuilder.path(request.getRequestURI() + "/{id}").buildAndExpand(subscriptionDto.getId()).toUri());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
          */
         return super.create(subscriptionDto);

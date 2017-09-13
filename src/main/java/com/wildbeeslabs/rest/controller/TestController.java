@@ -42,6 +42,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 /**
@@ -58,6 +59,8 @@ import javax.validation.Valid;
 //@RequestMapping("/api")
 public class TestController<T extends Subscription, E extends SubscriptionDTO> implements IBaseController<T, E> {
 
+    @Autowired
+    protected HttpServletRequest request;
     @Autowired
     private DTOConverter dtoConverter;
     @Autowired
@@ -107,9 +110,8 @@ public class TestController<T extends Subscription, E extends SubscriptionDTO> i
         T item = subscriptionProxyController.createItem(subscriptionDto, (Class<? extends T>) Subscription.class);
         UriComponentsBuilder ucBuilder = UriComponentsBuilder.newInstance();
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/subscription/{id}").buildAndExpand(item.getId()).toUri());
+        headers.setLocation(ucBuilder.path(request.getRequestURI() + "/{id}").buildAndExpand(item.getId()).toUri());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
-        //return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     /**
@@ -124,7 +126,7 @@ public class TestController<T extends Subscription, E extends SubscriptionDTO> i
     @Override
     public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody E subscriptionDto) {
         T item = subscriptionProxyController.updateItem(id, subscriptionDto, (Class<? extends T>) Subscription.class);
-        return new ResponseEntity<>(dtoConverter.convertToDTO(item, (Class<? extends E>) SubscriptionDTO.class), HttpStatus.OK);
+        return new ResponseEntity<>(dtoConverter.convertToDTO(item, SubscriptionDTO.class), HttpStatus.OK);
     }
 
     /**

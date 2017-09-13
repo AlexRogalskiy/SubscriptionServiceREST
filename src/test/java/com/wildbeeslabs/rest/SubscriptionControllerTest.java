@@ -68,7 +68,7 @@ public class SubscriptionControllerTest extends BaseControllerTest {
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123")
                 .body(getObjectAsString(subscription))
                 .when().post(REST_SERVICE_URI + "/api/subscription").then()
-                .statusCode(200);
+                .statusCode(201);
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/subscriptions").then()
                 .body("name", hasItem("Guest Group"))
                 .statusCode(200);

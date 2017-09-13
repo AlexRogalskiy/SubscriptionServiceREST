@@ -33,8 +33,8 @@ import com.wildbeeslabs.rest.model.dto.UserSubOrderDTO;
 import com.wildbeeslabs.rest.model.dto.UserSubOrderDTOListWrapper;
 import com.wildbeeslabs.rest.service.interfaces.IUserSubOrderService;
 import com.wildbeeslabs.rest.utils.ResourceUtils;
-import java.util.List;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.stereotype.Component;
@@ -78,6 +78,20 @@ public class UserSubscriptionProxyController<T extends UserSubOrder, E extends U
 
     public IBaseDTOListWrapper<? extends E> findByUser(final User userItem) throws EmptyContentException {
         List<? extends T> items = this.findAllEntityByUser(userItem);
+        return getDTOConverter().convertToDTOAndWrap(items, getDtoClass(), getDtoListClass());
+    }
+
+    public List<? extends T> findAllEntityBySubscription(final Subscription subscriptionItem) throws EmptyContentException {
+        LOGGER.info("Fetching subscription orders by subscription id {}", subscriptionItem.getId());
+        List<? extends T> items = getService().findBySubscription(subscriptionItem);
+        if (items.isEmpty()) {
+            throw new EmptyContentException(String.format(ResourceUtils.getLocaleMessage("error.no.content")));
+        }
+        return items;
+    }
+
+    public IBaseDTOListWrapper<? extends E> findBySubscription(final Subscription subscriptionItem) throws EmptyContentException {
+        List<? extends T> items = this.findAllEntityBySubscription(subscriptionItem);
         return getDTOConverter().convertToDTOAndWrap(items, getDtoClass(), getDtoListClass());
     }
 

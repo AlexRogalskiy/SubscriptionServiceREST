@@ -45,7 +45,7 @@ public class UserSubscriptionControllerTest extends BaseControllerTest {
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123")
                 .body(userSubOrder)
                 .when().post(REST_SERVICE_URI + "/api/user/{id}/subscription", user1.getId()).then()
-                .statusCode(200);
+                .statusCode(201);
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/user/{id}/subscriptions", user1.getId()).then()
                 .body("name", hasItem("subscription3"))
                 .statusCode(200);
