@@ -57,7 +57,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
  * @param <E>
  * @param <S>
  */
-public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBaseDTO, S extends IBaseService<T>> implements IBaseProxyController<T, E, S> {
+public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBaseDTO, S extends IBaseService<T>> implements IBaseProxyController<T, E> {
 
     /**
      * Default Logger instance
@@ -163,8 +163,7 @@ public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBas
         getService().deleteAll();
     }
 
-    @Override
-    public S getService() {
+    protected S getService() {
         return this.service;
     }
 

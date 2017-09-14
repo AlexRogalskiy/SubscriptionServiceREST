@@ -1,6 +1,5 @@
 package com.wildbeeslabs.rest.controller;
 
-import com.wildbeeslabs.rest.controller.proxy.IBaseProxyController;
 import com.wildbeeslabs.rest.controller.proxy.SubscriptionProxyController;
 import com.wildbeeslabs.rest.controller.proxy.UserProxyController;
 import com.wildbeeslabs.rest.controller.proxy.UserSubscriptionProxyController;
@@ -11,7 +10,6 @@ import com.wildbeeslabs.rest.model.UserSubOrder;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
 import com.wildbeeslabs.rest.model.dto.UserDTO;
 import com.wildbeeslabs.rest.model.dto.UserSubOrderDTO;
-import com.wildbeeslabs.rest.service.interfaces.IBaseService;
 
 import java.util.List;
 import javax.validation.Valid;
@@ -40,14 +38,12 @@ import org.springframework.web.util.UriComponentsBuilder;
  */
 @RestController
 @RequestMapping("/api")
-public class UserSubscriptionController<T extends UserSubOrder, E extends UserSubOrderDTO> extends ABaseController<T, E> {
+public class UserSubscriptionController<T extends UserSubOrder, E extends UserSubOrderDTO> extends ABaseController<T, E, UserSubscriptionProxyController<T, E>> {
 
     @Autowired
     private SubscriptionProxyController<Subscription, SubscriptionDTO> subscriptionProxyController;
     @Autowired
     private UserProxyController<User, UserDTO> userProxyController;
-    @Autowired
-    private UserSubscriptionProxyController<T, E> userSubscriptionProxyController;
 
     /**
      * Get list of subscription entities by user ID
@@ -83,7 +79,7 @@ public class UserSubscriptionController<T extends UserSubOrder, E extends UserSu
     public ResponseEntity<?> getSubscriptionByUserIdAndSubscriptionId(@PathVariable("userId") Long userId, @PathVariable("subscriptionId") Long subscriptionId) {
         User userItem = userProxyController.getEntityItemById(userId);
         Subscription subscriptionItem = subscriptionProxyController.getEntityItemById(subscriptionId);
-        return new ResponseEntity<>(userSubscriptionProxyController.findByUserAndSubscription(userItem, subscriptionItem), HttpStatus.OK);
+        return new ResponseEntity<>(getProxyController().findByUserAndSubscription(userItem, subscriptionItem), HttpStatus.OK);
     }
 
     /**
@@ -101,7 +97,7 @@ public class UserSubscriptionController<T extends UserSubOrder, E extends UserSu
         SubscriptionDTO subscriptionItem = subscriptionProxyController.getItemById(orderDto.getSubscription().getId());
         orderDto.setSubscription(subscriptionItem);
         orderDto.setUser(userItem);
-        userSubscriptionProxyController.createItem(orderDto);
+        getProxyController().createItem(orderDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -118,8 +114,8 @@ public class UserSubscriptionController<T extends UserSubOrder, E extends UserSu
     public ResponseEntity<?> updateSubscriptionsByUserIdAndSubscriptionId(@PathVariable("userId") Long userId, @PathVariable("subscriptionId") Long subscriptionId, @RequestBody @Valid E orderDto) {
         User userItem = userProxyController.getEntityItemById(userId);
         Subscription subscriptionItem = subscriptionProxyController.getEntityItemById(orderDto.getSubscription().getId());
-        T currentOrder = userSubscriptionProxyController.findAllEntityByUserAndSubscription(userItem, subscriptionItem);
-        userSubscriptionProxyController.updateEntityItem(currentOrder, orderDto);
+        T currentOrder = getProxyController().findAllEntityByUserAndSubscription(userItem, subscriptionItem);
+        getProxyController().updateEntityItem(currentOrder, orderDto);
         return new ResponseEntity<>(currentOrder, HttpStatus.OK);
     }
 
@@ -135,8 +131,8 @@ public class UserSubscriptionController<T extends UserSubOrder, E extends UserSu
     public ResponseEntity<?> deleteSubscriptionsByUserId(@PathVariable("userId") Long userId, @PathVariable("subscriptionId") Long subscriptionId) {
         User userItem = userProxyController.getEntityItemById(userId);
         Subscription subscriptionItem = subscriptionProxyController.getEntityItemById(subscriptionId);
-        T currentOrder = userSubscriptionProxyController.findAllEntityByUserAndSubscription(userItem, subscriptionItem);
-        userSubscriptionProxyController.deleteEntityItem(currentOrder);
+        T currentOrder = getProxyController().findAllEntityByUserAndSubscription(userItem, subscriptionItem);
+        getProxyController().deleteEntityItem(currentOrder);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -151,8 +147,8 @@ public class UserSubscriptionController<T extends UserSubOrder, E extends UserSu
     public ResponseEntity<?> deleteAllSubscriptions(@PathVariable("userId") Long userId) {
         User userItem = userProxyController.getEntityItemById(userId);
         try {
-            List<? extends T> subscriptionOrders = userSubscriptionProxyController.findAllEntityByUser(userItem);
-            userSubscriptionProxyController.deleteEntityItems(subscriptionOrders);
+            List<? extends T> subscriptionOrders = getProxyController().findAllEntityByUser(userItem);
+            getProxyController().deleteEntityItems(subscriptionOrders);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (EmptyContentException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
@@ -179,10 +175,5 @@ public class UserSubscriptionController<T extends UserSubOrder, E extends UserSu
         } catch (EmptyContentException ex) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-    }
-
-    @Override
-    protected IBaseProxyController<T, E, ? extends IBaseService<T>> getProxyController() {
-        return this.userSubscriptionProxyController;
     }
 }

@@ -4,7 +4,6 @@ import com.wildbeeslabs.rest.controller.proxy.IBaseProxyController;
 import com.wildbeeslabs.rest.exception.EmptyContentException;
 import com.wildbeeslabs.rest.model.IBaseEntity;
 import com.wildbeeslabs.rest.model.dto.IBaseDTO;
-import com.wildbeeslabs.rest.service.interfaces.IBaseService;
 
 import java.beans.PropertyEditorSupport;
 import javax.servlet.http.HttpServletRequest;
@@ -24,11 +23,14 @@ import org.springframework.web.util.UriComponentsBuilder;
  * @since 2017-08-08
  * @param <T>
  * @param <E>
+ * @param <C>
  */
-public abstract class ABaseController<T extends IBaseEntity, E extends IBaseDTO> implements IBaseController<T, E> {
+public abstract class ABaseController<T extends IBaseEntity, E extends IBaseDTO, C extends IBaseProxyController<T, E>> implements IBaseController<T, E> {
 
     @Autowired
     protected HttpServletRequest request;
+    @Autowired
+    private C proxyController;
 
     @Override
     public ResponseEntity<?> getAll() {
@@ -86,5 +88,7 @@ public abstract class ABaseController<T extends IBaseEntity, E extends IBaseDTO>
         }
     }
 
-    protected abstract IBaseProxyController<T, E, ? extends IBaseService<T>> getProxyController();
+    protected C getProxyController() {
+        return this.proxyController;
+    }
 }

@@ -1,14 +1,11 @@
 package com.wildbeeslabs.rest.controller;
 
-import com.wildbeeslabs.rest.controller.proxy.IBaseProxyController;
 import com.wildbeeslabs.rest.controller.proxy.SubscriptionProxyController;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
-import com.wildbeeslabs.rest.service.interfaces.IBaseService;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,10 +29,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 @RestController
 @RequestMapping("/api")
-public class SubscriptionController<T extends Subscription, E extends SubscriptionDTO> extends ABaseController<T, E> {
-
-    @Autowired
-    private SubscriptionProxyController<T, E> subscriptionProxyController;
+public class SubscriptionController<T extends Subscription, E extends SubscriptionDTO> extends ABaseController<T, E, SubscriptionProxyController<T, E>> {
 
     /**
      * Get list of subscription entities
@@ -119,15 +113,5 @@ public class SubscriptionController<T extends Subscription, E extends Subscripti
     @Override
     public ResponseEntity<?> deleteAll() {
         return super.deleteAll();
-    }
-
-    /**
-     * Get default Proxy Controller
-     *
-     * @return entity class instance
-     */
-    @Override
-    protected IBaseProxyController<T, E, ? extends IBaseService<T>> getProxyController() {
-        return this.subscriptionProxyController;
     }
 }

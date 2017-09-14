@@ -1,17 +1,14 @@
 package com.wildbeeslabs.rest.controller;
 
-import com.wildbeeslabs.rest.controller.proxy.IBaseProxyController;
 import com.wildbeeslabs.rest.controller.proxy.UserProxyController;
 import com.wildbeeslabs.rest.exception.EmptyContentException;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.dto.UserDTO;
-import com.wildbeeslabs.rest.service.interfaces.IBaseService;
 
 import java.util.Date;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -39,10 +36,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 @RestController
 @RequestMapping("/api")
-public class UserController<T extends User, E extends UserDTO> extends ABaseController<T, E> {
-
-    @Autowired
-    private UserProxyController<T, E> userProxyController;
+public class UserController<T extends User, E extends UserDTO> extends ABaseController<T, E, UserProxyController<T, E>> {
 
     @InitBinder
     public void initBinder(final WebDataBinder dataBinder) {
@@ -62,7 +56,7 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
     @ResponseBody
     public ResponseEntity<?> getAll(@RequestParam(name = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date subDate, @RequestParam(name = "type", required = false) Subscription.SubscriptionStatusType subType, @RequestParam(name = "order", required = false, defaultValue = "false") Boolean subDateOrder) {
         try {
-            return new ResponseEntity<>(userProxyController.findAllBySubscriptionTypeAndDate(subDate, subType, subDateOrder), HttpStatus.OK);
+            return new ResponseEntity<>(getProxyController().findAllBySubscriptionTypeAndDate(subDate, subType, subDateOrder), HttpStatus.OK);
         } catch (EmptyContentException ex) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -138,10 +132,5 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
     @Override
     public ResponseEntity<?> deleteAll() {
         return super.deleteAll();
-    }
-
-    @Override
-    protected IBaseProxyController<T, E, ? extends IBaseService<T>> getProxyController() {
-        return this.userProxyController;
     }
 }

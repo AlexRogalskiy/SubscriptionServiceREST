@@ -25,9 +25,9 @@ package com.wildbeeslabs.rest.controller.proxy;
 
 import com.wildbeeslabs.rest.exception.EmptyContentException;
 import com.wildbeeslabs.rest.model.dto.wrapper.IBaseDTOListWrapper;
+
 import java.io.Serializable;
 import java.util.List;
-import com.wildbeeslabs.rest.service.interfaces.IBaseService;
 
 /**
  *
@@ -38,9 +38,8 @@ import com.wildbeeslabs.rest.service.interfaces.IBaseService;
  * @since 2017-08-08
  * @param <T>
  * @param <E>
- * @param <S>
  */
-public interface IBaseProxyController<T extends Serializable, E extends Serializable, S extends IBaseService<T>> {
+public interface IBaseProxyController<T extends Serializable, E extends Serializable> {
 
     IBaseDTOListWrapper<? extends E> getAllItems() throws EmptyContentException;
 
@@ -57,8 +56,4 @@ public interface IBaseProxyController<T extends Serializable, E extends Serializ
     void deleteItems(final List<? extends E> itemDtoList);
 
     void deleteAllItems();
-
-    //void merge(final E toItemDto, final E fromItemDto);
-    //T findItemById(final Long id);
-    S getService();
 }
