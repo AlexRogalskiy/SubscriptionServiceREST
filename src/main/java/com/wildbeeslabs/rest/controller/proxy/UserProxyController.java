@@ -26,11 +26,10 @@ package com.wildbeeslabs.rest.controller.proxy;
 import com.wildbeeslabs.rest.exception.EmptyContentException;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.User;
-import com.wildbeeslabs.rest.model.dto.IBaseDTOListWrapper;
+import com.wildbeeslabs.rest.model.dto.wrapper.IBaseDTOListWrapper;
 import com.wildbeeslabs.rest.model.dto.UserDTO;
-import com.wildbeeslabs.rest.model.dto.UserDTOListWrapper;
+import com.wildbeeslabs.rest.model.dto.wrapper.UserDTOListWrapper;
 import com.wildbeeslabs.rest.service.interfaces.IUserService;
-import com.wildbeeslabs.rest.utils.ResourceUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -50,14 +49,14 @@ import org.springframework.stereotype.Component;
  * @param <S>
  */
 @Component
-public class UserProxyController<T extends User, E extends UserDTO, S extends IUserService<T>> extends ABaseProxyController<T, E, S> {
+public class UserProxyController<T extends User, E extends UserDTO> extends ABaseProxyController<T, E, IUserService<T>> {
 
     public List<? extends T> findAllEntityBySubscriptionTypeAndDate(final Date subDate, final Subscription.SubscriptionStatusType subType, final Boolean subDateOrder) throws EmptyContentException {
         LOGGER.info("Fetching all users by subscription date {}, type {}, date order {} (1 - before, 0 - after)", subDate, subType, subDateOrder);
         IUserService.DateTypeOrder dateTypeOrder = Objects.equals(subDateOrder, Boolean.TRUE) ? IUserService.DateTypeOrder.AFTER : IUserService.DateTypeOrder.BEFORE;
         List<? extends T> items = getService().findAllBySubscriptionTypeAndDate(subDate, subType, dateTypeOrder);
         if (items.isEmpty()) {
-            throw new EmptyContentException(String.format(ResourceUtils.getLocaleMessage("error.no.content")));
+            throw new EmptyContentException(String.format(getLocaleMessage("error.no.content")));
         }
         return items;
     }
@@ -71,7 +70,7 @@ public class UserProxyController<T extends User, E extends UserDTO, S extends IU
         LOGGER.info("Fetching all users by subscription id {}", subscriptionId);
         List<? extends T> items = getService().findBySubscriptionId(subscriptionId);
         if (items.isEmpty()) {
-            throw new EmptyContentException(String.format(ResourceUtils.getLocaleMessage("error.no.content")));
+            throw new EmptyContentException(String.format(getLocaleMessage("error.no.content")));
         }
         return items;
     }

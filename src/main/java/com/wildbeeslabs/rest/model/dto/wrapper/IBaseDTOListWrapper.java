@@ -21,31 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.rest.model.dto;
+package com.wildbeeslabs.rest.model.dto.wrapper;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
- * UserDTOListWrapper REST Application Model
+ * BaseDTOListWrapper REST interface declaration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
  * @param <E>
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JacksonXmlRootElement(localName = "users")
-public class UserDTOListWrapper<E extends UserDTO> extends BaseDTOListWrapper<E> {
+public interface IBaseDTOListWrapper<E extends Serializable> extends Serializable {
 
-    @JsonProperty("users")
-    @JacksonXmlElementWrapper(useWrapping = false)
-    @JacksonXmlProperty(localName = "user")
-    @SuppressWarnings("FieldNameHidesFieldInSuperclass")
-    protected List<? extends E> items = null;
+    List<? extends E> getItems();
+
+    void setItems(final List<? extends E> items);
 }

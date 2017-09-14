@@ -21,18 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.rest.model.dto;
+package com.wildbeeslabs.rest.model.dto.wrapper;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.wildbeeslabs.rest.model.dto.IBaseDTO;
+
 import java.util.List;
 
 /**
  *
- * UserSubOrderDTOListWrapper REST Application Model
+ * BaseDTOListWrapper REST Application Model
  *
  * @author Alex
  * @version 1.0.0
@@ -40,12 +42,21 @@ import java.util.List;
  * @param <E>
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JacksonXmlRootElement(localName = "userSubOrders")
-public class UserSubOrderDTOListWrapper<E extends UserSubOrderDTO> extends BaseDTOListWrapper<E> {
+@JacksonXmlRootElement(localName = "items")
+public class BaseDTOListWrapper<E extends IBaseDTO> implements IBaseDTOListWrapper<E> {
 
-    @JsonProperty("userSubOrders")
+    @JsonProperty("items")
     @JacksonXmlElementWrapper(useWrapping = false)
-    @JacksonXmlProperty(localName = "userSubOrder")
-    @SuppressWarnings("FieldNameHidesFieldInSuperclass")
+    @JacksonXmlProperty(localName = "item")
     protected List<? extends E> items = null;
+
+    @Override
+    public List<? extends E> getItems() {
+        return items;
+    }
+
+    @Override
+    public void setItems(final List<? extends E> items) {
+        this.items = items;
+    }
 }

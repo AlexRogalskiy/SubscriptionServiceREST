@@ -25,11 +25,10 @@ package com.wildbeeslabs.rest.controller.proxy;
 
 import com.wildbeeslabs.rest.exception.EmptyContentException;
 import com.wildbeeslabs.rest.model.Subscription;
-import com.wildbeeslabs.rest.model.dto.IBaseDTOListWrapper;
+import com.wildbeeslabs.rest.model.dto.wrapper.IBaseDTOListWrapper;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
-import com.wildbeeslabs.rest.model.dto.SubscriptionDTOListWrapper;
+import com.wildbeeslabs.rest.model.dto.wrapper.SubscriptionDTOListWrapper;
 import com.wildbeeslabs.rest.service.interfaces.ISubscriptionService;
-import com.wildbeeslabs.rest.utils.ResourceUtils;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -46,13 +45,13 @@ import org.springframework.stereotype.Component;
  * @param <S>
  */
 @Component
-public class SubscriptionProxyController<T extends Subscription, E extends SubscriptionDTO, S extends ISubscriptionService<T>> extends ABaseProxyController<T, E, S> {
+public class SubscriptionProxyController<T extends Subscription, E extends SubscriptionDTO> extends ABaseProxyController<T, E, ISubscriptionService<T>> {
 
     public IBaseDTOListWrapper<? extends E> findByUserId(final Long userId) throws EmptyContentException {
         LOGGER.info("Fetching all subscriptions by user id {}", userId);
         List<? extends T> items = getService().findByUserId(userId);
         if (items.isEmpty()) {
-            throw new EmptyContentException(String.format(ResourceUtils.getLocaleMessage("error.no.content")));
+            throw new EmptyContentException(String.format(getLocaleMessage("error.no.content")));
         }
         return getDTOConverter().convertToDTOAndWrap(items, getDtoClass(), getDtoListClass());
     }

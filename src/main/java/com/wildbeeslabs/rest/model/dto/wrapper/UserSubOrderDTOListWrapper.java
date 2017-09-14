@@ -21,23 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.rest.model.dto;
+package com.wildbeeslabs.rest.model.dto.wrapper;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.wildbeeslabs.rest.model.dto.UserSubOrderDTO;
 import java.util.List;
 
 /**
  *
- * BaseDTOListWrapper REST interface declaration
+ * UserSubOrderDTOListWrapper REST Application Model
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
  * @param <E>
  */
-public interface IBaseDTOListWrapper<E extends Serializable> extends Serializable {
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JacksonXmlRootElement(localName = "userSubOrders")
+public class UserSubOrderDTOListWrapper<E extends UserSubOrderDTO> extends BaseDTOListWrapper<E> {
 
-    List<? extends E> getItems();
-
-    void setItems(final List<? extends E> items);
+    @JsonProperty("userSubOrders")
+    @JacksonXmlElementWrapper(useWrapping = false)
+    @JacksonXmlProperty(localName = "userSubOrder")
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass")
+    protected List<? extends E> items = null;
 }

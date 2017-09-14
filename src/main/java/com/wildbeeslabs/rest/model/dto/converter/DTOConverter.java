@@ -26,7 +26,7 @@ package com.wildbeeslabs.rest.model.dto.converter;
 import com.wildbeeslabs.rest.controller.ABaseController;
 import com.wildbeeslabs.rest.model.IBaseEntity;
 import com.wildbeeslabs.rest.model.dto.IBaseDTO;
-import com.wildbeeslabs.rest.model.dto.IBaseDTOListWrapper;
+import com.wildbeeslabs.rest.model.dto.wrapper.IBaseDTOListWrapper;
 
 import java.util.LinkedList;
 import java.util.List;

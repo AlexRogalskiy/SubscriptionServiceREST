@@ -21,18 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.rest.model.dto;
+package com.wildbeeslabs.rest.model.dto.wrapper;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.wildbeeslabs.rest.model.dto.UserDTO;
 import java.util.List;
 
 /**
  *
- * SubscriptionDTOListWrapper REST Application Model
+ * UserDTOListWrapper REST Application Model
  *
  * @author Alex
  * @version 1.0.0
@@ -40,12 +41,12 @@ import java.util.List;
  * @param <E>
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JacksonXmlRootElement(localName = "subscriptions")
-public class SubscriptionDTOListWrapper<E extends SubscriptionDTO> extends BaseDTOListWrapper<E> {
+@JacksonXmlRootElement(localName = "users")
+public class UserDTOListWrapper<E extends UserDTO> extends BaseDTOListWrapper<E> {
 
-    @JsonProperty("subscriptions")
+    @JsonProperty("users")
     @JacksonXmlElementWrapper(useWrapping = false)
-    @JacksonXmlProperty(localName = "subscription")
+    @JacksonXmlProperty(localName = "user")
     @SuppressWarnings("FieldNameHidesFieldInSuperclass")
     protected List<? extends E> items = null;
 }

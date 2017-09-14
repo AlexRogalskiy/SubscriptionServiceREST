@@ -29,20 +29,22 @@ import com.wildbeeslabs.rest.exception.ResourceNotFoundException;
 import com.wildbeeslabs.rest.model.BaseEntity;
 import com.wildbeeslabs.rest.model.IBaseEntity;
 import com.wildbeeslabs.rest.model.dto.BaseDTO;
-import com.wildbeeslabs.rest.model.dto.BaseDTOListWrapper;
+import com.wildbeeslabs.rest.model.dto.wrapper.BaseDTOListWrapper;
 import com.wildbeeslabs.rest.model.dto.converter.DTOConverter;
 import com.wildbeeslabs.rest.model.dto.IBaseDTO;
-import com.wildbeeslabs.rest.model.dto.IBaseDTOListWrapper;
-import com.wildbeeslabs.rest.utils.ResourceUtils;
+import com.wildbeeslabs.rest.model.dto.wrapper.IBaseDTOListWrapper;
 import com.wildbeeslabs.rest.service.interfaces.IBaseService;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 /**
  *
@@ -63,9 +65,11 @@ public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBas
     protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @Autowired
+    private MessageSource messageSource;
+    @Autowired
     private DTOConverter dtoConverter;
     @Autowired
-    protected S service;
+    private S service;
 
     @Override
     public IBaseDTOListWrapper<? extends E> getAllItems() throws EmptyContentException {
@@ -77,7 +81,7 @@ public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBas
         LOGGER.info("Fetching all items");
         List<? extends T> items = getService().findAll();
         if (items.isEmpty()) {
-            throw new EmptyContentException(String.format(ResourceUtils.getLocaleMessage("error.no.content")));
+            throw new EmptyContentException(String.format(getLocaleMessage("error.no.content")));
         }
         return items;
     }
@@ -86,7 +90,7 @@ public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBas
         LOGGER.info("Fetching item by id {}", id);
         T item = getService().findById(id);
         if (Objects.isNull(item)) {
-            throw new ResourceNotFoundException(String.format(ResourceUtils.getLocaleMessage("error.no.item.id"), id));
+            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.item.id"), id));
         }
         return item;
     }
@@ -101,7 +105,7 @@ public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBas
         LOGGER.info("Creating item {}", itemDto);
         T itemEntity = getDTOConverter().convertToEntity(itemDto, entityClass);
         if (getService().isExist(itemEntity)) {
-            throw new ResourceAlreadyExistException(String.format(ResourceUtils.getLocaleMessage("error.already.exist.item")));
+            throw new ResourceAlreadyExistException(String.format(getLocaleMessage("error.already.exist.item")));
         }
         getService().save(itemEntity);
         return itemEntity;
@@ -117,7 +121,7 @@ public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBas
         LOGGER.info("Updating item by id {}", id);
         T currentItem = getService().findById(id);
         if (Objects.isNull(currentItem)) {
-            throw new ResourceNotFoundException(String.format(ResourceUtils.getLocaleMessage("error.no.item.id"), id));
+            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.item.id"), id));
         }
         T itemEntity = getDTOConverter().convertToEntity(itemDto, entityClass);
         getService().merge(currentItem, itemEntity);
@@ -134,7 +138,7 @@ public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBas
         LOGGER.info("Deleting item by id {}", id);
         T item = getService().findById(id);
         if (Objects.isNull(item)) {
-            throw new ResourceNotFoundException(String.format(ResourceUtils.getLocaleMessage("error.no.item.id"), id));
+            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.item.id"), id));
         }
         getService().deleteById(id);
         return item;
@@ -178,5 +182,10 @@ public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBas
 
     protected Class<? extends IBaseDTOListWrapper> getDtoListClass() {
         return BaseDTOListWrapper.class;
+    }
+
+    protected String getLocaleMessage(final String message) {
+        Locale locale = LocaleContextHolder.getLocale();
+        return messageSource.getMessage(message, null, locale);
     }
 }

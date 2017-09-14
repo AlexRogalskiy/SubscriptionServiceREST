@@ -24,7 +24,7 @@
 package com.wildbeeslabs.rest.controller.proxy;
 
 import com.wildbeeslabs.rest.exception.EmptyContentException;
-import com.wildbeeslabs.rest.model.dto.IBaseDTOListWrapper;
+import com.wildbeeslabs.rest.model.dto.wrapper.IBaseDTOListWrapper;
 import java.io.Serializable;
 import java.util.List;
 import com.wildbeeslabs.rest.service.interfaces.IBaseService;

@@ -12,9 +12,6 @@ import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
 import com.wildbeeslabs.rest.model.dto.UserDTO;
 import com.wildbeeslabs.rest.model.dto.UserSubOrderDTO;
 import com.wildbeeslabs.rest.service.interfaces.IBaseService;
-import com.wildbeeslabs.rest.service.interfaces.ISubscriptionService;
-import com.wildbeeslabs.rest.service.interfaces.IUserService;
-import com.wildbeeslabs.rest.service.interfaces.IUserSubOrderService;
 
 import java.util.List;
 import javax.validation.Valid;
@@ -46,11 +43,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class UserSubscriptionController<T extends UserSubOrder, E extends UserSubOrderDTO> extends ABaseController<T, E> {
 
     @Autowired
-    private SubscriptionProxyController<Subscription, SubscriptionDTO, ISubscriptionService<Subscription>> subscriptionProxyController;
+    private SubscriptionProxyController<Subscription, SubscriptionDTO> subscriptionProxyController;
     @Autowired
-    private UserProxyController<User, UserDTO, IUserService<User>> userProxyController;
+    private UserProxyController<User, UserDTO> userProxyController;
     @Autowired
-    private UserSubscriptionProxyController<T, E, IUserSubOrderService<T>> userSubscriptionProxyController;
+    private UserSubscriptionProxyController<T, E> userSubscriptionProxyController;
 
     /**
      * Get list of subscription entities by user ID

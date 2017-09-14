@@ -28,8 +28,7 @@ import com.wildbeeslabs.rest.exception.EmptyContentException;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.dto.converter.DTOConverter;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
-import com.wildbeeslabs.rest.model.dto.SubscriptionDTOListWrapper;
-import com.wildbeeslabs.rest.service.interfaces.ISubscriptionService;
+import com.wildbeeslabs.rest.model.dto.wrapper.SubscriptionDTOListWrapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -60,11 +59,11 @@ import javax.validation.Valid;
 public class TestController<T extends Subscription, E extends SubscriptionDTO> implements IBaseController<T, E> {
 
     @Autowired
-    protected HttpServletRequest request;
+    private HttpServletRequest request;
     @Autowired
     private DTOConverter dtoConverter;
     @Autowired
-    private SubscriptionProxyController<T, E, ISubscriptionService<T>> subscriptionProxyController;
+    private SubscriptionProxyController<T, E> subscriptionProxyController;
 
     /**
      * Get list of subscription entities

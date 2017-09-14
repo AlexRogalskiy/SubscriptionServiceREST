@@ -7,7 +7,6 @@ import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.dto.UserDTO;
 import com.wildbeeslabs.rest.service.interfaces.IBaseService;
-import com.wildbeeslabs.rest.service.interfaces.IUserService;
 
 import java.util.Date;
 import javax.validation.Valid;
@@ -43,7 +42,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class UserController<T extends User, E extends UserDTO> extends ABaseController<T, E> {
 
     @Autowired
-    private UserProxyController<T, E, IUserService<T>> userProxyController;
+    private UserProxyController<T, E> userProxyController;
 
     @InitBinder
     public void initBinder(final WebDataBinder dataBinder) {

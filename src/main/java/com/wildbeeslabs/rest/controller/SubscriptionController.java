@@ -5,7 +5,6 @@ import com.wildbeeslabs.rest.controller.proxy.SubscriptionProxyController;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
 import com.wildbeeslabs.rest.service.interfaces.IBaseService;
-import com.wildbeeslabs.rest.service.interfaces.ISubscriptionService;
 
 import javax.validation.Valid;
 
@@ -36,7 +35,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class SubscriptionController<T extends Subscription, E extends SubscriptionDTO> extends ABaseController<T, E> {
 
     @Autowired
-    private SubscriptionProxyController<T, E, ISubscriptionService<T>> subscriptionProxyController;
+    private SubscriptionProxyController<T, E> subscriptionProxyController;
 
     /**
      * Get list of subscription entities
