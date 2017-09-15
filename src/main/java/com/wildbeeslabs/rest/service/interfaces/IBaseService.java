@@ -33,7 +33,9 @@ public interface IBaseService<T extends Serializable> {
     void merge(final T itemTo, final T itemFrom);
 
     default void deleteById(final Long id) {
-    };
+    }
+
+    ;
 
     void delete(final T item);
 

@@ -82,18 +82,10 @@ public class UserServiceImpl<T extends User> implements IUserService<T> {
 
     @Override
     public List<T> findAllBySubscriptionStatusAndDate(final Date subDate, final SubscriptionStatusInfo.SubscriptionStatusType subStatus, final DateTypeOrder dateTypeOrder) {
-        if (Objects.nonNull(subDate) && Objects.nonNull(subStatus)) {
-            if (Objects.equals(dateTypeOrder, DateTypeOrder.BEFORE)) {
-                return userRepository.findBySubscriptionTypeAndDateBefore(subDate, subStatus);
-            } else if (Objects.equals(dateTypeOrder, DateTypeOrder.AFTER)) {
-                return userRepository.findBySubscriptionTypeAndDateAfter(subDate, subStatus);
-            }
-        } else {
-            if (Objects.nonNull(subDate)) {
-                return this.findAllBySubscriptionDate(subDate, dateTypeOrder);
-            } else if (Objects.nonNull(subStatus)) {
-                return this.findAllBySubscriptionStatus(subStatus);
-            }
+        if (Objects.nonNull(subDate)) {
+            return userRepository.findByOptionalSubscriptionStatusAndDate(subDate, subStatus, dateTypeOrder.name());
+        } else if (Objects.nonNull(subStatus)) {
+            return this.findAllBySubscriptionStatus(subStatus);
         }
         return this.findAll();
     }
@@ -105,12 +97,7 @@ public class UserServiceImpl<T extends User> implements IUserService<T> {
 
     @Override
     public List<T> findAllBySubscriptionDate(final Date subDate, final DateTypeOrder dateTypeOrder) {
-        if (Objects.equals(dateTypeOrder, DateTypeOrder.BEFORE)) {
-            return userRepository.findByDateBefore(subDate);
-        } else if (Objects.equals(dateTypeOrder, DateTypeOrder.AFTER)) {
-            return userRepository.findByDateAfter(subDate);
-        }
-        return new ArrayList<>();
+        return userRepository.findByDate(subDate, dateTypeOrder.name());
     }
 
     @Override
@@ -137,5 +124,10 @@ public class UserServiceImpl<T extends User> implements IUserService<T> {
     @Override
     public List<T> findBySubscriptionId(final Long subscriptionId) {
         return userRepository.findBySubscriptionId(subscriptionId);
+    }
+
+    @Override
+    public List<T> findByStatus(final User.UserStatusType status) {
+        return userRepository.findByStatus(status);
     }
 }

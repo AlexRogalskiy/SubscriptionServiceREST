@@ -47,6 +47,7 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
     /**
      * Get list of user entities by subscription type / date / date order
      *
+     * @param status - user status
      * @param subStatus - subscription status
      * @param subDate - subscription date
      * @param subDateOrder - date order (before / after)
@@ -54,9 +55,9 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
      */
     @RequestMapping(value = "/users", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public ResponseEntity<?> getAll(@RequestParam(name = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date subDate, @RequestParam(name = "type", required = false) SubscriptionStatusInfo.SubscriptionStatusType subStatus, @RequestParam(name = "order", required = false, defaultValue = "false") Boolean subDateOrder) {
+    public ResponseEntity<?> getAll(@RequestParam(name = "status", required = false) User.UserStatusType status, @RequestParam(name = "subdate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date subDate, @RequestParam(name = "substatus", required = false) SubscriptionStatusInfo.SubscriptionStatusType subStatus, @RequestParam(name = "order", required = false, defaultValue = "false") Boolean subDateOrder) {
         try {
-            return new ResponseEntity<>(getProxyController().findAllBySubscriptionStatusAndDate(subDate, subStatus, subDateOrder), HttpStatus.OK);
+            return new ResponseEntity<>(getProxyController().findAll(status, subDate, subStatus, subDateOrder), HttpStatus.OK);
         } catch (EmptyContentException ex) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

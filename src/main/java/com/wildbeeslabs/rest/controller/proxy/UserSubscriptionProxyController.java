@@ -47,7 +47,6 @@ import org.springframework.stereotype.Component;
  * @since 2017-08-08
  * @param <T>
  * @param <E>
- * @param <S>
  */
 @Component
 public class UserSubscriptionProxyController<T extends UserSubOrder, E extends UserSubOrderDTO> extends ABaseProxyController<T, E, IUserSubOrderService<T>> {

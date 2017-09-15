@@ -71,4 +71,12 @@ public interface IUserService<T extends User> extends IBaseService<T> {
      * @return list of user entities
      */
     List<T> findBySubscriptionId(final Long subscriptionId);
+
+    /**
+     * Get list of user entities by status
+     *
+     * @param status - user status
+     * @return list of user entities
+     */
+    List<T> findByStatus(final User.UserStatusType status);
 }

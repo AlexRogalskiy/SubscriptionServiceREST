@@ -30,10 +30,12 @@ import com.wildbeeslabs.rest.model.dto.wrapper.IBaseDTOListWrapper;
 import com.wildbeeslabs.rest.model.dto.UserDTO;
 import com.wildbeeslabs.rest.model.dto.wrapper.UserDTOListWrapper;
 import com.wildbeeslabs.rest.service.interfaces.IUserService;
+import java.util.ArrayList;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -52,7 +54,7 @@ public class UserProxyController<T extends User, E extends UserDTO> extends ABas
 
     public List<? extends T> findAllEntityBySubscriptionStatusAndDate(final Date subDate, final SubscriptionStatusInfo.SubscriptionStatusType subStatus, final Boolean subDateOrder) throws EmptyContentException {
         LOGGER.info("Fetching all users by subscription date {}, status {}, date order {} (1 - before, 0 - after)", subDate, subStatus, subDateOrder);
-        IUserService.DateTypeOrder dateTypeOrder = Objects.equals(subDateOrder, Boolean.TRUE) ? IUserService.DateTypeOrder.AFTER : IUserService.DateTypeOrder.BEFORE;
+        IUserService.DateTypeOrder dateTypeOrder = Objects.equals(Boolean.TRUE, subDateOrder) ? IUserService.DateTypeOrder.AFTER : IUserService.DateTypeOrder.BEFORE;
         List<? extends T> items = getService().findAllBySubscriptionStatusAndDate(subDate, subStatus, dateTypeOrder);
         if (items.isEmpty()) {
             throw new EmptyContentException(String.format(getLocaleMessage("error.no.content")));
@@ -60,11 +62,10 @@ public class UserProxyController<T extends User, E extends UserDTO> extends ABas
         return items;
     }
 
-    public IBaseDTOListWrapper<? extends E> findAllBySubscriptionStatusAndDate(final Date subDate, final SubscriptionStatusInfo.SubscriptionStatusType subStatus, final Boolean subDateOrder) throws EmptyContentException {
-        List<? extends T> items = this.findAllEntityBySubscriptionStatusAndDate(subDate, subStatus, subDateOrder);
-        return getDTOConverter().convertToDTOAndWrap(items, getDtoClass(), getDtoListClass());
-    }
-
+//    public IBaseDTOListWrapper<? extends E> findAllBySubscriptionStatusAndDate(final Date subDate, final SubscriptionStatusInfo.SubscriptionStatusType subStatus, final Boolean subDateOrder) throws EmptyContentException {
+//        List<? extends T> items = this.findAllEntityBySubscriptionStatusAndDate(subDate, subStatus, subDateOrder);
+//        return getDTOConverter().convertToDTOAndWrap(items, getDtoClass(), getDtoListClass());
+//    }
     public List<? extends T> findAllEntityBySubscriptionId(final Long subscriptionId) throws EmptyContentException {
         LOGGER.info("Fetching all users by subscription id {}", subscriptionId);
         List<? extends T> items = getService().findBySubscriptionId(subscriptionId);
@@ -76,6 +77,31 @@ public class UserProxyController<T extends User, E extends UserDTO> extends ABas
 
     public IBaseDTOListWrapper<? extends E> findAllBySubscriptionId(final Long subscriptionId) throws EmptyContentException {
         List<? extends T> items = this.findAllEntityBySubscriptionId(subscriptionId);
+        return getDTOConverter().convertToDTOAndWrap(items, getDtoClass(), getDtoListClass());
+    }
+
+    public List<? extends T> findAllEntityByStatus(final User.UserStatusType status) throws EmptyContentException {
+        LOGGER.info("Fetching all users by status {}", status);
+        List<? extends T> items = getService().findByStatus(status);
+        if (items.isEmpty()) {
+            throw new EmptyContentException(String.format(getLocaleMessage("error.no.content")));
+        }
+        return items;
+    }
+
+    public List<? extends T> findAllEntity(final User.UserStatusType status, final Date subDate, final SubscriptionStatusInfo.SubscriptionStatusType subStatus, final Boolean subDateOrder) throws EmptyContentException {
+        List<? extends T> items = this.findAllEntityBySubscriptionStatusAndDate(subDate, subStatus, subDateOrder);
+        if (Objects.nonNull(status)) {
+            items = items.stream().parallel().filter(item -> Objects.equals(status, item.getStatus())).collect(Collectors.toList());
+        }
+        if (items.isEmpty()) {
+            throw new EmptyContentException(String.format(getLocaleMessage("error.no.content")));
+        }
+        return items;
+    }
+
+    public IBaseDTOListWrapper<? extends E> findAll(final User.UserStatusType status, final Date subDate, final SubscriptionStatusInfo.SubscriptionStatusType subStatus, final Boolean subDateOrder) throws EmptyContentException {
+        List<? extends T> items = this.findAllEntity(status, subDate, subStatus, subDateOrder);
         return getDTOConverter().convertToDTOAndWrap(items, getDtoClass(), getDtoListClass());
     }
 

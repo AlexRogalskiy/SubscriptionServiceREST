@@ -41,6 +41,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -100,6 +101,23 @@ public class SubscriptionStatusInfo implements IBaseEntity {
 
     public void setStatus(final SubscriptionStatusType status) {
         this.status = status;
+    }
+
+    public Set<Subscription> getSubscriptions() {
+        return subscriptions;
+    }
+
+    public void setSubscriptions(final Set<Subscription> subscription) {
+        this.subscriptions.clear();
+        if (Objects.nonNull(subscription)) {
+            this.subscriptions.addAll(subscription);
+        }
+    }
+
+    public void addSubscription(final Subscription subscription) {
+        if (Objects.nonNull(subscription)) {
+            this.subscriptions.add(subscription);
+        }
     }
 
     @Override

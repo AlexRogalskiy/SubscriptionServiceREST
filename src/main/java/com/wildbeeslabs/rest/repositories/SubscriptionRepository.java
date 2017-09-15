@@ -2,7 +2,6 @@ package com.wildbeeslabs.rest.repositories;
 
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
-import static com.wildbeeslabs.rest.repositories.UserRepository.FIND_USER_BY_SUB_ID_QUERY;
 
 import java.util.List;
 
@@ -55,7 +54,7 @@ public interface SubscriptionRepository<T extends Subscription> extends BaseRepo
      * @return list of subscription entities
      */
     @Query(FIND_SUB_BY_STATUS_QUERY)
-    List<T> findByStatus(final SubscriptionStatusInfo.SubscriptionStatusType status);
+    List<T> findByStatus(@Param("status") final SubscriptionStatusInfo.SubscriptionStatusType status);
 
     /**
      * Get list of subscription entities by user ID

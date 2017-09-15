@@ -25,11 +25,13 @@ package com.wildbeeslabs.rest.controller.proxy;
 
 import com.wildbeeslabs.rest.exception.EmptyContentException;
 import com.wildbeeslabs.rest.model.Subscription;
+import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.model.dto.wrapper.IBaseDTOListWrapper;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
 import com.wildbeeslabs.rest.model.dto.wrapper.SubscriptionDTOListWrapper;
 import com.wildbeeslabs.rest.service.interfaces.ISubscriptionService;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.stereotype.Component;
 
@@ -42,7 +44,6 @@ import org.springframework.stereotype.Component;
  * @since 2017-08-08
  * @param <T>
  * @param <E>
- * @param <S>
  */
 @Component
 public class SubscriptionProxyController<T extends Subscription, E extends SubscriptionDTO> extends ABaseProxyController<T, E, ISubscriptionService<T>> {
@@ -50,6 +51,15 @@ public class SubscriptionProxyController<T extends Subscription, E extends Subsc
     public IBaseDTOListWrapper<? extends E> findByUserId(final Long userId) throws EmptyContentException {
         LOGGER.info("Fetching all subscriptions by user id {}", userId);
         List<? extends T> items = getService().findByUserId(userId);
+        if (items.isEmpty()) {
+            throw new EmptyContentException(String.format(getLocaleMessage("error.no.content")));
+        }
+        return getDTOConverter().convertToDTOAndWrap(items, getDtoClass(), getDtoListClass());
+    }
+
+    public IBaseDTOListWrapper<? extends E> findAll(final SubscriptionStatusInfo.SubscriptionStatusType subStatus) throws EmptyContentException {
+        LOGGER.info("Fetching all subscriptions by status {}", subStatus);
+        List<? extends T> items = Objects.isNull(subStatus) ? getService().findAll() : getService().findByStatus(subStatus);
         if (items.isEmpty()) {
             throw new EmptyContentException(String.format(getLocaleMessage("error.no.content")));
         }

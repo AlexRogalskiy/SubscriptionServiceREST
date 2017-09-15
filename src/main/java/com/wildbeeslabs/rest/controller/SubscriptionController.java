@@ -1,7 +1,9 @@
 package com.wildbeeslabs.rest.controller;
 
 import com.wildbeeslabs.rest.controller.proxy.SubscriptionProxyController;
+import com.wildbeeslabs.rest.exception.EmptyContentException;
 import com.wildbeeslabs.rest.model.Subscription;
+import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
 
 import javax.validation.Valid;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -32,15 +35,19 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class SubscriptionController<T extends Subscription, E extends SubscriptionDTO> extends ABaseController<T, E, SubscriptionProxyController<T, E>> {
 
     /**
-     * Get list of subscription entities
+     * Get list of subscription entities (by subscription type)
      *
+     * @param subStatus - subscription status
      * @return list of subscription entities
      */
     @RequestMapping(value = "/subscriptions", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    @Override
-    public ResponseEntity<?> getAll() {
-        return super.getAll();
+    public ResponseEntity<?> getAll(@RequestParam(name = "substatus", required = false) SubscriptionStatusInfo.SubscriptionStatusType subStatus) {
+        try {
+            return new ResponseEntity<>(getProxyController().findAll(subStatus), HttpStatus.OK);
+        } catch (EmptyContentException ex) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
     }
 
     /**
