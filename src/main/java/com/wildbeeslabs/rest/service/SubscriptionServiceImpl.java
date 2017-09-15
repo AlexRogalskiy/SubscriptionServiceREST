@@ -89,12 +89,13 @@ public class SubscriptionServiceImpl<T extends Subscription> implements ISubscri
 
     @Override
     public void merge(final T itemTo, final T itemFrom) {
-        itemTo.setExpireAt(itemFrom.getExpireAt());
-        itemTo.setModifiedBy(itemFrom.getModifiedBy());
-        itemTo.setName(itemFrom.getName());
-        itemTo.setStatusInfo(itemFrom.getStatusInfo());
-        itemTo.setUserOrders(itemFrom.getUserOrders());
-        update(itemTo);
+        itemFrom.setId(itemTo.getId());
+//        itemTo.setExpireAt(itemFrom.getExpireAt());
+//        itemTo.setModifiedBy(itemFrom.getModifiedBy());
+//        itemTo.setName(itemFrom.getName());
+//        itemTo.setStatusInfo(itemFrom.getStatusInfo());
+//        itemTo.setUserOrders(itemFrom.getUserOrders());
+        update(itemFrom);
     }
 
     @Override

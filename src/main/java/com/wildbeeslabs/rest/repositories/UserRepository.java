@@ -2,7 +2,6 @@ package com.wildbeeslabs.rest.repositories;
 
 import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.model.User;
-import com.wildbeeslabs.rest.service.interfaces.IBaseService;
 
 import java.util.Date;
 import java.util.List;

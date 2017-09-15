@@ -1,6 +1,5 @@
 package com.wildbeeslabs.rest.repositories;
 
-import com.wildbeeslabs.rest.model.BaseEntity;
 import com.wildbeeslabs.rest.model.IBaseEntity;
 
 import java.util.Date;

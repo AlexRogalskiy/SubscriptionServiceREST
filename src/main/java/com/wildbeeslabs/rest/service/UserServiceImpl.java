@@ -5,7 +5,6 @@ import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.repositories.UserRepository;
 import com.wildbeeslabs.rest.service.interfaces.IUserService;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -107,12 +106,13 @@ public class UserServiceImpl<T extends User> implements IUserService<T> {
 
     @Override
     public void merge(final T itemTo, final T itemFrom) {
-        itemTo.setAge(itemFrom.getAge());
-        itemTo.setModifiedBy(itemFrom.getModifiedBy());
-        itemTo.setRating(itemFrom.getRating());
-        itemTo.setStatus(itemFrom.getStatus());
-        itemTo.setSubOrders(itemFrom.getSubOrders());
-        update(itemTo);
+        itemFrom.setId(itemTo.getId());
+//        itemTo.setAge(itemFrom.getAge());
+//        itemTo.setModifiedBy(itemFrom.getModifiedBy());
+//        itemTo.setRating(itemFrom.getRating());
+//        itemTo.setStatus(itemFrom.getStatus());
+//        itemTo.setSubOrders(itemFrom.getSubOrders());
+        update(itemFrom);
     }
 
     @Override
