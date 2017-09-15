@@ -3,7 +3,7 @@ package com.wildbeeslabs.rest;
 import static com.jayway.restassured.RestAssured.given;
 
 import com.jayway.restassured.http.ContentType;
-import com.wildbeeslabs.rest.model.Subscription;
+import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
 
 import java.util.Objects;
@@ -52,7 +52,7 @@ public class SubscriptionControllerTest extends BaseControllerTest {
                 .body("id", equalTo(1))
                 .body("createdAt", equalTo("2018-12-12 00:00:00"))
                 .body("modifiedAt", nullValue())
-                .body("type", equalTo(Subscription.SubscriptionStatusType.PREMIUM.toString()))
+                .body("type", equalTo(SubscriptionStatusInfo.SubscriptionStatusType.PREMIUM.toString()))
                 .statusCode(200);
     }
 
@@ -63,7 +63,8 @@ public class SubscriptionControllerTest extends BaseControllerTest {
         subscription.setExpireAt("2018-08-28 00:00:00");
         subscription.setCreatedBy("admin");
         subscription.setName("Guest Group");
-        subscription.setType(Subscription.SubscriptionStatusType.STANDARD);
+        //subscription.setPrefix('standard');
+        subscription.setStatus(SubscriptionStatusInfo.SubscriptionStatusType.STANDARD);
 
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123")
                 .body(getObjectAsString(subscription))
@@ -80,7 +81,7 @@ public class SubscriptionControllerTest extends BaseControllerTest {
 
         assertTrue(Objects.nonNull(subscription1));
         assertTrue(Objects.equals("subscription1", subscription1.getName()));
-        assertTrue(Objects.equals(Subscription.SubscriptionStatusType.PREMIUM, subscription1.getType()));
+        assertTrue(Objects.equals(SubscriptionStatusInfo.SubscriptionStatusType.PREMIUM, subscription1.getStatus()));
 
         //subscription1.setExpireAt(DateUtils.strToDate("2019-04-18 00:00:00"));
         subscription1.setExpireAt("2019-04-18 00:00:00");

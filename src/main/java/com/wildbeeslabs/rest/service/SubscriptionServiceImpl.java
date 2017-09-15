@@ -1,9 +1,9 @@
 package com.wildbeeslabs.rest.service;
 
 import com.wildbeeslabs.rest.model.Subscription;
+import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.repositories.SubscriptionRepository;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -78,8 +78,8 @@ public class SubscriptionServiceImpl<T extends Subscription> implements ISubscri
     }
 
     @Override
-    public List<T> findByType(final Subscription.SubscriptionStatusType type) {
-        return subscriptionRepository.findByType(type);
+    public List<T> findByStatus(final SubscriptionStatusInfo.SubscriptionStatusType status) {
+        return subscriptionRepository.findByStatus(status);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class SubscriptionServiceImpl<T extends Subscription> implements ISubscri
         itemTo.setExpireAt(itemFrom.getExpireAt());
         itemTo.setModifiedBy(itemFrom.getModifiedBy());
         itemTo.setName(itemFrom.getName());
-        itemTo.setType(itemFrom.getType());
+        itemTo.setStatusInfo(itemFrom.getStatusInfo());
         itemTo.setUserOrders(itemFrom.getUserOrders());
         update(itemTo);
     }

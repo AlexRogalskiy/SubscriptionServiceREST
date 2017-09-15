@@ -1,6 +1,6 @@
 package com.wildbeeslabs.rest.service;
 
-import com.wildbeeslabs.rest.model.Subscription;
+import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.repositories.UserRepository;
 import com.wildbeeslabs.rest.service.interfaces.IUserService;
@@ -81,18 +81,18 @@ public class UserServiceImpl<T extends User> implements IUserService<T> {
     }
 
     @Override
-    public List<T> findAllBySubscriptionTypeAndDate(final Date subDate, final Subscription.SubscriptionStatusType subType, final DateTypeOrder dateTypeOrder) {
-        if (Objects.nonNull(subDate) && Objects.nonNull(subType)) {
+    public List<T> findAllBySubscriptionStatusAndDate(final Date subDate, final SubscriptionStatusInfo.SubscriptionStatusType subStatus, final DateTypeOrder dateTypeOrder) {
+        if (Objects.nonNull(subDate) && Objects.nonNull(subStatus)) {
             if (Objects.equals(dateTypeOrder, DateTypeOrder.BEFORE)) {
-                return userRepository.findBySubscriptionTypeAndDateBefore(subDate, subType);
+                return userRepository.findBySubscriptionTypeAndDateBefore(subDate, subStatus);
             } else if (Objects.equals(dateTypeOrder, DateTypeOrder.AFTER)) {
-                return userRepository.findBySubscriptionTypeAndDateAfter(subDate, subType);
+                return userRepository.findBySubscriptionTypeAndDateAfter(subDate, subStatus);
             }
         } else {
             if (Objects.nonNull(subDate)) {
                 return this.findAllBySubscriptionDate(subDate, dateTypeOrder);
-            } else if (Objects.nonNull(subType)) {
-                return this.findAllBySubscriptionType(subType);
+            } else if (Objects.nonNull(subStatus)) {
+                return this.findAllBySubscriptionStatus(subStatus);
             }
         }
         return this.findAll();
@@ -114,8 +114,8 @@ public class UserServiceImpl<T extends User> implements IUserService<T> {
     }
 
     @Override
-    public List<T> findAllBySubscriptionType(final Subscription.SubscriptionStatusType subType) {
-        return userRepository.findBySubscriptionType(subType);
+    public List<T> findAllBySubscriptionStatus(final SubscriptionStatusInfo.SubscriptionStatusType subStatus) {
+        return userRepository.findBySubscriptionStatus(subStatus);
     }
 
     @Override

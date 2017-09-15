@@ -1,7 +1,5 @@
 package com.wildbeeslabs.rest.model;
 
-//import com.fasterxml.jackson.annotation.JsonIgnore;
-//import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.wildbeeslabs.rest.utils.DateUtils;
 
 import java.io.Serializable;
@@ -40,7 +38,6 @@ import org.springframework.format.annotation.DateTimeFormat;
             joinColumns = @JoinColumn(name = "subscription_id", referencedColumnName = "subscription_id", nullable = false))})
 @Inheritance(strategy = InheritanceType.JOINED)
 @SuppressWarnings({"ConsistentAccessType", "IdDefinedInHierarchy"})
-//@JacksonXmlRootElement(localName = "userSubOrder")
 public class UserSubOrder extends BaseEntity implements Serializable {
 
     @Id

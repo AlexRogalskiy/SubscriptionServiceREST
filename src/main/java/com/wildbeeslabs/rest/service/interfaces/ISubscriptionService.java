@@ -1,6 +1,7 @@
 package com.wildbeeslabs.rest.service.interfaces;
 
 import com.wildbeeslabs.rest.model.Subscription;
+import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 
 import java.util.List;
 
@@ -34,10 +35,10 @@ public interface ISubscriptionService<T extends Subscription> extends IBaseServi
     /**
      * Get list of subscription entities by type
      *
-     * @param type - subscription type
+     * @param status - subscription type
      * @return list of subscription entities
      */
-    List<T> findByType(final Subscription.SubscriptionStatusType type);
+    List<T> findByStatus(final SubscriptionStatusInfo.SubscriptionStatusType status);
 
     /**
      * Get list of subscription entities by user ID

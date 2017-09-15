@@ -6,8 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
-import com.wildbeeslabs.rest.model.Subscription.SubscriptionStatusType;
+import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -36,17 +35,23 @@ public class SubscriptionDTO extends BaseDTO {
     @JacksonXmlProperty(localName = "name")
     private String name;
 
+    @JacksonXmlProperty(localName = "prefix")
+    private String prefix;
+
+    @JacksonXmlProperty(localName = "status")
+    private SubscriptionStatusInfo.SubscriptionStatusType status;
+
     @JacksonXmlProperty(localName = "expireAt")
     @JsonProperty("expireAt")
     private String expireAt;
 
-    @JacksonXmlProperty(localName = "type")
-    private SubscriptionStatusType type;
-
-    //@JsonBackReference(value = "subOrderToSubscription")
+//    @JacksonXmlProperty(localName = "status")
+//    //@JsonManagedReference(value = "statusToSubscription")
+//    private SubscriptionStatusInfo status;
     @JsonIgnore
     @JacksonXmlProperty(localName = "users")
-//    @JacksonXmlElementWrapper(localName = "subscriptions", useWrapping = false)
+    //@JsonBackReference(value = "subOrderToSubscription")
+//    @JacksonXmlElementWrapper(localName = "users", useWrapping = false)
     private final Set<UserSubOrderDTO> userOrders = new HashSet<>();
 
     @Override
@@ -66,6 +71,14 @@ public class SubscriptionDTO extends BaseDTO {
         this.name = name;
     }
 
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(final String prefix) {
+        this.prefix = prefix;
+    }
+
     public String getExpireAt() {
         return expireAt;
     }
@@ -81,12 +94,12 @@ public class SubscriptionDTO extends BaseDTO {
 //    public void setExpireAt(final Date date) {
 //        this.expireAt = (Objects.nonNull(date)) ? DateUtils.dateToStr(date) : null;
 //    }
-    public SubscriptionStatusType getType() {
-        return type;
+    public SubscriptionStatusInfo.SubscriptionStatusType getStatus() {
+        return status;
     }
 
-    public void setType(final SubscriptionStatusType type) {
-        this.type = type;
+    public void setStatus(final SubscriptionStatusInfo.SubscriptionStatusType status) {
+        this.status = status;
     }
 
     public Set<UserSubOrderDTO> getUserOrders() {
@@ -113,7 +126,7 @@ public class SubscriptionDTO extends BaseDTO {
             return false;
         }
         final SubscriptionDTO other = (SubscriptionDTO) obj;
-        if (this.type != other.type) {
+        if (this.status != other.status) {
             return false;
         }
         if (!Objects.equals(this.name, other.name)) {
@@ -131,12 +144,12 @@ public class SubscriptionDTO extends BaseDTO {
         hash = 79 * hash + Objects.hashCode(this.id);
         hash = 79 * hash + Objects.hashCode(this.name);
         hash = 79 * hash + Objects.hashCode(this.expireAt);
-        hash = 79 * hash + Objects.hashCode(this.type);
+        hash = 79 * hash + Objects.hashCode(this.status);
         return hash;
     }
 
     @Override
     public String toString() {
-        return String.format("SubscriptionDTO {id: %d, name: %s, expireAt: %s, type: %s, inherited: %s}", this.id, this.name, this.expireAt, this.type, super.toString());
+        return String.format("SubscriptionDTO {id: %d, name: %s, expireAt: %s, status: %s, inherited: %s}", this.id, this.name, this.expireAt, this.status, super.toString());
     }
 }

@@ -3,7 +3,7 @@ package com.wildbeeslabs.rest;
 import static com.jayway.restassured.RestAssured.given;
 import com.jayway.restassured.http.ContentType;
 
-import com.wildbeeslabs.rest.model.Subscription;
+import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
 import com.wildbeeslabs.rest.model.dto.UserDTO;
 import com.wildbeeslabs.rest.model.dto.UserSubOrderDTO;
@@ -34,7 +34,7 @@ public class UserSubscriptionControllerTest extends BaseControllerTest {
         assertTrue(Objects.equals("user1@gmail.com", user1.getLogin()));
         //assertTrue(Objects.equals(User.UserStatusType.UNVERIFIED, user1.getStatus()));
         assertTrue(Objects.equals("subscription3", subscription3.getName()));
-        assertTrue(Objects.equals(Subscription.SubscriptionStatusType.STANDARD, subscription3.getType()));
+        assertTrue(Objects.equals(SubscriptionStatusInfo.SubscriptionStatusType.STANDARD, subscription3.getStatus()));
 
         final UserSubOrderDTO userSubOrder = new UserSubOrderDTO();
         userSubOrder.setUser(user1);

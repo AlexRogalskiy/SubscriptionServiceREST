@@ -1,6 +1,7 @@
 package com.wildbeeslabs.rest;
 
 import com.wildbeeslabs.rest.model.Subscription;
+import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.UserSubOrder;
 import com.wildbeeslabs.rest.service.HibernateSessionService;
@@ -31,12 +32,12 @@ public class UsersSubscriptionsDBTest {
         Subscription groupAdmin = new Subscription();
         groupAdmin.setExpireAt("2017-05-28 00:00:00");
         groupAdmin.setName("Administrator Group");
-        groupAdmin.setType(Subscription.SubscriptionStatusType.PREMIUM);
+        groupAdmin.setStatusInfo(new SubscriptionStatusInfo());//SubscriptionStatusInfo.SubscriptionStatusType.PREMIUM
 
         Subscription groupGuest = new Subscription();
         groupGuest.setExpireAt("2017-05-28 00:00:00");
         groupGuest.setName("Guest Group");
-        groupGuest.setType(Subscription.SubscriptionStatusType.STANDARD);
+        groupGuest.setStatusInfo(new SubscriptionStatusInfo());
 
         User user1 = new User();
         user1.setAge(56);

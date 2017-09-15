@@ -28,6 +28,11 @@ spring:
           contentType: text/html
   main:
       banner-mode: "off"
+  mail:
+      host: localhost
+      port: 25
+      protocol: smtp
+      defaultEncoding: UTF-8
 datasource:
   subscriptionapp:
     url: jdbc:h2:~/subscriptiondb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
@@ -67,6 +72,11 @@ spring:
           contentType: text/html
   main:
       banner-mode: "console"
+  mail:
+      host: localhost
+      port: 25
+      protocol: smtp
+      defaultEncoding: UTF-8
 datasource:
   subscriptionapp:
     url: jdbc:mysql://localhost:3306/subscriptiondb?createDatabaseIfNotExist=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=UTF-8&characterSetResults=UTF-8

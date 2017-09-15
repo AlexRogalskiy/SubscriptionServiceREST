@@ -1,6 +1,6 @@
 package com.wildbeeslabs.rest.service.interfaces;
 
-import com.wildbeeslabs.rest.model.Subscription;
+import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.model.User;
 
 import java.util.Date;
@@ -26,15 +26,15 @@ public interface IUserService<T extends User> extends IBaseService<T> {
     T findByLogin(final String login);
 
     /**
-     * Get list of user entities by subscription type and subscription date
+     * Get list of user entities by subscription status and subscription date
      * (after - excluding / before - including)
      *
      * @param subDate - subscription date
-     * @param subType - subscription type
+     * @param subStatus - subscription status
      * @param dateTypeOrder - date type order (before / after)
      * @return list of user entities
      */
-    List<T> findAllBySubscriptionTypeAndDate(final Date subDate, final Subscription.SubscriptionStatusType subType, final DateTypeOrder dateTypeOrder);
+    List<T> findAllBySubscriptionStatusAndDate(final Date subDate, final SubscriptionStatusInfo.SubscriptionStatusType subStatus, final DateTypeOrder dateTypeOrder);
 
     /**
      * Get list of user entities by subscription date (after - excluding /
@@ -57,12 +57,12 @@ public interface IUserService<T extends User> extends IBaseService<T> {
     List<T> findAllBySubscriptionDateBetween(final Date startSubDate, final Date endSubDate);
 
     /**
-     * Get list of user entities by subscription type
+     * Get list of user entities by subscription status
      *
-     * @param subType - subscription type
+     * @param subStatus - subscription type
      * @return list of user entities
      */
-    List<T> findAllBySubscriptionType(final Subscription.SubscriptionStatusType subType);
+    List<T> findAllBySubscriptionStatus(final SubscriptionStatusInfo.SubscriptionStatusType subStatus);
 
     /**
      * Get list of user entities by subscription ID

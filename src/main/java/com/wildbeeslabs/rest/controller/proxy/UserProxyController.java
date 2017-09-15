@@ -24,7 +24,7 @@
 package com.wildbeeslabs.rest.controller.proxy;
 
 import com.wildbeeslabs.rest.exception.EmptyContentException;
-import com.wildbeeslabs.rest.model.Subscription;
+import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.dto.wrapper.IBaseDTOListWrapper;
 import com.wildbeeslabs.rest.model.dto.UserDTO;
@@ -46,23 +46,22 @@ import org.springframework.stereotype.Component;
  * @since 2017-08-08
  * @param <T>
  * @param <E>
- * @param <S>
  */
 @Component
 public class UserProxyController<T extends User, E extends UserDTO> extends ABaseProxyController<T, E, IUserService<T>> {
 
-    public List<? extends T> findAllEntityBySubscriptionTypeAndDate(final Date subDate, final Subscription.SubscriptionStatusType subType, final Boolean subDateOrder) throws EmptyContentException {
-        LOGGER.info("Fetching all users by subscription date {}, type {}, date order {} (1 - before, 0 - after)", subDate, subType, subDateOrder);
+    public List<? extends T> findAllEntityBySubscriptionStatusAndDate(final Date subDate, final SubscriptionStatusInfo.SubscriptionStatusType subStatus, final Boolean subDateOrder) throws EmptyContentException {
+        LOGGER.info("Fetching all users by subscription date {}, status {}, date order {} (1 - before, 0 - after)", subDate, subStatus, subDateOrder);
         IUserService.DateTypeOrder dateTypeOrder = Objects.equals(subDateOrder, Boolean.TRUE) ? IUserService.DateTypeOrder.AFTER : IUserService.DateTypeOrder.BEFORE;
-        List<? extends T> items = getService().findAllBySubscriptionTypeAndDate(subDate, subType, dateTypeOrder);
+        List<? extends T> items = getService().findAllBySubscriptionStatusAndDate(subDate, subStatus, dateTypeOrder);
         if (items.isEmpty()) {
             throw new EmptyContentException(String.format(getLocaleMessage("error.no.content")));
         }
         return items;
     }
 
-    public IBaseDTOListWrapper<? extends E> findAllBySubscriptionTypeAndDate(final Date subDate, final Subscription.SubscriptionStatusType subType, final Boolean subDateOrder) throws EmptyContentException {
-        List<? extends T> items = this.findAllEntityBySubscriptionTypeAndDate(subDate, subType, subDateOrder);
+    public IBaseDTOListWrapper<? extends E> findAllBySubscriptionStatusAndDate(final Date subDate, final SubscriptionStatusInfo.SubscriptionStatusType subStatus, final Boolean subDateOrder) throws EmptyContentException {
+        List<? extends T> items = this.findAllEntityBySubscriptionStatusAndDate(subDate, subStatus, subDateOrder);
         return getDTOConverter().convertToDTOAndWrap(items, getDtoClass(), getDtoListClass());
     }
 

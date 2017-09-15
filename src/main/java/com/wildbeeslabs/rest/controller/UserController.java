@@ -3,7 +3,7 @@ package com.wildbeeslabs.rest.controller;
 import com.wildbeeslabs.rest.controller.proxy.UserProxyController;
 import com.wildbeeslabs.rest.exception.EmptyContentException;
 import com.wildbeeslabs.rest.model.User;
-import com.wildbeeslabs.rest.model.Subscription;
+import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.model.dto.UserDTO;
 
 import java.util.Date;
@@ -40,23 +40,23 @@ public class UserController<T extends User, E extends UserDTO> extends ABaseCont
 
     @InitBinder
     public void initBinder(final WebDataBinder dataBinder) {
-        BaseEnumConverter<Subscription.SubscriptionStatusType> converter = new BaseEnumConverter<>(Subscription.SubscriptionStatusType.class);
-        dataBinder.registerCustomEditor(Subscription.SubscriptionStatusType.class, converter);
+        BaseEnumConverter<SubscriptionStatusInfo.SubscriptionStatusType> converter = new BaseEnumConverter<>(SubscriptionStatusInfo.SubscriptionStatusType.class);
+        dataBinder.registerCustomEditor(SubscriptionStatusInfo.SubscriptionStatusType.class, converter);
     }
 
     /**
      * Get list of user entities by subscription type / date / date order
      *
-     * @param subType - subscription type
+     * @param subStatus - subscription status
      * @param subDate - subscription date
      * @param subDateOrder - date order (before / after)
      * @return list of user entities
      */
     @RequestMapping(value = "/users", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public ResponseEntity<?> getAll(@RequestParam(name = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date subDate, @RequestParam(name = "type", required = false) Subscription.SubscriptionStatusType subType, @RequestParam(name = "order", required = false, defaultValue = "false") Boolean subDateOrder) {
+    public ResponseEntity<?> getAll(@RequestParam(name = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date subDate, @RequestParam(name = "type", required = false) SubscriptionStatusInfo.SubscriptionStatusType subStatus, @RequestParam(name = "order", required = false, defaultValue = "false") Boolean subDateOrder) {
         try {
-            return new ResponseEntity<>(getProxyController().findAllBySubscriptionTypeAndDate(subDate, subType, subDateOrder), HttpStatus.OK);
+            return new ResponseEntity<>(getProxyController().findAllBySubscriptionStatusAndDate(subDate, subStatus, subDateOrder), HttpStatus.OK);
         } catch (EmptyContentException ex) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

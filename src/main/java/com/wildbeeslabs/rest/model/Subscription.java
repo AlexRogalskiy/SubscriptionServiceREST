@@ -1,10 +1,5 @@
 package com.wildbeeslabs.rest.model;
 
-//import com.fasterxml.jackson.annotation.JsonIgnore;
-//import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-//import com.fasterxml.jackson.annotation.JsonProperty;
-//import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-//import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.wildbeeslabs.rest.utils.DateUtils;
 
 import java.io.Serializable;
@@ -17,14 +12,14 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -43,11 +38,9 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 @Entity(name = "Subscription")
 @Table(name = "subscriptions", uniqueConstraints = {
-    @UniqueConstraint(columnNames = "name")
+    @UniqueConstraint(columnNames = "name", name = "name_unique_constraint")
 })
 @Inheritance(strategy = InheritanceType.JOINED)
-//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-//@JacksonXmlRootElement(localName = "subscription")
 public class Subscription extends BaseEntity implements Serializable {
 
     @Id
@@ -58,32 +51,23 @@ public class Subscription extends BaseEntity implements Serializable {
 
     @NotBlank(message = "Field <name> cannot be blank")
     @Column(name = "name", nullable = false, unique = true)
-    //@JacksonXmlProperty(localName = "name")
     private String name;
 
     @DateTimeFormat(pattern = DateUtils.DEFAULT_DATE_FORMAT_PATTERN)
     @Column(name = "expired_at", nullable = true)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    //@JacksonXmlProperty(localName = "expireAt")
-    //@JsonProperty("expireAt")
     private Date expireAt;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    //@JacksonXmlProperty(localName = "type")
-    private SubscriptionStatusType type;
-
-    public static enum SubscriptionStatusType {
-        PREMIUM, STANDARD, ADVANCED
-    }
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    //@JsonManagedReference(value = "subscriptionToSubscriptionStatus")
+    @JoinColumn(name = "subscription_status_id")
+    private SubscriptionStatusInfo statusInfo;
 
     @OneToMany(mappedBy = "pk.subscription", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @Column(name = "users", nullable = true)
-    //@JsonBackReference(value = "subOrderToSubscription")
-    //@JsonIgnore
-    //@JacksonXmlProperty(localName = "users")
     private final Set<UserSubOrder> userOrders = new HashSet<>();
 
+    @Override
     public Long getId() {
         return id;
     }
@@ -108,12 +92,12 @@ public class Subscription extends BaseEntity implements Serializable {
         this.expireAt = (Objects.nonNull(str)) ? DateUtils.strToDate(str) : null;
     }
 
-    public SubscriptionStatusType getType() {
-        return type;
+    public SubscriptionStatusInfo getStatusInfo() {
+        return statusInfo;
     }
 
-    public void setType(final SubscriptionStatusType type) {
-        this.type = type;
+    public void setStatusInfo(final SubscriptionStatusInfo statusInfo) {
+        this.statusInfo = statusInfo;
     }
 
     public Set<UserSubOrder> getUserOrders() {
@@ -140,7 +124,7 @@ public class Subscription extends BaseEntity implements Serializable {
             return false;
         }
         final Subscription other = (Subscription) obj;
-        if (this.type != other.type) {
+        if (this.statusInfo != other.statusInfo) {
             return false;
         }
         if (!Objects.equals(this.name, other.name)) {
@@ -158,12 +142,12 @@ public class Subscription extends BaseEntity implements Serializable {
         hash = 79 * hash + Objects.hashCode(this.id);
         hash = 79 * hash + Objects.hashCode(this.name);
         hash = 79 * hash + Objects.hashCode(this.expireAt);
-        hash = 79 * hash + Objects.hashCode(this.type);
+        hash = 79 * hash + Objects.hashCode(this.statusInfo);
         return hash;
     }
 
     @Override
     public String toString() {
-        return String.format("Subscription {id: %d, name: %s, expireAt: %s, type: %s, inherited: %s}", this.id, this.name, this.expireAt, this.type, super.toString());
+        return String.format("Subscription {id: %d, name: %s, expireAt: %s, statusInfo: %s, inherited: %s}", this.id, this.name, this.expireAt, this.statusInfo, super.toString());
     }
 }
