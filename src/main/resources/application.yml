@@ -9,6 +9,8 @@ server:
 #security:
     #basic:
         #enabled: true
+quartz:
+    enabled: true
 ---
 spring:
   profiles: prod
@@ -85,6 +87,11 @@ datasource:
     driverClassName: com.mysql.jdbc.Driver
     defaultSchema:
     maxPoolSize: 10
+    minPoolSize: 5
+    maxStatements: 100
+    maxStatementsPerConnection: 20
+    acquire_increment: 5
+    use_sql_comments: true
     hibernate:
       hbm2ddl:
         method: create-drop
@@ -93,6 +100,9 @@ datasource:
       format_sql: true
       dialect: org.hibernate.dialect.MySQLDialect
       globally_quoted_identifiers: true
+      cache:
+        use_second_level_cache: false
+        use_query_cache: false
       connection:
         characterEncoding: UTF-8
         charSet: UTF-8

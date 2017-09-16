@@ -23,6 +23,16 @@
  */
 package com.wildbeeslabs.rest.service;
 
+import com.wildbeeslabs.rest.model.dto.mail.MailDTO;
+import com.wildbeeslabs.rest.service.interfaces.IMailService;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,9 +43,59 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
+ * @param <T>
  */
 @Service("mailService")
 @Transactional
-public class MailServiceImpl {
+public class MailServiceImpl<T extends MailDTO> implements IMailService<T> {
 
+    /**
+     * Default Logger instance
+     */
+    protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
+
+    @Autowired
+    private JavaMailSender mailSender;
+
+    @Override
+    public void send(final T mailDto) {
+        if (mailDto.isHtml()) {
+            try {
+                this.sendHtmlMail(mailDto);
+            } catch (MessagingException e) {
+                LOGGER.error("Could not send email to: {}, error: {}", mailDto.getToAsList(), e.getMessage());
+            }
+        } else {
+            this.sendPlainTextMail(mailDto);
+        }
+    }
+
+    private void sendHtmlMail(final T mailDto) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+        helper.setTo(mailDto.getTo().toArray(new String[mailDto.getTo().size()]));
+        helper.setReplyTo(mailDto.getFrom());
+        helper.setFrom(mailDto.getFrom());
+        helper.setSubject(mailDto.getSubject());
+        helper.setText(mailDto.getMessage(), true);
+
+        if (mailDto.getCc().size() > 0) {
+            helper.setCc(mailDto.getCc().toArray(new String[mailDto.getCc().size()]));
+        }
+        this.mailSender.send(message);
+    }
+
+    private void sendPlainTextMail(final T mailDto) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailDto.getTo().toArray(new String[mailDto.getTo().size()]);
+        mailMessage.setTo(mailDto.getTo().toArray(new String[mailDto.getTo().size()]));
+        mailMessage.setReplyTo(mailDto.getFrom());
+        mailMessage.setFrom(mailDto.getFrom());
+        mailMessage.setSubject(mailDto.getSubject());
+        mailMessage.setText(mailDto.getMessage());
+        if (mailDto.getCc().size() > 0) {
+            mailMessage.setCc(mailDto.getCc().toArray(new String[mailDto.getCc().size()]));
+        }
+        this.mailSender.send(mailMessage);
+    }
 }

@@ -21,12 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.rest.model.dto;
+package com.wildbeeslabs.rest.model.dto.mail;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -37,7 +39,7 @@ import org.apache.commons.lang3.StringUtils;
  * @version 1.0.0
  * @since 2017-08-08
  */
-public class MailDTO {
+public class MailDTO implements Serializable {
 
     private String from;
 

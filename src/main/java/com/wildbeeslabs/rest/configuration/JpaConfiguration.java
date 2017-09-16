@@ -1,5 +1,6 @@
 package com.wildbeeslabs.rest.configuration;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 import java.util.Properties;
 
 import javax.naming.NamingException;
@@ -25,8 +26,16 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.zaxxer.hikari.HikariDataSource;
+import java.beans.PropertyVetoException;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager;
+import org.springframework.orm.jpa.persistenceunit.PersistenceUnitManager;
+import org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor;
 //import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 //import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -41,7 +50,6 @@ public class JpaConfiguration {
 
 //    @PersistenceContext(unitName = "ds2", type = PersistenceContextType.TRANSACTION)
 //    private EntityManager em;
-
     @Autowired
     private Environment environment;
 
@@ -85,6 +93,24 @@ public class JpaConfiguration {
     }
 
     /*
+     * Combo pool datasource configuration
+     */
+    //@Bean
+    public DataSource dataSource2() throws PropertyVetoException {
+        ComboPooledDataSource dataSource2 = new ComboPooledDataSource();
+        dataSource2.setAcquireIncrement(Integer.valueOf(environment.getRequiredProperty("datasource.subscriptionapp.acquire_increment")));
+        dataSource2.setMaxStatementsPerConnection(Integer.valueOf(environment.getRequiredProperty("datasource.subscriptionapp.maxStatementsPerConnection")));
+        dataSource2.setMaxStatements(Integer.valueOf(environment.getRequiredProperty("datasource.subscriptionapp.maxStatements")));
+        dataSource2.setMaxPoolSize(Integer.valueOf(environment.getRequiredProperty("datasource.subscriptionapp.maxPoolSize")));
+        dataSource2.setMinPoolSize(Integer.valueOf(environment.getRequiredProperty("datasource.subscriptionapp.minPoolSize")));
+        dataSource2.setJdbcUrl(environment.getRequiredProperty("datasource.subscriptionapp.url"));
+        dataSource2.setUser(environment.getRequiredProperty("datasource.subscriptionapp.username"));
+        dataSource2.setPassword(environment.getRequiredProperty("datasource.subscriptionapp.password"));
+        dataSource2.setDriverClass(environment.getRequiredProperty("datasource.subscriptionapp.driverClassName"));
+        return dataSource2;
+    }
+
+    /*
      * Entity Manager Factory initialization
      */
     @Bean
@@ -94,6 +120,8 @@ public class JpaConfiguration {
         factoryBean.setPackagesToScan(new String[]{"com.wildbeeslabs.rest.model"});
         factoryBean.setJpaVendorAdapter(jpaVendorAdapter());
         factoryBean.setJpaProperties(jpaProperties());
+        factoryBean.setPersistenceUnitName("local");
+//        factoryBean.setPersistenceUnitManager(persistenceUnitManager());
         return factoryBean;
     }
 
@@ -103,6 +131,9 @@ public class JpaConfiguration {
     @Bean
     public JpaVendorAdapter jpaVendorAdapter() {
         HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
+//        hibernateJpaVendorAdapter.setShowSql(true);
+//        hibernateJpaVendorAdapter.setGenerateDdl(true);
+//        hibernateJpaVendorAdapter.setDatabasePlatform(environment.getRequiredProperty("datasource.subscriptionapp.hibernate.dialect"));
         return hibernateJpaVendorAdapter;
     }
 
@@ -138,5 +169,25 @@ public class JpaConfiguration {
         JpaTransactionManager txManager = new JpaTransactionManager();
         txManager.setEntityManagerFactory(emf);
         return txManager;
+    }
+
+    @Bean
+    public FactoryBean<SessionFactory> sessionFactory() {
+        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+        sessionFactory.setDataSource(dataSource());
+        return sessionFactory;
+    }
+
+    @Bean
+    public PersistenceUnitManager persistenceUnitManager() {
+        DefaultPersistenceUnitManager manager = new DefaultPersistenceUnitManager();
+        manager.setDefaultDataSource(dataSource());
+        return manager;
+    }
+
+    @Bean
+    public BeanPostProcessor postProcessor() {
+        PersistenceAnnotationBeanPostProcessor postProcessor = new PersistenceAnnotationBeanPostProcessor();
+        return postProcessor;
     }
 }

@@ -21,20 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.rest.service.interfaces;
+package com.wildbeeslabs.rest.utils;
 
-import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import javax.sql.DataSource;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  *
- * Mail REST Application Service declaration
+ * PropertiesDBUtils implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
- * @param <T>
  */
-public interface IMailService<T extends Serializable> {
+public class PropertiesDBUtils extends Properties {
 
-    void send(final T mailDto);
+    public PropertiesDBUtils(final DataSource dataSource) {
+        super();
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        List<Map<String, Object>> configs = jdbcTemplate.queryForList("select config_key, config_value from config_params");
+        configs.forEach((config) -> {
+            setProperty((config.get("config_key")).toString(), (config.get("config_value")).toString());
+        });
+    }
 }
