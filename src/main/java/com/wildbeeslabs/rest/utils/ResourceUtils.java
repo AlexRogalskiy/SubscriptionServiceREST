@@ -23,28 +23,33 @@
  */
 package com.wildbeeslabs.rest.utils;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import javax.sql.DataSource;
-import org.springframework.jdbc.core.JdbcTemplate;
+import java.util.Locale;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.stereotype.Component;
 
 /**
  *
- * PropertiesDBUtils implementation
+ * ResourceUtils implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
  */
-public final class PropertiesDBUtils extends Properties {
+@Component
+public final class ResourceUtils {
 
-    public PropertiesDBUtils(final DataSource dataSource) {
-        super();
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        List<Map<String, Object>> configs = jdbcTemplate.queryForList("select config_key, config_value from config_params");
-        configs.forEach((config) -> {
-            setProperty((config.get("config_key")).toString(), (config.get("config_value")).toString());
-        });
+    @Autowired
+    private MessageSource messageSource;
+
+    public String getLocaleMessage(final String message) {
+        Locale locale = LocaleContextHolder.getLocale();
+        return messageSource.getMessage(message, null, locale);
+    }
+
+    public String formatMessage(final String message, final Object... args) {
+        return String.format(this.getLocaleMessage(message), args);
     }
 }

@@ -60,7 +60,8 @@ public class UserSubscriptionProxyController<T extends UserSubOrder, E extends U
         LOGGER.info("Fetching subscription order by user id {} and subscription id {}", userItem.getId(), subscriptionItem.getId());
         T currentOrder = getService().findByUserAndSubscription(userItem, subscriptionItem);
         if (Objects.isNull(currentOrder)) {
-            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.order.item.user.subscription.id"), userItem.getId(), subscriptionItem.getId()));
+            //throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.order.item.user.subscription.id"), userItem.getId(), subscriptionItem.getId()));
+            throw new ResourceNotFoundException(getResource().formatMessage("error.no.order.item.user.subscription.id", userItem.getId(), subscriptionItem.getId()));
         }
         return currentOrder;
     }
@@ -69,7 +70,8 @@ public class UserSubscriptionProxyController<T extends UserSubOrder, E extends U
         LOGGER.info("Fetching subscription orders by user id {}", userItem.getId());
         List<? extends T> items = getService().findByUser(userItem);
         if (items.isEmpty()) {
-            throw new EmptyContentException(String.format(getLocaleMessage("error.no.content")));
+            //throw new EmptyContentException(String.format(getLocaleMessage("error.no.content")));
+            throw new EmptyContentException(getResource().formatMessage("error.no.content"));
         }
         return items;
     }
@@ -83,7 +85,8 @@ public class UserSubscriptionProxyController<T extends UserSubOrder, E extends U
         LOGGER.info("Fetching subscription orders by subscription id {}", subscriptionItem.getId());
         List<? extends T> items = getService().findBySubscription(subscriptionItem);
         if (items.isEmpty()) {
-            throw new EmptyContentException(String.format(getLocaleMessage("error.no.content")));
+            //throw new EmptyContentException(String.format(getLocaleMessage("error.no.content")));
+            throw new EmptyContentException(getResource().formatMessage("error.no.content"));
         }
         return items;
     }

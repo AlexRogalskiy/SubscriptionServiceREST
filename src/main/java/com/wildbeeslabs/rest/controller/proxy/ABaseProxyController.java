@@ -34,17 +34,19 @@ import com.wildbeeslabs.rest.model.dto.converter.DTOConverter;
 import com.wildbeeslabs.rest.model.dto.IBaseDTO;
 import com.wildbeeslabs.rest.model.dto.wrapper.IBaseDTOListWrapper;
 import com.wildbeeslabs.rest.service.interfaces.IBaseService;
+import com.wildbeeslabs.rest.utils.ResourceUtils;
 
 import java.util.List;
-import java.util.Locale;
+//import java.util.Locale;
 import java.util.Objects;
+import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
+//import org.springframework.context.MessageSource;
+//import org.springframework.context.i18n.LocaleContextHolder;
 
 /**
  *
@@ -64,8 +66,10 @@ public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBas
      */
     protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
+//    @Autowired
+//    private MessageSource messageSource;
     @Autowired
-    private MessageSource messageSource;
+    private ResourceUtils resourceUtils;
     @Autowired
     private DTOConverter dtoConverter;
     @Autowired
@@ -81,7 +85,8 @@ public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBas
         LOGGER.info("Fetching all items");
         List<? extends T> items = getService().findAll();
         if (items.isEmpty()) {
-            throw new EmptyContentException(String.format(getLocaleMessage("error.no.content")));
+            //throw new EmptyContentException(String.format(getLocaleMessage("error.no.content")));
+            throw new EmptyContentException(getResource().formatMessage("error.no.content"));
         }
         return items;
     }
@@ -90,7 +95,8 @@ public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBas
         LOGGER.info("Fetching item by id {}", id);
         T item = getService().findById(id);
         if (Objects.isNull(item)) {
-            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.item.id"), id));
+            //throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.item.id"), id));
+            throw new ResourceNotFoundException(getResource().formatMessage("error.no.item.id", id));
         }
         return item;
     }
@@ -105,7 +111,8 @@ public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBas
         LOGGER.info("Creating item {}", itemDto);
         T itemEntity = getDTOConverter().convertToEntity(itemDto, entityClass);
         if (getService().isExist(itemEntity)) {
-            throw new ResourceAlreadyExistException(String.format(getLocaleMessage("error.already.exist.item")));
+            //throw new ResourceAlreadyExistException(String.format(getLocaleMessage("error.already.exist.item")));
+            throw new ResourceAlreadyExistException(getResource().formatMessage("error.already.exist.item"));
         }
         getService().save(itemEntity);
         return itemEntity;
@@ -121,7 +128,8 @@ public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBas
         LOGGER.info("Updating item by id {}", id);
         T currentItem = getService().findById(id);
         if (Objects.isNull(currentItem)) {
-            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.item.id"), id));
+            //throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.item.id"), id));
+            throw new ResourceNotFoundException(getResource().formatMessage("error.no.item.id", id));
         }
         T itemEntity = getDTOConverter().convertToEntity(itemDto, entityClass);
         getService().merge(currentItem, itemEntity);
@@ -138,7 +146,8 @@ public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBas
         LOGGER.info("Deleting item by id {}", id);
         T item = getService().findById(id);
         if (Objects.isNull(item)) {
-            throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.item.id"), id));
+            //throw new ResourceNotFoundException(String.format(getLocaleMessage("error.no.item.id"), id));
+            throw new ResourceNotFoundException(getResource().formatMessage("error.no.item.id", id));
         }
         getService().deleteById(id);
         return item;
@@ -152,7 +161,7 @@ public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBas
 
     @Override
     public void deleteItems(final List<? extends E> itemDtoList) {
-        LOGGER.info("Deleting items");
+        LOGGER.info("Deleting items {}", StringUtils.join(itemDtoList, ", "));
         List<? extends T> items = getDTOConverter().convertToEntity(itemDtoList, getEntityClass());
         getService().delete(items);
     }
@@ -171,6 +180,10 @@ public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBas
         return this.dtoConverter;
     }
 
+    protected ResourceUtils getResource() {
+        return this.resourceUtils;
+    }
+
     protected Class<? extends T> getEntityClass() {
         return (Class<? extends T>) BaseEntity.class;
     }
@@ -183,8 +196,8 @@ public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBas
         return BaseDTOListWrapper.class;
     }
 
-    protected String getLocaleMessage(final String message) {
-        Locale locale = LocaleContextHolder.getLocale();
-        return messageSource.getMessage(message, null, locale);
-    }
+//    protected String getLocaleMessage(final String message) {
+//        Locale locale = LocaleContextHolder.getLocale();
+//        return messageSource.getMessage(message, null, locale);
+//    }
 }
