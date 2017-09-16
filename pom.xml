@@ -10,10 +10,16 @@
     <url>http://maven.apache.org</url>
     <description>REST API newsletter subscription</description>
     
-    <parent>
+    <!--<parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>1.5.6.RELEASE</version>
+    </parent>-->
+    
+    <parent>
+        <groupId>com.wildbeeslabs.rest</groupId>
+        <artifactId>cascoder</artifactId>
+        <version>1.0.0-RELEASE</version>
     </parent>
     
     <properties>
