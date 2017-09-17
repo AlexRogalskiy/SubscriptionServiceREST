@@ -17,7 +17,7 @@
     </parent>-->
     
     <parent>
-        <groupId>com.wildbeeslabs.rest</groupId>
+        <groupId>com.wildbeeslabs.api.rest</groupId>
         <artifactId>cascoder</artifactId>
         <version>1.0.0-RELEASE</version>
     </parent>
