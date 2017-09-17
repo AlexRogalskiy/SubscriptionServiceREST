@@ -53,7 +53,6 @@ public class SubscriptionProxyController<T extends Subscription, E extends Subsc
         LOGGER.info("Fetching all subscriptions by user id {}", userId);
         List<? extends T> items = getService().findByUserId(userId);
         if (items.isEmpty()) {
-            //throw new EmptyContentException(String.format(getLocaleMessage("error.no.content")));
             throw new EmptyContentException(getResource().formatMessage("error.no.content"));
         }
         return getDTOConverter().convertToDTOAndWrap(items, getDtoClass(), getDtoListClass());
@@ -63,7 +62,6 @@ public class SubscriptionProxyController<T extends Subscription, E extends Subsc
         LOGGER.info("Fetching all subscriptions by status {}", subStatus);
         List<? extends T> items = Objects.isNull(subStatus) ? getService().findAll() : getService().findByStatus(subStatus);
         if (items.isEmpty()) {
-            //throw new EmptyContentException(String.format(getLocaleMessage("error.no.content")));
             throw new EmptyContentException(getResource().formatMessage("error.no.content"));
         }
         return getDTOConverter().convertToDTOAndWrap(items, getDtoClass(), getDtoListClass());

@@ -56,21 +56,20 @@ public class UserProxyController<T extends User, E extends UserDTO> extends ABas
         IUserService.DateTypeOrder dateTypeOrder = Objects.equals(Boolean.TRUE, subDateOrder) ? IUserService.DateTypeOrder.AFTER : IUserService.DateTypeOrder.BEFORE;
         List<? extends T> items = getService().findAllBySubscriptionStatusAndDate(subDate, subStatus, dateTypeOrder);
         if (items.isEmpty()) {
-            //throw new EmptyContentException(String.format(getLocaleMessage("error.no.content")));
             throw new EmptyContentException(getResource().formatMessage("error.no.content"));
         }
         return items;
     }
 
-//    public IBaseDTOListWrapper<? extends E> findAllBySubscriptionStatusAndDate(final Date subDate, final SubscriptionStatusInfo.SubscriptionStatusType subStatus, final Boolean subDateOrder) throws EmptyContentException {
-//        List<? extends T> items = this.findAllEntityBySubscriptionStatusAndDate(subDate, subStatus, subDateOrder);
-//        return getDTOConverter().convertToDTOAndWrap(items, getDtoClass(), getDtoListClass());
-//    }
+    public IBaseDTOListWrapper<? extends E> findAllBySubscriptionStatusAndDate(final Date subDate, final SubscriptionStatusInfo.SubscriptionStatusType subStatus, final Boolean subDateOrder) throws EmptyContentException {
+        List<? extends T> items = this.findAllEntityBySubscriptionStatusAndDate(subDate, subStatus, subDateOrder);
+        return getDTOConverter().convertToDTOAndWrap(items, getDtoClass(), getDtoListClass());
+    }
+
     public List<? extends T> findAllEntityBySubscriptionId(final Long subscriptionId) throws EmptyContentException {
         LOGGER.info("Fetching all users by subscription id {}", subscriptionId);
         List<? extends T> items = getService().findBySubscriptionId(subscriptionId);
         if (items.isEmpty()) {
-            //throw new EmptyContentException(String.format(getLocaleMessage("error.no.content")));
             throw new EmptyContentException(getResource().formatMessage("error.no.content"));
         }
         return items;
@@ -85,7 +84,6 @@ public class UserProxyController<T extends User, E extends UserDTO> extends ABas
         LOGGER.info("Fetching all users by status {}", status);
         List<? extends T> items = getService().findByStatus(status);
         if (items.isEmpty()) {
-            //throw new EmptyContentException(String.format(getLocaleMessage("error.no.content")));
             throw new EmptyContentException(getResource().formatMessage("error.no.content"));
         }
         return items;
@@ -97,7 +95,6 @@ public class UserProxyController<T extends User, E extends UserDTO> extends ABas
             items = items.stream().parallel().filter(item -> Objects.equals(status, item.getStatus())).collect(Collectors.toList());
         }
         if (items.isEmpty()) {
-            //throw new EmptyContentException(String.format(getLocaleMessage("error.no.content")));
             throw new EmptyContentException(getResource().formatMessage("error.no.content"));
         }
         return items;
