@@ -60,7 +60,7 @@ public class Subscription extends BaseEntity implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     //@JsonManagedReference(value = "subscriptionToSubscriptionStatus")
-    @JoinColumn(name = "subscription_status_id")
+    @JoinColumn(name = "subscription_status_id", referencedColumnName = "subscription_status_id")
     private SubscriptionStatusInfo statusInfo;
 
     @OneToMany(mappedBy = "pk.subscription", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
