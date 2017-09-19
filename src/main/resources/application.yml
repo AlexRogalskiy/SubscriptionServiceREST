@@ -25,19 +25,28 @@ management:
     address: 127.0.0.1
     security:
         enabled: true
-        role: ACTUATOR
+        roles: EPADMIN
     info:
         git:
             mode: full
-security:
-    user:
-        name: admin
-        password: secret
-    #basic:
-        #enabled: true
+#security:
+#    user:
+#        name: epadmin
+#        password: epadmin
+#    basic:
+#        enabled: true
 endpoints:
     metrics:
         id: app_metrics
+        sensitive: true
+    health:
+        id: app_health
+        sensitive: true
+    beans:
+        id: app_beans
+        sensitive: true
+    info:
+        id: app_info
         sensitive: true
     shutdown:
         enabled: true
