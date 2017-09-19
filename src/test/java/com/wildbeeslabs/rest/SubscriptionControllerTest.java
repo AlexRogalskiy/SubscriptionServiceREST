@@ -28,23 +28,23 @@ public class SubscriptionControllerTest extends BaseControllerTest {
 
     @Test
     public void testForbiddenAccess() {
-        given().when().get(REST_SERVICE_URI + "/api/subscriptions").then().statusCode(401);
+        given().when().get(getServiceURI() + "/api/subscriptions").then().statusCode(401);
     }
 
     @Test
     public void testAuthorizationAccess() {
         //.auth().digest( ADMIN_USERNAME, ADMIN_PASSWORD )
-        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/subscriptions").then().statusCode(200);
+        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(getServiceURI() + "/api/subscriptions").then().statusCode(200);
     }
 
     @Test
     public void testNotFound() {
-        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/subscriptionss").then().statusCode(404);
+        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(getServiceURI() + "/api/subscriptionss").then().statusCode(404);
     }
 
     @Test
     public void testVerifySubscription1() {
-        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/subscription/1").then()
+        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(getServiceURI() + "/api/subscription/1").then()
                 .body("name", equalTo("subscription1"))
                 .body("createdBy", equalTo("admin"))
                 //                .body("expireAt", equalTo(1544562000000L))
@@ -68,16 +68,16 @@ public class SubscriptionControllerTest extends BaseControllerTest {
 
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123")
                 .body(getObjectAsString(subscription))
-                .when().post(REST_SERVICE_URI + "/api/subscription").then()
+                .when().post(getServiceURI() + "/api/subscription").then()
                 .statusCode(201);
-        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/subscriptions").then()
+        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(getServiceURI() + "/api/subscriptions").then()
                 .body("name", hasItem("Guest Group"))
                 .statusCode(200);
     }
 
     @Test
     public void testUpdateSubscription() {
-        final SubscriptionDTO subscription1 = given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/subscription/1").as(SubscriptionDTO.class);
+        final SubscriptionDTO subscription1 = given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(getServiceURI() + "/api/subscription/1").as(SubscriptionDTO.class);
 
         assertTrue(Objects.nonNull(subscription1));
         assertTrue(Objects.equals("subscription1", subscription1.getName()));
@@ -88,7 +88,7 @@ public class SubscriptionControllerTest extends BaseControllerTest {
 
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123")
                 .body(subscription1)
-                .when().put(REST_SERVICE_URI + "/api/subscription/{id}", subscription1.getId()).then()
+                .when().put(getServiceURI() + "/api/subscription/{id}", subscription1.getId()).then()
                 //                .body("expireAt", equalTo(1555534800000L))
                 .body("expireAt", equalTo("2019-04-18 00:00:00"))
                 .statusCode(200);
@@ -96,14 +96,14 @@ public class SubscriptionControllerTest extends BaseControllerTest {
 
     @Test
     public void testDeleteSubscription() {
-        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/subscription/4").then()
+        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(getServiceURI() + "/api/subscription/4").then()
                 .body("name", equalTo("Guest Group"))
                 .statusCode(200);
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123")
-                .when().delete(REST_SERVICE_URI + "/api/subscription/4").then()
+                .when().delete(getServiceURI() + "/api/subscription/4").then()
                 .statusCode(403);
 //        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("dba", "dba123")
-//                .when().delete(REST_SERVICE_URI + "/api/subscription/4").then()
+//                .when().delete(getServiceURI() + "/api/subscription/4").then()
 //                .statusCode(200);
     }
 }

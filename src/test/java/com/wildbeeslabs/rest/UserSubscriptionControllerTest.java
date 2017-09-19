@@ -11,7 +11,6 @@ import com.wildbeeslabs.rest.model.dto.UserSubOrderDTO;
 import java.util.Objects;
 
 import static junit.framework.TestCase.assertTrue;
-
 import static org.hamcrest.CoreMatchers.hasItem;
 
 import org.junit.Test;
@@ -28,8 +27,8 @@ public class UserSubscriptionControllerTest extends BaseControllerTest {
 
     @Test
     public void testAddUserSubscription() {
-        final UserDTO user1 = given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/user/1").as(UserDTO.class);
-        final SubscriptionDTO subscription3 = given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/subscription/3").as(SubscriptionDTO.class);
+        final UserDTO user1 = given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(getServiceURI() + "/api/user/1").as(UserDTO.class);
+        final SubscriptionDTO subscription3 = given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(getServiceURI() + "/api/subscription/3").as(SubscriptionDTO.class);
 
         assertTrue(Objects.equals("user1@gmail.com", user1.getLogin()));
         //assertTrue(Objects.equals(User.UserStatusType.UNVERIFIED, user1.getStatus()));
@@ -44,9 +43,9 @@ public class UserSubscriptionControllerTest extends BaseControllerTest {
 
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123")
                 .body(userSubOrder)
-                .when().post(REST_SERVICE_URI + "/api/user/{id}/subscription", user1.getId()).then()
+                .when().post(getServiceURI() + "/api/user/{id}/subscription", user1.getId()).then()
                 .statusCode(201);
-        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/user/{id}/subscriptions", user1.getId()).then()
+        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(getServiceURI() + "/api/user/{id}/subscriptions", user1.getId()).then()
                 .body("name", hasItem("subscription3"))
                 .statusCode(200);
     }

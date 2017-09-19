@@ -48,8 +48,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @since 2017-08-08
  * @param <T>
  */
-@Service("mailService")
-@Transactional
+//@Service("mailService")
+//@Transactional
 public class MailServiceImpl<T extends MailDTO> implements IMailService<T> {
 
     /**
@@ -57,7 +57,7 @@ public class MailServiceImpl<T extends MailDTO> implements IMailService<T> {
      */
     protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
-    @Autowired
+    //@Autowired
     private JavaMailSender mailSender;
 
     @Override

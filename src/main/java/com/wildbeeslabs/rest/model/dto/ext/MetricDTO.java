@@ -32,6 +32,7 @@ import com.wildbeeslabs.rest.utils.DateUtils;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
+import org.springframework.boot.actuate.metrics.Metric;
 
 /**
  *
@@ -40,10 +41,11 @@ import java.util.Objects;
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
+ * @param <T>
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JacksonXmlRootElement(localName = "metric")
-public class MetricDTO implements Serializable {
+public class MetricDTO<T extends Number> extends Metric<T> implements Serializable {
 
     @JacksonXmlProperty(localName = "timestamp")
     @JsonProperty("timestamp")
@@ -57,9 +59,22 @@ public class MetricDTO implements Serializable {
     @JsonProperty("status")
     private Integer statusCode;
 
-    public String getTimestamp() {
-        return (Objects.nonNull(this.timestamp)) ? DateUtils.dateToStr(this.timestamp) : null;
+    public MetricDTO() {
+        super(null, null, null);
     }
+
+    public MetricDTO(final String name, final T value, final Date timestamp) {
+        super(name, value, timestamp);
+    }
+
+    @Override
+    public Date getTimestamp() {
+        return timestamp;
+    }
+//
+//    public String getTimestamp() {
+//        return (Objects.nonNull(this.timestamp)) ? DateUtils.dateToStr(this.timestamp) : null;
+//    }
 
     public void setTimestamp(final Date timestamp) {
         this.timestamp = timestamp;
@@ -83,7 +98,8 @@ public class MetricDTO implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 3;
+        //int hash = 3;
+        int hash = super.hashCode();
         hash = 23 * hash + Objects.hashCode(this.timestamp);
         hash = 23 * hash + Objects.hashCode(this.request);
         hash = 23 * hash + Objects.hashCode(this.statusCode);
@@ -91,11 +107,15 @@ public class MetricDTO implements Serializable {
     }
 
     @Override
+    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (null == obj || obj.getClass() != this.getClass()) {
+//        if (this == obj) {
+//            return true;
+//        }
+//        if (null == obj || obj.getClass() != this.getClass()) {
+//            return false;
+//        }
+        if (!super.equals(obj)) {
             return false;
         }
         final MetricDTO other = (MetricDTO) obj;

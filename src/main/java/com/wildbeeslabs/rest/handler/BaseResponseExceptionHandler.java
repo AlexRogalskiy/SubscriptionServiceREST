@@ -1,5 +1,6 @@
 package com.wildbeeslabs.rest.handler;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.wildbeeslabs.rest.exception.BadRequestException;
@@ -9,6 +10,7 @@ import com.wildbeeslabs.rest.exception.ResourceNotFoundException;
 import com.wildbeeslabs.rest.exception.ServiceException;
 
 import java.util.Date;
+import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
 import org.hibernate.exception.ConstraintViolationException;
@@ -22,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -64,8 +67,23 @@ public class BaseResponseExceptionHandler {//extends ResponseEntityExceptionHand
         public Integer getValue() {
             return value;
         }
+
+        @Override
+        public String toString() {
+            return String.valueOf(this.getValue());
+        }
+
+        public static ResponseStatusCode valueOf(final Integer value) {
+            for (ResponseStatusCode v : values()) {
+                if (Objects.equals(v.getValue(), value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
     }
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @JacksonXmlRootElement(localName = "exception")
     protected class ExceptionEntity {
 
@@ -139,7 +157,7 @@ public class BaseResponseExceptionHandler {//extends ResponseEntityExceptionHand
     /**
      * Default Logger instance
      */
-    protected final Logger LOGGER = LoggerFactory.getLogger(BaseResponseExceptionHandler.class);
+    protected final Logger LOGGER = LoggerFactory.getLogger(getClass());//BaseResponseExceptionHandler.class
 
     @ExceptionHandler({ResourceAlreadyExistException.class})
     @ResponseBody
@@ -252,9 +270,18 @@ public class BaseResponseExceptionHandler {//extends ResponseEntityExceptionHand
     @ExceptionHandler({AccessDeniedException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ResponseEntity<?> handle(final HttpServletRequest req, final AccessDeniedException ex) {
+    protected ResponseEntity<?> handle(final HttpServletRequest req, final AccessDeniedException ex) {
         LOGGER.error(ex.getMessage());
         String url = req.getRequestURI().substring(req.getContextPath().length());
         return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.FORBIDDEN, ex.getMessage()), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler({HttpMediaTypeNotAcceptableException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+    protected ResponseEntity<?> handle(final HttpServletRequest req, final HttpMediaTypeNotAcceptableException ex) {
+        LOGGER.error(ex.getMessage());
+        String url = req.getRequestURI().substring(req.getContextPath().length());
+        return new ResponseEntity<>(new ExceptionEntity(url, ResponseStatusCode.BAD_MEDIA_TYPE, ex.getMessage()), HttpStatus.UNSUPPORTED_MEDIA_TYPE);
     }
 }

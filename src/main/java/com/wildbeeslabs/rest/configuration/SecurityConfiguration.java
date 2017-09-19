@@ -45,6 +45,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         manager.createUser(User.withUsername("user").password("user123").roles("USER").build());
         manager.createUser(User.withUsername("admin").password("admin123").roles("ADMIN").build());
         manager.createUser(User.withUsername("dba").password("dba123").roles("ADMIN", "DBA").build());
+        manager.createUser(User.withUsername("act").password("act123").roles("ACTUATOR").build());
         return manager;
     }
 
@@ -55,7 +56,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .withUser("admin").password("admin123").roles("ADMIN")
                 .and()
-                .withUser("dba").password("dba123").roles("ADMIN", "DBA");
+                .withUser("dba").password("dba123").roles("ADMIN", "DBA")
+                .and()
+                .withUser("act").password("act123").roles("ACTUATOR");
     }
 
     @Override

@@ -36,7 +36,7 @@ abstract public class BaseControllerTest {
      * Default REST URI bind address
      */
     @Value("#{'${server.basePath}'.concat(':').concat('${server.port}').concat('${server.contextPath}')}")
-    protected String REST_SERVICE_URI;
+    private String restServiceURI;
 
     protected String getObjectAsString(final Object obj) {
         ObjectMapper mapper = new ObjectMapper();
@@ -53,4 +53,7 @@ abstract public class BaseControllerTest {
 //    public void setUp() { 
 //        RestAssured.authentication = preemptive().basic("user", "123");
 //    }
+    protected String getServiceURI() {
+        return restServiceURI;
+    }
 }

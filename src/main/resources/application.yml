@@ -1,26 +1,46 @@
 server:
   port: 8080
   contextPath: /newsletterSub
+  endPointPath: endpoints
   basePath: http://localhost
   error:
       path: /error
       whitelabel:
           enabled: false
-#security:
-    #basic:
-        #enabled: true
+  ssl:
+    enabled: false
+    key-store: classpath:main.jks
+    key-password: secret
+
 #quartz:
 #    enabled: true
+
 management:
+    context-path: /manage
     port: 8081
+    ssl:
+        enabled: false
+        key-store: classpath:management.jks
+        key-password: secret
     address: 127.0.0.1
     security:
-        enabled: false
-        role: SUPERUSER
+        enabled: true
+        role: ACTUATOR
+    info:
+        git:
+            mode: full
 security:
     user:
         name: admin
         password: secret
+    #basic:
+        #enabled: true
+endpoints:
+    metrics:
+        id: app_metrics
+        sensitive: true
+    shutdown:
+        enabled: true
 ---
 spring:
   profiles: prod
@@ -40,11 +60,11 @@ spring:
           contentType: text/html
   main:
       banner-mode: "off"
-  mail:
-      host: localhost
-      port: 25
-      protocol: smtp
-      defaultEncoding: UTF-8
+  #mail:
+  #    host: localhost
+  #    port: 25
+  #    protocol: smtp
+  #    defaultEncoding: UTF-8
 datasource:
   subscriptionapp:
     url: jdbc:h2:~/subscriptiondb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
@@ -71,6 +91,12 @@ spring:
   resources:
     #staticLocations: classpath:/static/
     #cachePeriod: 0
+  metrics:
+    export:
+        enabled: false
+        redis:
+            prefix: metrics.newsletterSub.${spring.application.name:application}.${random.value:0000}
+            key: keys.metrics.newsletterSub
   application:
       name: REST API newsletter subscription
       thymeleaf:
@@ -84,11 +110,11 @@ spring:
           contentType: text/html
   main:
       banner-mode: "console"
-  mail:
-      host: localhost
-      port: 25
-      protocol: smtp
-      defaultEncoding: UTF-8
+  #mail:
+  #    host: localhost
+  #    port: 25
+  #    protocol: smtp
+  #    defaultEncoding: UTF-8
 datasource:
   subscriptionapp:
     url: jdbc:mysql://localhost:3306/subscriptiondb?createDatabaseIfNotExist=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=UTF-8&characterSetResults=UTF-8

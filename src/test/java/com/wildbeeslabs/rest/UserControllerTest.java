@@ -28,22 +28,22 @@ public class UserControllerTest extends BaseControllerTest {
 
     @Test
     public void testForbiddenAccess() {
-        given().when().get(REST_SERVICE_URI + "/api/users").then().statusCode(401);
+        given().when().get(getServiceURI() + "/api/users").then().statusCode(401);
     }
 
     @Test
     public void testAuthorizationAccess() {
-        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/users").then().statusCode(200);
+        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(getServiceURI() + "/api/users").then().statusCode(200);
     }
 
     @Test
     public void testNotFound() {
-        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/userss").then().statusCode(404);
+        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(getServiceURI() + "/api/userss").then().statusCode(404);
     }
 
     @Test
     public void testVerifyUser2() {
-        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/user/2").then()
+        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(getServiceURI() + "/api/user/2").then()
                 .body("login", equalTo("user2@gmail.com"))
                 .body("name", equalTo("user2"))
                 .body("createdBy", equalTo("user2@gmail.com"))
@@ -76,16 +76,16 @@ public class UserControllerTest extends BaseControllerTest {
 
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123")
                 .body(getObjectAsString(user))
-                .when().post(REST_SERVICE_URI + "/api/user").then()
+                .when().post(getServiceURI() + "/api/user").then()
                 .statusCode(201);
-        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/users").then()
+        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(getServiceURI() + "/api/users").then()
                 .body("login", hasItem("user18@gmail.com"))
                 .statusCode(200);
     }
 
     @Test
     public void testUpdateUser() {
-        final UserDTO user1 = given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/user/1").as(UserDTO.class);
+        final UserDTO user1 = given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(getServiceURI() + "/api/user/1").as(UserDTO.class);
 
         assertTrue(Objects.nonNull(user1));
         assertTrue(Objects.equals("user1@gmail.com", user1.getLogin()));
@@ -95,21 +95,21 @@ public class UserControllerTest extends BaseControllerTest {
 
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123")
                 .body(user1)
-                .when().put(REST_SERVICE_URI + "/api/user/{id}", user1.getId()).then()
+                .when().put(getServiceURI() + "/api/user/{id}", user1.getId()).then()
                 .body("status", equalTo(User.UserStatusType.ACTIVE.toString()))
                 .statusCode(200);
     }
 
     @Test
     public void testDeleteUser() {
-        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(REST_SERVICE_URI + "/api/user/4").then()
+        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(getServiceURI() + "/api/user/4").then()
                 .body("login", equalTo("user18@gmail.com"))
                 .statusCode(200);
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123")
-                .when().delete(REST_SERVICE_URI + "/api/user/4").then()
+                .when().delete(getServiceURI() + "/api/user/4").then()
                 .statusCode(403);
 //        given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("dba", "dba123")
-//                .when().delete(REST_SERVICE_URI + "/api/user/4").then()
+//                .when().delete(getServiceURI() + "/api/user/4").then()
 //                .statusCode(200);
     }
 }
