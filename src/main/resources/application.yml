@@ -36,18 +36,15 @@ management:
 #    basic:
 #        enabled: true
 endpoints:
+    sensitive: true
     metrics:
         id: app_metrics
-        sensitive: true
     health:
         id: app_health
-        sensitive: true
     beans:
         id: app_beans
-        sensitive: true
     info:
         id: app_info
-        sensitive: true
     shutdown:
         enabled: true
 ---
