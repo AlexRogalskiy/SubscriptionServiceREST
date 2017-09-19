@@ -21,11 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.rest.controller.proxy.mail;
+package com.wildbeeslabs.rest.controller.proxy.ext;
 
-import com.wildbeeslabs.rest.model.dto.mail.MailDTO;
-import com.wildbeeslabs.rest.model.dto.mail.MailTemplate;
-import com.wildbeeslabs.rest.service.interfaces.IMailService;
+import com.wildbeeslabs.rest.model.dto.ext.MailDTO;
+import com.wildbeeslabs.rest.model.dto.ext.MailTemplate;
+import com.wildbeeslabs.rest.service.interfaces.ext.IMailService;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -55,8 +55,7 @@ public class MailProxyController {//implements ApplicationRunner {
 //        sendHtmltMail();
 //        sendTextMail();
 //    }
-
-    private void sendTextMail() {
+    public void sendTextMail() {
         String from = "pavan@localhost";
         String to = "solapure@localhost";
         String subject = "Java Mail with Spring Boot - Plain Text";
@@ -71,7 +70,7 @@ public class MailProxyController {//implements ApplicationRunner {
         this.mailService.send(mailDto);
     }
 
-    private void sendHtmltMail() {
+    public void sendHtmltMail() {
         String from = "pavan@localhost";
         String to = "solapure@localhost";
         String subject = "Java Mail with Spring Boot";

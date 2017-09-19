@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.rest.model.dto.mail;
+package com.wildbeeslabs.rest.model.dto.ext;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -33,7 +33,7 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  *
- * MailDTO REST interface declaration
+ * MailDTO REST Application Model
  *
  * @author Alex
  * @version 1.0.0

@@ -21,13 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.rest.model.dto.mail;
+package com.wildbeeslabs.rest.model.dto.ext;
 
 import org.springframework.ui.Model;
 
 /**
  *
- * MailTemplate REST model
+ * MailTemplate REST Application Model
  *
  * @author Alex
  * @version 1.0.0

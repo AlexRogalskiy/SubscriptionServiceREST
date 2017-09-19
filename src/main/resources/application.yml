@@ -9,8 +9,18 @@ server:
 #security:
     #basic:
         #enabled: true
-quartz:
-    enabled: true
+#quartz:
+#    enabled: true
+management:
+    port: 8081
+    address: 127.0.0.1
+    security:
+        enabled: false
+        role: SUPERUSER
+security:
+    user:
+        name: admin
+        password: secret
 ---
 spring:
   profiles: prod

@@ -21,10 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.rest.service;
+package com.wildbeeslabs.rest.service.ext;
 
-import com.wildbeeslabs.rest.model.dto.mail.MailDTO;
-import com.wildbeeslabs.rest.service.interfaces.IMailService;
+import com.wildbeeslabs.rest.model.dto.ext.MailDTO;
+import com.wildbeeslabs.rest.service.interfaces.ext.IMailService;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
