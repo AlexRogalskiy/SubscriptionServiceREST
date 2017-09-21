@@ -24,6 +24,7 @@
 package com.wildbeeslabs.rest.model.validation;
 
 import java.util.Objects;
+import java.util.UUID;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -36,20 +37,20 @@ import javax.validation.ConstraintValidatorContext;
  * @version 1.0.0
  * @since 2017-08-08
  */
-public class UIDConstraintValidator implements ConstraintValidator<UID, String> {
+public class UIDConstraintValidator implements ConstraintValidator<UID, UUID> {
 
-    private static final String DEFAULT_FORMAT = "[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}";
+    public static final String DEFAULT_FORMAT = "\\p{XDigit}{8}-\\p{XDigit}{4}-\\p{XDigit}{4}-\\p{XDigit}{4}-\\p{XDigit}{12}";
 
     @Override
     public void initialize(final UID uid) {
     }
 
     @Override
-    public boolean isValid(final String uidField, final ConstraintValidatorContext cxt) {
+    public boolean isValid(final UUID uidField, final ConstraintValidatorContext cxt) {
         if (Objects.isNull(uidField)) {
             return false;
         }
-        boolean isValid = uidField.matches(DEFAULT_FORMAT);
+        boolean isValid = uidField.toString().matches(DEFAULT_FORMAT);
         if (!isValid) {
             cxt.disableDefaultConstraintViolation();
             cxt.buildConstraintViolationWithTemplate(String.format("ERROR: incorrect uid={%s} (expected format={%s})", uidField, UIDConstraintValidator.DEFAULT_FORMAT)).addConstraintViolation();

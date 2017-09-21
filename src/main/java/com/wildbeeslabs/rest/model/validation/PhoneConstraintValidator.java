@@ -37,7 +37,7 @@ import javax.validation.ConstraintValidatorContext;
  */
 public class PhoneConstraintValidator implements ConstraintValidator<Phone, String> {
 
-    private static final String DEFAULT_FORMAT = "\\+[0-9]+";
+    public static final String DEFAULT_FORMAT = "\\+[0-9]+";
 
     @Override
     public void initialize(final Phone phone) {

@@ -96,7 +96,8 @@ public class BaseResponseExceptionHandler {//extends ResponseEntityExceptionHand
         @JacksonXmlProperty(localName = "message")
         private String message;
         @JacksonXmlProperty(localName = "timestamp")
-        private Long timestamp;
+        //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.DEFAULT_DATE_FORMAT_PATTERN_EXT, locale = DateUtils.DEFAULT_DATE_FORMAT_LOCALE)
+        private Date timestamp;
 
         public ExceptionEntity() {
         }
@@ -110,7 +111,7 @@ public class BaseResponseExceptionHandler {//extends ResponseEntityExceptionHand
             this.code = code;
             this.error = error;
             this.message = message;
-            this.timestamp = new Date().getTime();
+            this.timestamp = new Date();
         }
 
         public String getPath() {
@@ -145,11 +146,11 @@ public class BaseResponseExceptionHandler {//extends ResponseEntityExceptionHand
             this.message = message;
         }
 
-        public Long getTimestamp() {
+        public Date getTimestamp() {
             return timestamp;
         }
 
-        public void setTimestamp(final Long timestamp) {
+        public void setTimestamp(final Date timestamp) {
             this.timestamp = timestamp;
         }
     }

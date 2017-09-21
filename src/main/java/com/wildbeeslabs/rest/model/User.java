@@ -3,6 +3,7 @@ package com.wildbeeslabs.rest.model;
 import com.wildbeeslabs.rest.utils.DateUtils;
 import com.wildbeeslabs.rest.model.validation.Phone;
 import com.wildbeeslabs.rest.model.validation.BigDecimalRange;
+import com.wildbeeslabs.rest.model.validation.UID;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -10,6 +11,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -30,6 +32,7 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
+import org.hibernate.annotations.Type;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -81,6 +84,11 @@ public class User extends BaseEntity implements Serializable {
     @Column(name = "gender", nullable = false)
     private UserGenderType gender;
 
+    @UID
+    @Column(name = "uuid", unique = true, nullable = false)
+    @Type(type = "uuid-char")
+    private final UUID uuId;
+
     public static enum UserGenderType {
         MALE, FEMALE
     }
@@ -116,6 +124,10 @@ public class User extends BaseEntity implements Serializable {
     @OneToMany(mappedBy = "pk.user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @Column(name = "subscriptions", nullable = true)
     private final Set<UserSubOrder> subOrders = new HashSet<>();
+
+    public User() {
+        this.uuId = UUID.randomUUID();
+    }
 
     @Override
     public Long getId() {
@@ -235,6 +247,10 @@ public class User extends BaseEntity implements Serializable {
         if (Objects.nonNull(subOrder)) {
             this.subOrders.add(subOrder);
         }
+    }
+
+    public UUID getUuId() {
+        return uuId;
     }
 
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")

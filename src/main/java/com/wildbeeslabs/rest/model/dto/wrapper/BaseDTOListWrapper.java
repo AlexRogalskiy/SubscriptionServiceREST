@@ -51,11 +51,13 @@ public class BaseDTOListWrapper<E extends IBaseDTO> implements IBaseDTOListWrapp
     protected List<? extends E> items = null;
 
     @Override
+    //@JsonGetter("items")
     public List<? extends E> getItems() {
         return items;
     }
 
     @Override
+    //@JsonDetter("items")
     public void setItems(final List<? extends E> items) {
         this.items = items;
     }

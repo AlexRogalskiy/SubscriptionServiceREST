@@ -31,6 +31,7 @@ import java.lang.annotation.Target;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
+import javax.validation.constraints.Pattern;
 
 /**
  *
@@ -42,8 +43,9 @@ import javax.validation.Payload;
  */
 @Documented
 @Constraint(validatedBy = PhoneConstraintValidator.class)
-@Target({ElementType.METHOD, ElementType.FIELD})
+@Target({ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
+@Pattern(regexp = PhoneConstraintValidator.DEFAULT_FORMAT, message = "Invalid Phone format")
 public @interface Phone {
 
     public String message() default "{com.wildbeeslabs.rest.model.validator.Phone.message}";
