@@ -18,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -81,21 +82,35 @@ public class UserSubOrder extends BaseEntity implements Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date expiredAt;
 
-    public String getSubscribedAt() {
-        return (Objects.nonNull(this.subscribedAt)) ? DateUtils.dateToStr(this.subscribedAt) : null;
+    public Date getSubscribedAt() {
+        return this.subscribedAt;
     }
 
-    public void setSubscribedAt(final String str) {
-        this.subscribedAt = (Objects.nonNull(str)) ? DateUtils.strToDate(str) : null;
+    public void setSubscribedAt(final Date subscribedAt) {
+        this.subscribedAt = subscribedAt;
+    }
+//    public String getSubscribedAt() {
+//        return (Objects.nonNull(this.subscribedAt)) ? DateUtils.dateToStr(this.subscribedAt) : null;
+//    }
+//
+//    public void setSubscribedAt(final String str) {
+//        this.subscribedAt = (Objects.nonNull(str)) ? DateUtils.strToDate(str) : null;
+//    }
+    public Date getExpiredAt() {
+        return this.expiredAt;
     }
 
-    public String getExpiredAt() {
-        return (Objects.nonNull(this.expiredAt)) ? DateUtils.dateToStr(this.expiredAt) : null;
+    public void setExpiredAt(final Date expiredAt) {
+        this.expiredAt = expiredAt;
     }
 
-    public void setExpiredAt(final String str) {
-        this.expiredAt = (Objects.nonNull(str)) ? DateUtils.strToDate(str) : null;
-    }
+//    public String getExpiredAt() {
+//        return (Objects.nonNull(this.expiredAt)) ? DateUtils.dateToStr(this.expiredAt) : null;
+//    }
+//
+//    public void setExpiredAt(final String str) {
+//        this.expiredAt = (Objects.nonNull(str)) ? DateUtils.strToDate(str) : null;
+//    }
 
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override

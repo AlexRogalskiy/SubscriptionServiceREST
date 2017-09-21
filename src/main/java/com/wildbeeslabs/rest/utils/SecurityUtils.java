@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.rest.utils;
 
-import com.wildbeeslabs.rest.security.SecurityPrincipal;
+import com.wildbeeslabs.rest.security.UserCredentials;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 import java.io.UnsupportedEncodingException;
@@ -57,7 +57,7 @@ public final class SecurityUtils {
     }
 
     public static User authenticate(final String key, final String uuid) {
-        final SecurityPrincipal principal = new SecurityPrincipal(randomAlphabetic(6), randomAlphabetic(6), true, new ArrayList<>(), uuid);
+        final UserCredentials principal = new UserCredentials(randomAlphabetic(6), randomAlphabetic(6), true, new ArrayList<>(), uuid);
         SecurityContextHolder.getContext().setAuthentication(new RunAsUserToken(key, principal, null, new ArrayList<>(), null));
         return principal;
     }
@@ -92,7 +92,7 @@ public final class SecurityUtils {
         return securityContext.getAuthentication();
     }
 
-    public static SecurityPrincipal getCurrentPrincipal() {
+    public static UserCredentials getCurrentPrincipal() {
         final Authentication currentAuthentication = getCurrentAuthentication();
         if (Objects.isNull(currentAuthentication)) {
             return null;
@@ -101,7 +101,7 @@ public final class SecurityUtils {
         if (Objects.isNull(principal)) {
             return null;
         }
-        return (SecurityPrincipal) principal;
+        return (UserCredentials) principal;
     }
 
     public static String getNameOfCurrentPrincipal() {
@@ -113,7 +113,7 @@ public final class SecurityUtils {
     }
 
     public static String getUuidOfCurrentPrincipal() {
-        final SecurityPrincipal currentPrincipal = getCurrentPrincipal();
+        final UserCredentials currentPrincipal = getCurrentPrincipal();
         if (Objects.isNull(currentPrincipal)) {
             return null;
         }

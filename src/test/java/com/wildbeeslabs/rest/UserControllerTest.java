@@ -5,6 +5,7 @@ import static com.jayway.restassured.RestAssured.given;
 import com.jayway.restassured.http.ContentType;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.dto.UserDTO;
+import com.wildbeeslabs.rest.utils.DateUtils;
 
 import java.util.Objects;
 
@@ -51,10 +52,10 @@ public class UserControllerTest extends BaseControllerTest {
                 .body("phone", equalTo("+79211234567"))
                 .body("gender", equalTo(User.UserGenderType.MALE.toString()))
                 .body("id", equalTo(2))
-                .body("createdAt", equalTo("2017-04-30 00:00:00"))
+                .body("createdAt", equalTo("2017-04-30 00:00:00+0300"))
                 .body("modifiedAt", nullValue())
                 .body("rating", equalTo(1.0f))
-                .body("registeredAt", equalTo("2017-04-30 00:00:00"))
+                .body("registeredAt", equalTo("2017-04-30 00:00:00+0300"))
                 .body("status", equalTo(User.UserStatusType.ACTIVE.toString()))
                 .statusCode(200);
     }
@@ -64,14 +65,16 @@ public class UserControllerTest extends BaseControllerTest {
         final UserDTO user = new UserDTO();
         user.setAge(25);
         user.setCreatedBy("user18@gmail.com");
-        user.setCreatedAt("2017-04-18 00:00:00");
-        user.setRegisteredAt("2016-04-18 00:00:00");
+        //user.setCreatedAt("2017-04-18 00:00:00+0300");
+        user.setCreatedAt(DateUtils.strToDate("2016-04-18 00:00:00+0300"));
+        //user.setRegisteredAt("2016-04-18 00:00:00+0300");
         user.setLogin("user18@gmail.com");
         user.setName("user1");
         user.setGender(User.UserGenderType.MALE);
         user.setRating(1.00);
         user.setPhone("+79211234567");
-        user.setRegisteredAt("2017-04-18 00:00:00");
+        user.setRegisteredAt(DateUtils.strToDate("2017-04-18 00:00:00+0300"));
+        //user.setRegisteredAt("2017-04-18 00:00:00+0300");
         user.setStatus(User.UserStatusType.UNVERIFIED);
 
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123")

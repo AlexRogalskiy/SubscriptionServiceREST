@@ -12,6 +12,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.wildbeeslabs.rest.service.interfaces.ISubscriptionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  *
@@ -36,13 +38,25 @@ public class SubscriptionServiceImpl<T extends Subscription> implements ISubscri
     }
 
     @Override
-    public T findById(final Long id) {
-        return subscriptionRepository.findOne(id);
+    @Transactional(readOnly = true)
+    public Page<T> findAll(final Pageable pageable) {
+        return subscriptionRepository.findAll(pageable);
     }
 
     @Override
+    public T findById(final Long id) {
+        return subscriptionRepository.findOne(id);
+    }
+    
+    @Override
     public void save(final T subscription) {
         subscriptionRepository.save(subscription);
+    }
+
+    @Override
+    public void create(final T subscription) {
+        subscription.setId(null);
+        save(subscription);
     }
 
     @Override

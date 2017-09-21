@@ -7,13 +7,15 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
+//import javax.persistence.PrePersist;
+//import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -28,48 +30,65 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class BaseEntity implements IBaseEntity {
 
     @CreationTimestamp
+    //@CreatedDate
     @DateTimeFormat(pattern = DateUtils.DEFAULT_DATE_FORMAT_PATTERN)
     @Column(name = "created_at", nullable = false, updatable = false)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date createdAt;
 
     @UpdateTimestamp
+    //@LastModifiedDate
     @DateTimeFormat(pattern = DateUtils.DEFAULT_DATE_FORMAT_PATTERN)
     @Column(name = "modified_at", nullable = true, insertable = false)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date modifiedAt;
 
+    @CreatedBy
     @NotBlank(message = "Field <createdBy> cannot be blank")
     @Column(name = "created_by", nullable = false, updatable = false)
     private String createdBy;
 
+    @LastModifiedBy
     @Column(name = "modified_by", nullable = true, insertable = false)
     private String modifiedBy;
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = new Date();
+//    @PrePersist
+//    protected void onCreate() {
+//        this.createdAt = new Date();
+//    }
+//
+//    @PreUpdate
+//    protected void onUpdate() {
+//        this.modifiedAt = new Date();
+//    }
+//    public String getCreatedAt() {
+//        return (Objects.nonNull(this.createdAt)) ? DateUtils.dateToStr(this.createdAt) : null;
+//    }
+//
+//    public void setCreatedAt(final String str) {
+//        this.createdAt = (Objects.nonNull(str)) ? DateUtils.strToDate(str) : null;
+//    }
+    public Date getCreatedAt() {
+        return this.createdAt;
     }
 
-    @PreUpdate
-    protected void onUpdate() {
-        this.modifiedAt = new Date();
+    public void setCreatedAt(final Date createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public String getCreatedAt() {
-        return (Objects.nonNull(this.createdAt)) ? DateUtils.dateToStr(this.createdAt) : null;
+//    public String getModifiedAt() {
+//        return (Objects.nonNull(this.modifiedAt)) ? DateUtils.dateToStr(this.modifiedAt) : null;
+//    }
+//
+//    public void setModifiedAt(final String str) {
+//        this.modifiedAt = (Objects.nonNull(str)) ? DateUtils.strToDate(str) : null;
+//    }
+    public Date getModifiedAt() {
+        return this.modifiedAt;
     }
 
-    public void setCreatedAt(final String str) {
-        this.createdAt = (Objects.nonNull(str)) ? DateUtils.strToDate(str) : null;
-    }
-
-    public String getModifiedAt() {
-        return (Objects.nonNull(this.modifiedAt)) ? DateUtils.dateToStr(this.modifiedAt) : null;
-    }
-
-    public void setModifiedAt(final String str) {
-        this.modifiedAt = (Objects.nonNull(str)) ? DateUtils.strToDate(str) : null;
+    public void setModifiedAt(final Date modifiedAt) {
+        this.modifiedAt = modifiedAt;
     }
 
     public String getCreatedBy() {

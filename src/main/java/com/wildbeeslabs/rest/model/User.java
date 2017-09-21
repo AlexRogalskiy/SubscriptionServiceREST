@@ -174,20 +174,34 @@ public class User extends BaseEntity implements Serializable {
         this.rating = rating;
     }
 
-    public String getBirthdayAt() {
-        return (Objects.nonNull(this.birthdayAt)) ? DateUtils.dateToStr(this.birthdayAt) : null;
+//    public String getBirthdayAt() {
+//        return (Objects.nonNull(this.birthdayAt)) ? DateUtils.dateToStr(this.birthdayAt) : null;
+//    }
+//
+//    public void setBirthdayAt(final String str) {
+//        this.birthdayAt = (Objects.nonNull(str)) ? DateUtils.strToDate(str) : null;
+//    }
+    public Date getBirthdayAt() {
+        return this.birthdayAt;
     }
 
-    public void setBirthdayAt(final String str) {
-        this.birthdayAt = (Objects.nonNull(str)) ? DateUtils.strToDate(str) : null;
+    public void setBirthdayAt(final Date birthdayAt) {
+        this.birthdayAt = birthdayAt;
     }
 
-    public String getRegisteredAt() {
-        return (Objects.nonNull(this.registeredAt)) ? DateUtils.dateToStr(this.registeredAt) : null;
+//    public String getRegisteredAt() {
+//        return (Objects.nonNull(this.registeredAt)) ? DateUtils.dateToStr(this.registeredAt) : null;
+//    }
+//
+//    public void setRegisteredAt(final String str) {
+//        this.registeredAt = (Objects.nonNull(str)) ? DateUtils.strToDate(str) : null;
+//    }
+    public Date getRegisteredAt() {
+        return this.registeredAt;
     }
 
-    public void setRegisteredAt(final String str) {
-        this.registeredAt = (Objects.nonNull(str)) ? DateUtils.strToDate(str) : null;
+    public void setRegisteredAt(final Date registeredAt) {
+        this.registeredAt = registeredAt;
     }
 
     public Boolean getIsEnabledSubscription() {

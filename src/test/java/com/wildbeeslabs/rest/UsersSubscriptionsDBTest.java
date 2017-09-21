@@ -5,6 +5,7 @@ import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.UserSubOrder;
 import com.wildbeeslabs.rest.service.HibernateSessionService;
+import com.wildbeeslabs.rest.utils.DateUtils;
 
 import java.math.BigDecimal;
 
@@ -30,12 +31,14 @@ public class UsersSubscriptionsDBTest {
         session.beginTransaction();
 
         Subscription groupAdmin = new Subscription();
-        groupAdmin.setExpireAt("2017-05-28 00:00:00");
+        groupAdmin.setExpireAt(DateUtils.strToDate("2017-05-28 00:00:00+0300"));
+        //groupAdmin.setExpireAt("2017-05-28 00:00:00");
         groupAdmin.setName("Administrator Group");
         groupAdmin.setStatusInfo(new SubscriptionStatusInfo());//SubscriptionStatusInfo.SubscriptionStatusType.PREMIUM
 
         Subscription groupGuest = new Subscription();
-        groupGuest.setExpireAt("2017-05-28 00:00:00");
+        groupGuest.setExpireAt(DateUtils.strToDate("2017-05-28 00:00:00+0300"));
+        //groupGuest.setExpireAt("2017-05-28 00:00:00");
         groupGuest.setName("Guest Group");
         groupGuest.setStatusInfo(new SubscriptionStatusInfo());
 
@@ -52,19 +55,19 @@ public class UsersSubscriptionsDBTest {
         user2.setStatus(User.UserStatusType.ACTIVE);
 
         UserSubOrder userSubOrder1 = new UserSubOrder();
-        userSubOrder1.setCreatedAt("2017-05-28 00:00:00");
+        //userSubOrder1.setCreatedAt("2017-05-28 00:00:00+0300");
         userSubOrder1.setExpiredAt(null);
         userSubOrder1.setSubscription(groupAdmin);
         userSubOrder1.setUser(user1);
 
         UserSubOrder userSubOrder2 = new UserSubOrder();
-        userSubOrder2.setCreatedAt("2017-05-28 00:00:00");
+        //userSubOrder2.setCreatedAt("2017-05-28 00:00:00+0300");
         userSubOrder2.setExpiredAt(null);
         userSubOrder2.setSubscription(groupGuest);
         userSubOrder2.setUser(user1);
 
         UserSubOrder userSubOrder3 = new UserSubOrder();
-        userSubOrder3.setCreatedAt("2017-05-28 00:00:00");
+        //userSubOrder3.setCreatedAt("2017-05-28 00:00:00+0300");
         userSubOrder3.setExpiredAt(null);
         userSubOrder3.setSubscription(groupAdmin);
         userSubOrder3.setUser(user2);

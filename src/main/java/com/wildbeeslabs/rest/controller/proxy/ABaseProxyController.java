@@ -106,7 +106,7 @@ public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBas
         if (getService().isExist(itemEntity)) {
             throw new ResourceAlreadyExistException(getResource().formatMessage("error.already.exist.item"));
         }
-        getService().save(itemEntity);
+        getService().create(itemEntity);
         return itemEntity;
     }
 

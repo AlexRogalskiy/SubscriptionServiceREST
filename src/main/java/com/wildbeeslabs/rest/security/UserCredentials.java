@@ -23,26 +23,29 @@
  */
 package com.wildbeeslabs.rest.security;
 
-import java.io.IOException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.stereotype.Component;
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 
 /**
  *
- * CustomAuthenticationEntryPoint REST Application implementation
+ * UserCredentials REST Application implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
  */
-@Component("customAuthenticationEntryPoint")
-public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public final class UserCredentials extends User {
 
-    @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+    private final String uuid;
+
+    public UserCredentials(final String username, final String password, final boolean enabled, final Collection<? extends GrantedAuthority> authorities, final String uuidToSet) {
+        super(username, password, enabled, true, true, true, authorities);
+        uuid = uuidToSet;
+    }
+
+    public final String getUuid() {
+        return uuid;
     }
 }

@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +39,12 @@ public class UserServiceImpl<T extends User> implements IUserService<T> {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public Page<T> findAll(final Pageable pageable) {
+        return userRepository.findAll(pageable);
+    }
+
+    @Override
     public T findById(final Long id) {
         return userRepository.findOne(id);
     }
@@ -49,6 +57,12 @@ public class UserServiceImpl<T extends User> implements IUserService<T> {
     @Override
     public void save(final T user) {
         userRepository.save(user);
+    }
+
+    @Override
+    public void create(final T user) {
+        user.setId(null);
+        save(user);
     }
 
     @Override
@@ -70,6 +84,7 @@ public class UserServiceImpl<T extends User> implements IUserService<T> {
 
     @Override
     public boolean isExist(final T user) {
+        //return userRepository.exists(Example.of(user));
         return Objects.nonNull(findByLogin(user.getLogin()));
     }
 

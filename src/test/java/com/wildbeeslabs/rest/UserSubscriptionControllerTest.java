@@ -7,6 +7,7 @@ import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
 import com.wildbeeslabs.rest.model.dto.UserDTO;
 import com.wildbeeslabs.rest.model.dto.UserSubOrderDTO;
+import com.wildbeeslabs.rest.utils.DateUtils;
 
 import java.util.Objects;
 
@@ -39,7 +40,8 @@ public class UserSubscriptionControllerTest extends BaseControllerTest {
         userSubOrder.setUser(user1);
         userSubOrder.setSubscription(subscription3);
         userSubOrder.setCreatedBy(user1.getLogin());
-        userSubOrder.setSubscribedAt("2017-05-28 00:00:00");
+        userSubOrder.setSubscribedAt(DateUtils.strToDate("2017-05-28 00:00:00+0300"));
+        //userSubOrder.setSubscribedAt("2017-05-28 00:00:00");
 
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123")
                 .body(userSubOrder)

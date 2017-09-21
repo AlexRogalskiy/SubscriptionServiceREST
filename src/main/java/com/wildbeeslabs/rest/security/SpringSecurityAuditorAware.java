@@ -23,21 +23,32 @@
  */
 package com.wildbeeslabs.rest.security;
 
-import java.util.Collection;
-
-import org.springframework.security.core.GrantedAuthority;
+//import com.wildbeeslabs.rest.model.User;
+import java.util.Objects;
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
-public final class SecurityPrincipal extends User {
+/**
+ *
+ * SpringSecurityAuditorAware REST Application implementation
+ *
+ * @author Alex
+ * @version 1.0.0
+ * @since 2017-08-08
+ * @param <T>
+ */
+public class SpringSecurityAuditorAware<T extends User> implements AuditorAware<T> {
 
-    private final String uuid;
-
-    public SecurityPrincipal(final String username, final String password, final boolean enabled, final Collection<? extends GrantedAuthority> authorities, final String uuidToSet) {
-        super(username, password, enabled, true, true, true, authorities);
-        uuid = uuidToSet;
-    }
-
-    public final String getUuid() {
-        return uuid;
+    @Override
+    public T getCurrentAuditor() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (Objects.isNull(authentication) || !authentication.isAuthenticated()) {
+            return null;
+        }
+        //return ((UserDetails) authentication.getPrincipal()).getUser();
+        return null;
     }
 }

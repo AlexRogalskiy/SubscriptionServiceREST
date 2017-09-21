@@ -1,13 +1,15 @@
 package com.wildbeeslabs.rest.model.dto;
 
+import com.wildbeeslabs.rest.utils.DateUtils;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+import java.util.Date;
 import java.util.Objects;
-
-import javax.persistence.MappedSuperclass;
 
 /**
  *
@@ -17,18 +19,19 @@ import javax.persistence.MappedSuperclass;
  * @version 1.0.0
  * @since 2017-08-08
  */
-@MappedSuperclass
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class BaseDTO implements IBaseDTO {
 
     @JacksonXmlProperty(localName = "createdAt")
     @JsonProperty("createdAt")
-    private String createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.DEFAULT_DATE_FORMAT_PATTERN_EXT, locale = DateUtils.DEFAULT_DATE_FORMAT_LOCALE)
+    private Date createdAt;
 
     @JacksonXmlProperty(localName = "modifiedAt")
     @JsonProperty("modifiedAt")
-    private String modifiedAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.DEFAULT_DATE_FORMAT_PATTERN_EXT, locale = DateUtils.DEFAULT_DATE_FORMAT_LOCALE)
+    private Date modifiedAt;
 
     @JacksonXmlProperty(localName = "createdBy")
     private String createdBy;
@@ -52,19 +55,19 @@ public class BaseDTO implements IBaseDTO {
         this.modifiedBy = modifiedBy;
     }
 
-    public String getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(final String createdAt) {
+    public void setCreatedAt(final Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public String getModifiedAt() {
+    public Date getModifiedAt() {
         return modifiedAt;
     }
 
-    public void setModifiedAt(final String modifiedAt) {
+    public void setModifiedAt(final Date modifiedAt) {
         this.modifiedAt = modifiedAt;
     }
 

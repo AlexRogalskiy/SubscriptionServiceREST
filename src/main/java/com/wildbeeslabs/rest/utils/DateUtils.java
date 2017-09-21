@@ -24,9 +24,19 @@ public final class DateUtils {
     }
 
     /**
+     * Default date format locale
+     */
+    public static final String DEFAULT_DATE_FORMAT_LOCALE = "en_GB";
+
+    /**
      * Default date format pattern
      */
-    public static final String DEFAULT_DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    public static final String DEFAULT_DATE_FORMAT_PATTERN_EXT = "yyyy-MM-dd HH:mm:ssZ";
+
+    /**
+     * Default date format pattern
+     */
+    public static final String DEFAULT_DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";//yyyy-MM-dd HH:mm:ss.SSSZ
     /**
      * Default time zone pattern
      */

@@ -1,13 +1,17 @@
 package com.wildbeeslabs.rest.model.dto;
 
+import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
+import com.wildbeeslabs.rest.utils.DateUtils;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -43,7 +47,8 @@ public class SubscriptionDTO extends BaseDTO {
 
     @JacksonXmlProperty(localName = "expireAt")
     @JsonProperty("expireAt")
-    private String expireAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.DEFAULT_DATE_FORMAT_PATTERN_EXT, locale = DateUtils.DEFAULT_DATE_FORMAT_LOCALE)
+    private Date expireAt;
 
 //    @JacksonXmlProperty(localName = "status")
 //    //@JsonManagedReference(value = "statusToSubscription")
@@ -79,11 +84,11 @@ public class SubscriptionDTO extends BaseDTO {
         this.prefix = prefix;
     }
 
-    public String getExpireAt() {
+    public Date getExpireAt() {
         return expireAt;
     }
 
-    public void setExpireAt(final String expireAt) {
+    public void setExpireAt(final Date expireAt) {
         this.expireAt = expireAt;
     }
 

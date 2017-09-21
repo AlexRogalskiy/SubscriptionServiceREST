@@ -41,6 +41,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -68,6 +69,7 @@ public class SubscriptionStatusInfo implements IBaseEntity {
     @Column(name = "subscription_status_id", unique = true, nullable = false)
     private Long id;
 
+    @Size(min = 2, max = 50, message = "Field <prefix> is only allowed in the following length range=[min={%d}, max={%d}]")
     @NotBlank(message = "Field <prefix> cannot be blank")
     @Column(name = "prefix", nullable = false, unique = true)
     private String prefix;

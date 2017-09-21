@@ -15,6 +15,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.wildbeeslabs.rest.service.interfaces.IUserSubOrderService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  *
@@ -43,6 +45,12 @@ public class UserSubOrderServiceImpl<T extends UserSubOrder> implements IUserSub
     }
 
     @Override
+    public void create(final T userSubOrder) {
+        userSubOrder.setPk(null);
+        save(userSubOrder);
+    }
+
+    @Override
     public void update(final T userSubOrder) {
         save(userSubOrder);
     }
@@ -55,6 +63,12 @@ public class UserSubOrderServiceImpl<T extends UserSubOrder> implements IUserSub
     @Transactional(readOnly = true)
     public List<T> findAll() {
         return userSubOrderRepository.findAll();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<T> findAll(final Pageable pageable) {
+        return userSubOrderRepository.findAll(pageable);
     }
 
     @Override

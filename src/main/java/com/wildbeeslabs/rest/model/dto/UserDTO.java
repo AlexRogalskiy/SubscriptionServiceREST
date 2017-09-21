@@ -1,7 +1,9 @@
 package com.wildbeeslabs.rest.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wildbeeslabs.rest.model.User.UserStatusType;
 import com.wildbeeslabs.rest.model.User.UserGenderType;
+import com.wildbeeslabs.rest.utils.DateUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -10,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -54,11 +57,13 @@ public class UserDTO extends BaseDTO {
 
     @JacksonXmlProperty(localName = "birthdayAt")
     @JsonProperty("birthdayAt")
-    private String birthdayAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.DEFAULT_DATE_FORMAT_PATTERN, locale = DateUtils.DEFAULT_DATE_FORMAT_LOCALE)
+    private Date birthdayAt;
 
     @JacksonXmlProperty(localName = "registeredAt")
     @JsonProperty("registeredAt")
-    private String registeredAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.DEFAULT_DATE_FORMAT_PATTERN_EXT, locale = DateUtils.DEFAULT_DATE_FORMAT_LOCALE)
+    private Date registeredAt;
 
     @JacksonXmlProperty(localName = "enableSubscription")
     private Boolean isEnabledSubscription;
@@ -129,19 +134,19 @@ public class UserDTO extends BaseDTO {
         this.gender = gender;
     }
 
-    public String getBirthdayAt() {
+    public Date getBirthdayAt() {
         return birthdayAt;
     }
 
-    public void setBirthdayAt(final String birthdayAt) {
+    public void setBirthdayAt(final Date birthdayAt) {
         this.birthdayAt = birthdayAt;
     }
 
-    public String getRegisteredAt() {
+    public Date getRegisteredAt() {
         return registeredAt;
     }
 
-    public void setRegisteredAt(final String registeredAt) {
+    public void setRegisteredAt(final Date registeredAt) {
         this.registeredAt = registeredAt;
     }
 

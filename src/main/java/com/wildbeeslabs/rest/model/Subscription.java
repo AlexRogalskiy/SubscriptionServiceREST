@@ -84,14 +84,21 @@ public class Subscription extends BaseEntity implements Serializable {
         this.name = name;
     }
 
-    public String getExpireAt() {
-        return (Objects.nonNull(this.expireAt)) ? DateUtils.dateToStr(this.expireAt) : null;
+    public Date getExpireAt() {
+        return this.expireAt;
     }
 
-    public void setExpireAt(final String str) {
-        this.expireAt = (Objects.nonNull(str)) ? DateUtils.strToDate(str) : null;
+    public void setExpireAt(final Date expireAt) {
+        this.expireAt = expireAt;
     }
 
+//    public String getExpireAt() {
+//        return (Objects.nonNull(this.expireAt)) ? DateUtils.dateToStr(this.expireAt) : null;
+//    }
+//
+//    public void setExpireAt(final String str) {
+//        this.expireAt = (Objects.nonNull(str)) ? DateUtils.strToDate(str) : null;
+//    }
     public SubscriptionStatusInfo getStatusInfo() {
         return statusInfo;
     }

@@ -5,6 +5,7 @@ import static com.jayway.restassured.RestAssured.given;
 import com.jayway.restassured.http.ContentType;
 import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
+import com.wildbeeslabs.rest.utils.DateUtils;
 
 import java.util.Objects;
 
@@ -47,10 +48,10 @@ public class SubscriptionControllerTest extends BaseControllerTest {
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123").when().get(getServiceURI() + "/api/subscription/1").then()
                 .body("name", equalTo("subscription1"))
                 .body("createdBy", equalTo("admin"))
-                //                .body("expireAt", equalTo(1544562000000L))
-                .body("expireAt", equalTo("2018-12-12 00:00:00"))
+                .body("expireAt", equalTo(1544562000000L))
+                .body("expireAt", equalTo("2018-12-12 00:00:00+0300"))
                 .body("id", equalTo(1))
-                .body("createdAt", equalTo("2018-12-12 00:00:00"))
+                .body("createdAt", equalTo("2018-12-12 00:00:00+0300"))
                 .body("modifiedAt", nullValue())
                 .body("type", equalTo(SubscriptionStatusInfo.SubscriptionStatusType.PREMIUM.toString()))
                 .statusCode(200);
@@ -59,8 +60,8 @@ public class SubscriptionControllerTest extends BaseControllerTest {
     @Test
     public void testAddSubscription() {
         final SubscriptionDTO subscription = new SubscriptionDTO();
-        //subscription.setExpireAt(DateUtils.strToDate("2018-08-28 00:00:00"));
-        subscription.setExpireAt("2018-08-28 00:00:00");
+        subscription.setExpireAt(DateUtils.strToDate("2018-08-28 00:00:00+0300"));
+        //subscription.setExpireAt("2018-08-28 00:00:00");
         subscription.setCreatedBy("admin");
         subscription.setName("Guest Group");
         //subscription.setPrefix('standard');
@@ -83,8 +84,8 @@ public class SubscriptionControllerTest extends BaseControllerTest {
         assertTrue(Objects.equals("subscription1", subscription1.getName()));
         assertTrue(Objects.equals(SubscriptionStatusInfo.SubscriptionStatusType.PREMIUM, subscription1.getStatus()));
 
-        //subscription1.setExpireAt(DateUtils.strToDate("2019-04-18 00:00:00"));
-        subscription1.setExpireAt("2019-04-18 00:00:00");
+        subscription1.setExpireAt(DateUtils.strToDate("2019-04-18 00:00:00+0300"));
+        //subscription1.setExpireAt("2019-04-18 00:00:00");
 
         given().contentType(ContentType.JSON).accept(ContentType.JSON).auth().basic("user", "user123")
                 .body(subscription1)

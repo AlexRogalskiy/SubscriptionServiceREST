@@ -2,6 +2,8 @@ package com.wildbeeslabs.rest.service.interfaces;
 
 import java.io.Serializable;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  *
@@ -25,6 +27,8 @@ public interface IBaseService<T extends Serializable> {
     default T findById(final Long id) {
         return null;
     }
+    
+    void create(final T item);
 
     void save(final T item);
 
@@ -42,6 +46,8 @@ public interface IBaseService<T extends Serializable> {
     void delete(final List<? extends T> item);
 
     List<T> findAll();
+    
+    Page<T> findAll(final Pageable pageable);
 
     void deleteAll();
 
