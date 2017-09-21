@@ -28,20 +28,46 @@ import org.springframework.stereotype.Component;
 
 /**
  *
+ * Application Properties Configuration
+ *
  * @author Alex
+ * @version 1.0.0
+ * @since 2017-08-08
  */
 @Component
-public final class BaseConfiguration {
+public final class PropertiesConfiguration {
 
     //@Value("${server.endPointPath}")
     private static String endPointURI;
+    //@Value("${datasource.subscriptionapp.maxPoolSize:10}")
+    private static int maxPoolSize;
+    //@Value("#{'${server.basePath}'.concat(':').concat('${server.port}').concat('${server.contextPath}')}")
+    private static String restServiceURI;
 
     @Value("${server.endPointPath}")
     public void setEndPointURI(final String endPointURI) {
-        BaseConfiguration.endPointURI = endPointURI;
+        PropertiesConfiguration.endPointURI = endPointURI;
     }
 
     public String getEndPointURI() {
-        return BaseConfiguration.endPointURI;
+        return PropertiesConfiguration.endPointURI;
+    }
+
+    @Value("${datasource.subscriptionapp.maxPoolSize:10}")
+    public void setMaxPoolSize(final int maxPoolSize) {
+        PropertiesConfiguration.maxPoolSize = maxPoolSize;
+    }
+
+    public int getMaxPoolSize() {
+        return PropertiesConfiguration.maxPoolSize;
+    }
+
+    @Value("#{'${server.basePath}'.concat(':').concat('${server.port}').concat('${server.contextPath}')}")
+    public void setRestServiceURI(final String restServiceURI) {
+        PropertiesConfiguration.restServiceURI = restServiceURI;
+    }
+
+    public String getRestServiceURI() {
+        return PropertiesConfiguration.restServiceURI;
     }
 }

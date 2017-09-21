@@ -23,6 +23,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
+/**
+ *
+ * Web Security Configuration
+ *
+ * @author Alex
+ * @version 1.0.0
+ * @since 2017-08-08
+ */
 @Configuration
 @EnableAutoConfiguration
 @EnableWebSecurity
@@ -50,7 +58,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("user").password("user123").roles("USER")
                 .and()

@@ -43,6 +43,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 //import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 //import org.springframework.http.converter.xml.MarshallingHttpMessageConverter;
 //import org.springframework.oxm.xstream.XStreamMarshaller;
+/**
+ *
+ * Web MVC Configuration
+ *
+ * @author Alex
+ * @version 1.0.0
+ * @since 2017-08-08
+ */
 @Configuration
 @EnableWebMvc
 public class WebConfiguration extends WebMvcConfigurerAdapter {

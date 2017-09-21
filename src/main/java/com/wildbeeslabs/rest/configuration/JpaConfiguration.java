@@ -9,7 +9,6 @@ import javax.sql.DataSource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -39,6 +38,14 @@ import org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcesso
 //import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 //import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+/**
+ *
+ * JPA Configuration
+ *
+ * @author Alex
+ * @version 1.0.0
+ * @since 2017-08-08
+ */
 @Configuration
 @EnableJpaRepositories(basePackages = "com.wildbeeslabs.rest.repositories",
         entityManagerFactoryRef = "entityManagerFactory",
@@ -52,9 +59,8 @@ public class JpaConfiguration {
 //    private EntityManager em;
     @Autowired
     private Environment environment;
-
-    @Value("${datasource.subscriptionapp.maxPoolSize:10}")
-    private int maxPoolSize;
+    @Autowired
+    private PropertiesConfiguration propsConfiguration;
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
@@ -82,7 +88,7 @@ public class JpaConfiguration {
                 .password(dataSourceProperties.getPassword())
                 .type(HikariDataSource.class)
                 .build();
-        dataSource.setMaximumPoolSize(maxPoolSize);
+        dataSource.setMaximumPoolSize(propsConfiguration.getMaxPoolSize());
         return dataSource;
         /*final DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(environment.getRequiredProperty("datasource.subscriptionapp.driverClassName"));
@@ -165,7 +171,7 @@ public class JpaConfiguration {
 
     @Bean
     @Autowired
-    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
+    public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
         JpaTransactionManager txManager = new JpaTransactionManager();
         txManager.setEntityManagerFactory(emf);
         return txManager;

@@ -36,6 +36,15 @@ import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
+
+/**
+ *
+ * Controller Validation Configuration
+ *
+ * @author Alex
+ * @version 1.0.0
+ * @since 2017-08-08
+ */
 @Configuration
 @EnableAutoConfiguration
 public class ValidatorConfiguration {
@@ -57,7 +66,7 @@ public class ValidatorConfiguration {
     }
 
     @Bean
-    public Validator validator(MessageSource messageSource) {
+    public Validator validator(final MessageSource messageSource) {
         LocalValidatorFactoryBean factory = new LocalValidatorFactoryBean();
         factory.setValidationMessageSource(messageSource);
         return factory;

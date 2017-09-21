@@ -2,7 +2,7 @@ package com.wildbeeslabs.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.wildbeeslabs.rest.configuration.PropertiesConfiguration;
 import com.wildbeeslabs.rest.controller.SubscriptionController;
 import com.wildbeeslabs.rest.controller.UserController;
 import com.wildbeeslabs.rest.controller.UserSubscriptionController;
@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -32,11 +32,9 @@ abstract public class BaseControllerTest {
      * Default Logger instance
      */
     protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
-    /**
-     * Default REST URI bind address
-     */
-    @Value("#{'${server.basePath}'.concat(':').concat('${server.port}').concat('${server.contextPath}')}")
-    private String restServiceURI;
+
+    @Autowired
+    protected PropertiesConfiguration propsConfiguration;
 
     protected String getObjectAsString(final Object obj) {
         ObjectMapper mapper = new ObjectMapper();
@@ -54,6 +52,6 @@ abstract public class BaseControllerTest {
 //        RestAssured.authentication = preemptive().basic("user", "123");
 //    }
     protected String getServiceURI() {
-        return restServiceURI;
+        return propsConfiguration.getRestServiceURI();
     }
 }
