@@ -1,6 +1,6 @@
 INSERT INTO subscription_status_info (prefix, status) VALUES ('premium', 'PREMIUM'), ('advanced', 'ADVANCED'), ('standard', 'STANDARD');
 
-INSERT INTO users (created_at, created_by, login, name, age, phone, rating, gender, registered_at, status, uuid) VALUES ('2017-04-18', 'user1@gmail.com', 'user1@gmail.com', 'user1', 25, '+79211234567', 1.00, 'MALE', '2017-04-18', 'UNVERIFIED', 'user1'), ('2017-04-30', 'user2@gmail.com', 'user2@gmail.com', 'user2', 26, '+79211234567', 1.00, 'MALE', '2017-04-30', 'ACTIVE', 'user2'), ('2017-01-30', 'user3@gmail.com', 'user3@gmail.com', 'user3', 27, '+79211234567', 1.00, 'MALE', '2017-01-30', 'BLOCKED', 'user3');
+INSERT INTO users (created_at, created_by, login, name, age, phone, rating, gender, registered_at, status, uuid) VALUES ('2017-04-18', 'user1@gmail.com', 'user1@gmail.com', 'user1', 25, '+79211234567', 1.00, 'MALE', '2017-04-18', 'UNVERIFIED', 'fb063f4f-9ad0-43b3-8d65-dc1e4e46c04a'), ('2017-04-30', 'user2@gmail.com', 'user2@gmail.com', 'user2', 26, '+79211234567', 1.00, 'MALE', '2017-04-30', 'ACTIVE', 'fb063f4f-9ad0-43b3-8d65-dc1e4e46c04b'), ('2017-01-30', 'user3@gmail.com', 'user3@gmail.com', 'user3', 27, '+79211234567', 1.00, 'MALE', '2017-01-30', 'BLOCKED', 'fb063f4f-9ad0-43b3-8d65-dc1e4e46c04c');
 
 INSERT INTO subscriptions (created_at, created_by, name, expired_at, subscription_status_id) VALUES ('2018-12-12', 'admin', 'subscription1', '2018-12-12', 1), ('2018-11-12', 'admin', 'subscription2', '2018-11-12', 2), ('2018-10-12', 'admin', 'subscription3', '2018-10-12', 3);
 

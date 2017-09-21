@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -36,6 +37,10 @@ public class UserDTO extends BaseDTO {
 
     @JacksonXmlProperty(localName = "id")
     private Long id;
+
+    @JacksonXmlProperty(localName = "uuid")
+    //@JacksonInject
+    private UUID uuId;
 
     @JacksonXmlProperty(localName = "login")
     private String login;
@@ -84,6 +89,14 @@ public class UserDTO extends BaseDTO {
 
     public void setId(final Long id) {
         this.id = id;
+    }
+
+    public UUID getUuId() {
+        return uuId;
+    }
+
+    public void setUuId(final UUID uuId) {
+        this.uuId = uuId;
     }
 
     public String getLogin() {

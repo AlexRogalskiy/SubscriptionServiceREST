@@ -26,12 +26,14 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import org.hibernate.validator.constraints.Email;
@@ -85,9 +87,13 @@ public class User extends BaseEntity implements Serializable {
     private UserGenderType gender;
 
     @UID
-    @Column(name = "uuid", unique = true, nullable = false)
+    @Column(name = "uuid", unique = true, nullable = false, updatable = false)
+    //@GeneratedValue(generator = "UUID")
+    //@GeneratedValue(generator = "uuid2")
+    //@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    //@GenericGenerator(name = "uuid", strategy = "uuid2")
     @Type(type = "uuid-char")
-    private final UUID uuId;
+    private UUID uuId;
 
     public static enum UserGenderType {
         MALE, FEMALE
@@ -125,9 +131,15 @@ public class User extends BaseEntity implements Serializable {
     @Column(name = "subscriptions", nullable = true)
     private final Set<UserSubOrder> subOrders = new HashSet<>();
 
-    public User() {
-        this.uuId = UUID.randomUUID();
+    @PrePersist
+    public void initializeUUID() {
+        if (Objects.isNull(this.uuId)) {
+            this.uuId = UUID.randomUUID();
+        }
     }
+//    public User() {
+//        this.uuId = UUID.randomUUID();
+//    }
 
     @Override
     public Long getId() {
@@ -263,6 +275,9 @@ public class User extends BaseEntity implements Serializable {
         if (!Objects.equals(this.login, other.login)) {
             return false;
         }
+        if (!Objects.equals(this.uuId, other.uuId)) {
+            return false;
+        }
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
@@ -297,6 +312,7 @@ public class User extends BaseEntity implements Serializable {
     public int hashCode() {
         int hash = super.hashCode();
         hash = 29 * hash + Objects.hashCode(this.id);
+        hash = 29 * hash + Objects.hashCode(this.uuId);
         hash = 29 * hash + Objects.hashCode(this.login);
         hash = 29 * hash + Objects.hashCode(this.name);
         hash = 29 * hash + Objects.hashCode(this.age);
@@ -312,6 +328,6 @@ public class User extends BaseEntity implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("User {id: %d, login: %s, name: %s, age: %d, phone: %s, gender: %s, rating: %f, birthdayAt: %s, isEnabledSubscription: %s, status: %s, registeredAt: %s, inherited: %s}", this.id, this.login, this.name, this.age, this.phone, this.gender, this.rating, this.birthdayAt, this.isEnabledSubscription, this.status, this.registeredAt, super.toString());
+        return String.format("User {id: %d, uuid: %s, login: %s, name: %s, age: %d, phone: %s, gender: %s, rating: %f, birthdayAt: %s, isEnabledSubscription: %s, status: %s, registeredAt: %s, inherited: %s}", this.id, this.uuId, this.login, this.name, this.age, this.phone, this.gender, this.rating, this.birthdayAt, this.isEnabledSubscription, this.status, this.registeredAt, super.toString());
     }
 }
