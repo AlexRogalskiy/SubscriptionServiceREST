@@ -114,6 +114,9 @@ spring:
           mode: LEGACYHTML5
           encoding: UTF-8
           contentType: text/html
+  jackson:
+    serialization:
+        write_dates_as_timestamps: false
   main:
       banner-mode: "console"
   #mail:
@@ -149,3 +152,11 @@ datasource:
         characterEncoding: UTF-8
         charSet: UTF-8
         useUnicode: true
+---
+logging:
+    level:
+        org:
+            springframework:
+                web: INFO
+            hibernate: INFO
+            
