@@ -95,9 +95,6 @@ public class UserSubOrderServiceImpl<T extends UserSubOrder> implements IUserSub
     @Override
     public void merge(final T itemTo, final T itemFrom) {
         itemFrom.setPk(itemTo.getPk());
-//        itemTo.setExpiredAt(itemFrom.getExpiredAt());
-//        itemTo.setSubscribedAt(itemFrom.getSubscribedAt());
-//        itemTo.setModifiedBy(itemFrom.getModifiedBy());
         update(itemFrom);
     }
 
