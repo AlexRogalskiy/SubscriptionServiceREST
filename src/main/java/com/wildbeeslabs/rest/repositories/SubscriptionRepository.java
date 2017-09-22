@@ -24,7 +24,7 @@ public interface SubscriptionRepository<T extends Subscription> extends BaseRepo
     /**
      * Default query to find subscriptions by user id
      */
-    public final static String FIND_SUB_BY_USER_ID_QUERY = "SELECT o.pk.subscription FROM UserSubOrder o WHERE o.pk.user.id = :userId";
+    public final static String FIND_SUB_BY_USER_ID_QUERY = "SELECT o.id.subscription FROM UserSubOrder o WHERE o.id.user.id = :userId";
 
     /**
      * Default query to find subscriptions by status

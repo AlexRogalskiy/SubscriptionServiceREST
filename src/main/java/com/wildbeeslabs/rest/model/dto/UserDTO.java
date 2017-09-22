@@ -33,7 +33,7 @@ import javax.persistence.InheritanceType;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "subOrders"})
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JacksonXmlRootElement(localName = "user")
-public class UserDTO extends BaseDTO {
+public class UserDTO extends BaseDTO<Long> {
 
     @JacksonXmlProperty(localName = "id")
     private Long id;
@@ -206,58 +206,30 @@ public class UserDTO extends BaseDTO {
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(Object obj) {
-        if (!super.equals(obj)) {
+        if (this == obj) {
+            return true;
+        }
+        if (null == obj || obj.getClass() != this.getClass()) {
             return false;
         }
         final UserDTO other = (UserDTO) obj;
-        if (!Objects.equals(this.login, other.login)) {
-            return false;
-        }
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        if (!Objects.equals(this.age, other.age)) {
-            return false;
-        }
-        if (!Objects.equals(this.phone, other.phone)) {
-            return false;
-        }
-        if (!Objects.equals(this.rating, other.rating)) {
-            return false;
-        }
-        if (this.gender != other.gender) {
-            return false;
-        }
-        if (!Objects.equals(this.birthdayAt, other.birthdayAt)) {
-            return false;
-        }
-        if (!Objects.equals(this.registeredAt, other.registeredAt)) {
-            return false;
-        }
-        if (!Objects.equals(this.isEnabledSubscription, other.isEnabledSubscription)) {
-            return false;
-        }
-        return this.status == other.status;
+        return Objects.equals(this.login, other.login)
+                && Objects.equals(this.uuId, other.uuId)
+                && Objects.equals(this.name, other.name)
+                && Objects.equals(this.id, other.id)
+                && Objects.equals(this.age, other.age)
+                && Objects.equals(this.phone, other.phone)
+                && Objects.equals(this.gender, other.gender)
+                && Objects.equals(this.rating, other.rating)
+                && Objects.equals(this.birthdayAt, other.birthdayAt)
+                && Objects.equals(this.registeredAt, other.registeredAt)
+                && Objects.equals(this.isEnabledSubscription, other.isEnabledSubscription)
+                && Objects.equals(this.status, other.status);
     }
 
     @Override
     public int hashCode() {
-        int hash = super.hashCode();
-        hash = 29 * hash + Objects.hashCode(this.id);
-        hash = 29 * hash + Objects.hashCode(this.login);
-        hash = 29 * hash + Objects.hashCode(this.name);
-        hash = 29 * hash + Objects.hashCode(this.age);
-        hash = 29 * hash + Objects.hashCode(this.phone);
-        hash = 29 * hash + Objects.hashCode(this.rating);
-        hash = 29 * hash + Objects.hashCode(this.gender);
-        hash = 29 * hash + Objects.hashCode(this.registeredAt);
-        hash = 29 * hash + Objects.hashCode(this.birthdayAt);
-        hash = 29 * hash + Objects.hashCode(this.isEnabledSubscription);
-        hash = 29 * hash + Objects.hashCode(this.status);
-        return hash;
+        return Objects.hash(this.id, this.uuId, this.login, this.name, this.age, this.phone, this.gender, this.rating, this.birthdayAt, this.registeredAt, this.isEnabledSubscription, this.status);
     }
 
     @Override

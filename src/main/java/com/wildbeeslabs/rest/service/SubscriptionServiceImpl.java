@@ -3,17 +3,13 @@ package com.wildbeeslabs.rest.service;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.repositories.SubscriptionRepository;
+import com.wildbeeslabs.rest.service.interfaces.ISubscriptionService;
 
 import java.util.List;
 import java.util.Objects;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.wildbeeslabs.rest.service.interfaces.ISubscriptionService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 /**
  *
@@ -26,49 +22,7 @@ import org.springframework.data.domain.Pageable;
  */
 @Service("subscriptionService")
 @Transactional
-public class SubscriptionServiceImpl<T extends Subscription> implements ISubscriptionService<T> {
-
-    @Autowired
-    private SubscriptionRepository<T> subscriptionRepository;
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<T> findAll() {
-        return subscriptionRepository.findAll();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Page<T> findAll(final Pageable pageable) {
-        return subscriptionRepository.findAll(pageable);
-    }
-
-    @Override
-    public T findById(final Long id) {
-        return subscriptionRepository.findOne(id);
-    }
-    
-    @Override
-    public void save(final T subscription) {
-        subscriptionRepository.save(subscription);
-    }
-
-    @Override
-    public void create(final T subscription) {
-        subscription.setId(null);
-        save(subscription);
-    }
-
-    @Override
-    public void update(final T subscription) {
-        save(subscription);
-    }
-
-    @Override
-    @PreAuthorize("hasRole('ADMIN') AND hasRole('DBA')")
-    public void deleteById(final Long id) {
-        subscriptionRepository.delete(id);
-    }
+public class SubscriptionServiceImpl<T extends Subscription> extends BaseServiceImpl<T, SubscriptionRepository<T>> implements ISubscriptionService<T> {
 
     @Override
     public boolean isExist(final T subscription) {
@@ -76,46 +30,22 @@ public class SubscriptionServiceImpl<T extends Subscription> implements ISubscri
     }
 
     @Override
-    @PreAuthorize("hasRole('ADMIN') AND hasRole('DBA')")
-    public void deleteAll() {
-        subscriptionRepository.deleteAll();
-    }
-
-    @Override
     public T findByName(final String name) {
-        return subscriptionRepository.findByNameIgnoreCase(name);
+        return getRepository().findByNameIgnoreCase(name);
     }
 
     @Override
     public List<T> findByPatternName(final String pattern) {
-        return subscriptionRepository.findByNameLike(pattern);
+        return getRepository().findByNameLike(pattern);
     }
 
     @Override
     public List<T> findByStatus(final SubscriptionStatusInfo.SubscriptionStatusType status) {
-        return subscriptionRepository.findByStatus(status);
+        return getRepository().findByStatus(status);
     }
 
     @Override
     public List<T> findByUserId(Long userId) {
-        return subscriptionRepository.findByUserId(userId);
-    }
-
-    @Override
-    public void merge(final T itemTo, final T itemFrom) {
-        itemFrom.setId(itemTo.getId());
-        update(itemFrom);
-    }
-
-    @Override
-    @PreAuthorize("hasRole('ADMIN') AND hasRole('DBA')")
-    public void delete(final T item) {
-        subscriptionRepository.delete(item);
-    }
-
-    @Override
-    @PreAuthorize("hasRole('ADMIN') AND hasRole('DBA')")
-    public void delete(final List<? extends T> items) {
-        subscriptionRepository.delete(items);
+        return getRepository().findByUserId(userId);
     }
 }

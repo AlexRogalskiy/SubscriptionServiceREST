@@ -32,44 +32,46 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity(name = "UserSubOrder")
 @Table(name = "user_sub_orders")
 @AssociationOverrides({
-    @AssociationOverride(name = "pk.user",
+    @AssociationOverride(name = "id.user",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false))
     ,
-		@AssociationOverride(name = "pk.subscription",
+		@AssociationOverride(name = "id.subscription",
             joinColumns = @JoinColumn(name = "subscription_id", referencedColumnName = "subscription_id", nullable = false))})
 @Inheritance(strategy = InheritanceType.JOINED)
 @SuppressWarnings({"ConsistentAccessType", "IdDefinedInHierarchy"})
-public class UserSubOrder extends BaseEntity implements Serializable {
+public class UserSubOrder extends BaseEntity<UserSubOrderId> implements Serializable {
 
     @Id
     @EmbeddedId
 //    @JsonIgnore
-    private UserSubOrderId pk = new UserSubOrderId();
+    private UserSubOrderId id = new UserSubOrderId();
 
-    public UserSubOrderId getPk() {
-        return pk;
+    @Override
+    public UserSubOrderId getId() {
+        return id;
     }
 
-    public void setPk(final UserSubOrderId pk) {
-        this.pk = pk;
+    @Override
+    public void setId(final UserSubOrderId id) {
+        this.id = id;
     }
 
     @Transient
     public User getUser() {
-        return getPk().getUser();
+        return getId().getUser();
     }
 
     public void setUser(final User user) {
-        getPk().setUser(user);
+        getId().setUser(user);
     }
 
     @Transient
     public Subscription getSubscription() {
-        return getPk().getSubscription();
+        return getId().getSubscription();
     }
 
     public void setSubscription(final Subscription subscription) {
-        getPk().setSubscription(subscription);
+        getId().setSubscription(subscription);
     }
 
     @DateTimeFormat(pattern = DateUtils.DEFAULT_DATE_FORMAT_PATTERN)
@@ -96,6 +98,7 @@ public class UserSubOrder extends BaseEntity implements Serializable {
 //    public void setSubscribedAt(final String str) {
 //        this.subscribedAt = (Objects.nonNull(str)) ? DateUtils.strToDate(str) : null;
 //    }
+
     public Date getExpiredAt() {
         return this.expiredAt;
     }
@@ -111,34 +114,28 @@ public class UserSubOrder extends BaseEntity implements Serializable {
 //    public void setExpiredAt(final String str) {
 //        this.expiredAt = (Objects.nonNull(str)) ? DateUtils.strToDate(str) : null;
 //    }
-
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(Object obj) {
-        if (!super.equals(obj)) {
+        if (this == obj) {
+            return true;
+        }
+        if (null == obj || obj.getClass() != this.getClass()) {
             return false;
         }
         final UserSubOrder other = (UserSubOrder) obj;
-        if (!Objects.equals(this.pk, other.pk)) {
-            return false;
-        }
-        if (!Objects.equals(this.subscribedAt, other.subscribedAt)) {
-            return false;
-        }
-        return Objects.equals(this.expiredAt, other.expiredAt);
+        return Objects.equals(this.id, other.id)
+                && Objects.equals(this.subscribedAt, other.subscribedAt)
+                && Objects.equals(this.expiredAt, other.expiredAt);
     }
 
     @Override
     public int hashCode() {
-        int hash = super.hashCode();
-        hash = 23 * hash + Objects.hashCode(this.pk);
-        hash = 23 * hash + Objects.hashCode(this.subscribedAt);
-        hash = 23 * hash + Objects.hashCode(this.expiredAt);
-        return hash;
+        return Objects.hash(this.id, this.subscribedAt, this.expiredAt);
     }
 
     @Override
     public String toString() {
-        return String.format("UserSubOrder {primary key: %s, subscribedAt: %s, expiredAt: %s, inherited: %s}", this.pk, this.subscribedAt, this.expiredAt, super.toString());
+        return String.format("UserSubOrder {primary key: %s, subscribedAt: %s, expiredAt: %s, inherited: %s}", this.id, this.subscribedAt, this.expiredAt, super.toString());
     }
 }

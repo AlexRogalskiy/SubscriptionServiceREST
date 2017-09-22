@@ -20,10 +20,10 @@ import javax.persistence.ManyToOne;
 @SuppressWarnings("ValidAttributes")
 public class UserSubOrderId implements Serializable {
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     private Subscription subscription;
 
     public User getUser() {
@@ -51,18 +51,13 @@ public class UserSubOrderId implements Serializable {
             return false;
         }
         final UserSubOrderId other = (UserSubOrderId) obj;
-        if (!Objects.equals(this.user, other.user)) {
-            return false;
-        }
-        return Objects.equals(this.subscription, other.subscription);
+        return Objects.equals(this.user, other.user)
+                && Objects.equals(this.subscription, other.subscription);
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 89 * hash + Objects.hashCode(this.user);
-        hash = 89 * hash + Objects.hashCode(this.subscription);
-        return hash;
+        return Objects.hash(this.user, this.subscription);
     }
 
     @Override

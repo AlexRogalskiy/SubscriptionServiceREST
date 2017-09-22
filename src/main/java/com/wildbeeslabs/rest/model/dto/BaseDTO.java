@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import java.io.Serializable;
 
 import java.util.Date;
 import java.util.Objects;
@@ -18,10 +19,11 @@ import java.util.Objects;
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
+ * @param <T>
  */
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class BaseDTO implements IBaseDTO {
+public abstract class BaseDTO<T extends Serializable> implements IBaseDTO<T> {
 
     @JacksonXmlProperty(localName = "createdAt")
     @JsonProperty("createdAt")
@@ -95,26 +97,15 @@ public class BaseDTO implements IBaseDTO {
             return false;
         }
         final BaseDTO other = (BaseDTO) obj;
-        if (!Objects.equals(this.createdBy, other.createdBy)) {
-            return false;
-        }
-        if (!Objects.equals(this.modifiedBy, other.modifiedBy)) {
-            return false;
-        }
-        if (!Objects.equals(this.createdAt, other.createdAt)) {
-            return false;
-        }
-        return Objects.equals(this.modifiedAt, other.modifiedAt);
+        return Objects.equals(this.createdBy, other.createdBy)
+                && Objects.equals(this.modifiedBy, other.modifiedBy)
+                && Objects.equals(this.createdAt, other.createdAt)
+                && Objects.equals(this.modifiedAt, other.modifiedAt);
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 53 * hash + Objects.hashCode(this.createdAt);
-        hash = 53 * hash + Objects.hashCode(this.modifiedAt);
-        hash = 53 * hash + Objects.hashCode(this.createdBy);
-        hash = 53 * hash + Objects.hashCode(this.modifiedBy);
-        return hash;
+        return Objects.hash(this.createdAt, this.modifiedAt, this.createdBy, this.modifiedBy);
     }
 
     @Override

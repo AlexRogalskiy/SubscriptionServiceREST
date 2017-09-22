@@ -2,11 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.wildbeeslabs.api.rest</groupId>
-    <artifactId>newsletter-subscription</artifactId>
+    <artifactId>subscription</artifactId>
     <version>1.0.0-RELEASE</version>
     <packaging>war</packaging>
     
-    <name>rest-api-newsletter-subscription</name>
+    <name>rest-api-subscription</name>
     <url>http://maven.apache.org</url>
     <description>REST API DB</description>
     <inceptionYear>2017</inceptionYear>
@@ -224,7 +224,7 @@
             <artifactId>modelmapper</artifactId>
             <version>${modelmapper.version}</version>
         </dependency>
-        
+        <!-- Test -->
         <dependency>
             <groupId>com.jayway.restassured</groupId>
             <artifactId>rest-assured</artifactId>

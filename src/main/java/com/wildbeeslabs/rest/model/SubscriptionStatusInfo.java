@@ -61,7 +61,7 @@ import org.hibernate.validator.constraints.NotBlank;
 })
 @Inheritance(strategy = InheritanceType.JOINED)
 @SuppressWarnings("ValidAttributes")
-public class SubscriptionStatusInfo implements IBaseEntity {
+public class SubscriptionStatusInfo implements IBaseEntity<Long> {
 
     @Id
     @Basic(optional = false)
@@ -84,6 +84,16 @@ public class SubscriptionStatusInfo implements IBaseEntity {
 //    //@JsonIgnore
 //    //@JacksonXmlProperty(localName = "subscriptions")
     private final Set<Subscription> subscriptions = new HashSet<>();
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public static enum SubscriptionStatusType {
         PREMIUM, STANDARD, ADVANCED
@@ -131,22 +141,14 @@ public class SubscriptionStatusInfo implements IBaseEntity {
             return false;
         }
         final SubscriptionStatusInfo other = (SubscriptionStatusInfo) obj;
-        if (!Objects.equals(this.prefix, other.prefix)) {
-            return false;
-        }
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        return this.status == other.status;
+        return Objects.equals(this.prefix, other.prefix)
+                && Objects.equals(this.id, other.id)
+                && Objects.equals(this.status, other.status);
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 17 * hash + Objects.hashCode(this.id);
-        hash = 17 * hash + Objects.hashCode(this.prefix);
-        hash = 17 * hash + Objects.hashCode(this.status);
-        return hash;
+        return Objects.hash(this.id, this.prefix, this.status);
     }
 
     @Override

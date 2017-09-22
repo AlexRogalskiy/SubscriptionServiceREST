@@ -25,50 +25,50 @@ public interface UserRepository<T extends User> extends BaseRepository<T> {
     /**
      * Default query to find users by subscription id
      */
-    public final static String FIND_USER_BY_SUB_ID_QUERY = "SELECT o.pk.user FROM UserSubOrder o WHERE o.pk.subscription.id = :subscriptionId";
+    public final static String FIND_USER_BY_SUB_ID_QUERY = "SELECT o.id.user FROM UserSubOrder o WHERE o.id.subscription.id = :subscriptionId";
 
     /**
      * Default query to find subscribed users by subscription status (optional)
      * and date after (excluding)
      */
-    public final static String FIND_USER_BY_OPT_SUB_STATUS_AND_SUB_DATE_AFTER_QUERY = "SELECT DISTINCT o.pk.user FROM UserSubOrder o WHERE (:subStatus IS NULL OR o.pk.subscription.statusInfo.status = :subStatus) AND o.subscribedAt > :subDate";
+    public final static String FIND_USER_BY_OPT_SUB_STATUS_AND_SUB_DATE_AFTER_QUERY = "SELECT DISTINCT o.id.user FROM UserSubOrder o WHERE (:subStatus IS NULL OR o.id.subscription.statusInfo.status = :subStatus) AND o.subscribedAt > :subDate";
 
     /**
      * Default query to find subscribed users by subscription status (optional)
      * and date before (including)
      */
-    public final static String FIND_USER_BY_OPT_SUB_STATUS_AND_SUB_DATE_BEFORE_QUERY = "SELECT DISTINCT o.pk.user FROM UserSubOrder o WHERE (:subStatus IS NULL OR o.pk.subscription.statusInfo.status = :subStatus) AND o.subscribedAt <= :subDate";
+    public final static String FIND_USER_BY_OPT_SUB_STATUS_AND_SUB_DATE_BEFORE_QUERY = "SELECT DISTINCT o.id.user FROM UserSubOrder o WHERE (:subStatus IS NULL OR o.id.subscription.statusInfo.status = :subStatus) AND o.subscribedAt <= :subDate";
 
     /**
      * Default query to find subscribed users by subscription status (optional)
      * and date
      */
-    public final static String FIND_USER_BY_OPT_SUB_STATUS_AND_SUB_DATE_QUERY = "SELECT DISTINCT o.pk.user FROM UserSubOrder o WHERE (:subStatus IS NULL OR o.pk.subscription.statusInfo.status = :subStatus) AND ((:order = 'BEFORE' AND o.subscribedAt <= :subDate) OR o.subscribedAt >= :subDate)";
+    public final static String FIND_USER_BY_OPT_SUB_STATUS_AND_SUB_DATE_QUERY = "SELECT DISTINCT o.id.user FROM UserSubOrder o WHERE (:subStatus IS NULL OR o.id.subscription.statusInfo.status = :subStatus) AND ((:order = 'BEFORE' AND o.subscribedAt <= :subDate) OR o.subscribedAt >= :subDate)";
 
     /**
      * Default query to find subscribed users by date after (excluding)
      */
-    public final static String FIND_USER_BY_SUB_DATE_AFTER_QUERY = "SELECT DISTINCT o.pk.user FROM UserSubOrder o WHERE o.subscribedAt > :subDate";
+    public final static String FIND_USER_BY_SUB_DATE_AFTER_QUERY = "SELECT DISTINCT o.id.user FROM UserSubOrder o WHERE o.subscribedAt > :subDate";
 
     /**
      * Default query to find subscribed users by date before (including)
      */
-    public final static String FIND_USER_BY_SUB_DATE_BEFORE_QUERY = "SELECT DISTINCT o.pk.user FROM UserSubOrder o WHERE o.subscribedAt <= :subDate";
+    public final static String FIND_USER_BY_SUB_DATE_BEFORE_QUERY = "SELECT DISTINCT o.id.user FROM UserSubOrder o WHERE o.subscribedAt <= :subDate";
 
     /**
      * Default query to find subscribed users by date
      */
-    public final static String FIND_USER_BY_SUB_DATE_QUERY = "SELECT DISTINCT o.pk.user FROM UserSubOrder o WHERE ((:order = 'BEFORE' AND o.subscribedAt <= :subDate) OR o.subscribedAt >= :subDate)";
+    public final static String FIND_USER_BY_SUB_DATE_QUERY = "SELECT DISTINCT o.id.user FROM UserSubOrder o WHERE ((:order = 'BEFORE' AND o.subscribedAt <= :subDate) OR o.subscribedAt >= :subDate)";
 
     /**
      * Default query to find subscribed users by date between (including)
      */
-    public final static String FIND_USER_BY_SUB_DATE_BETWEEN_QUERY = "SELECT DISTINCT o.pk.user FROM UserSubOrder o WHERE o.subscribedAt BETWEEN :startSubDate AND :endSubDate";
+    public final static String FIND_USER_BY_SUB_DATE_BETWEEN_QUERY = "SELECT DISTINCT o.id.user FROM UserSubOrder o WHERE o.subscribedAt BETWEEN :startSubDate AND :endSubDate";
 
     /**
      * Default query to find subscribed users by subscription status
      */
-    public final static String FIND_USER_BY_SUB_STATUS_QUERY = "SELECT DISTINCT o.pk.user FROM UserSubOrder o WHERE o.pk.subscription.statusInfo.status = :subStatus";
+    public final static String FIND_USER_BY_SUB_STATUS_QUERY = "SELECT DISTINCT o.id.user FROM UserSubOrder o WHERE o.id.subscription.statusInfo.status = :subStatus";
 
     /**
      * Get user entity by login (case insensitive)

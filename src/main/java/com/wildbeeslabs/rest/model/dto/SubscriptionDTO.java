@@ -31,7 +31,7 @@ import javax.persistence.InheritanceType;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "userOrders"})
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JacksonXmlRootElement(localName = "subscription")
-public class SubscriptionDTO extends BaseDTO {
+public class SubscriptionDTO extends BaseDTO<Long> {
 
     @JacksonXmlProperty(localName = "id")
     private Long id;
@@ -127,30 +127,22 @@ public class SubscriptionDTO extends BaseDTO {
     @Override
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     public boolean equals(Object obj) {
-        if (!super.equals(obj)) {
+        if (this == obj) {
+            return true;
+        }
+        if (null == obj || obj.getClass() != this.getClass()) {
             return false;
         }
         final SubscriptionDTO other = (SubscriptionDTO) obj;
-        if (this.status != other.status) {
-            return false;
-        }
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        return Objects.equals(this.expireAt, other.expireAt);
+        return Objects.equals(this.status, other.status)
+                && Objects.equals(this.name, other.name)
+                && Objects.equals(this.id, other.id)
+                && Objects.equals(this.expireAt, other.expireAt);
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 79 * hash + Objects.hashCode(this.id);
-        hash = 79 * hash + Objects.hashCode(this.name);
-        hash = 79 * hash + Objects.hashCode(this.expireAt);
-        hash = 79 * hash + Objects.hashCode(this.status);
-        return hash;
+        return Objects.hash(this.id, this.name, this.expireAt, this.status);
     }
 
     @Override

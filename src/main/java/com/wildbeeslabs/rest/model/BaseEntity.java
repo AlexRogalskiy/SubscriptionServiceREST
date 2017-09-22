@@ -1,6 +1,7 @@
 package com.wildbeeslabs.rest.model;
 
 import com.wildbeeslabs.rest.utils.DateUtils;
+import java.io.Serializable;
 
 import java.util.Date;
 import java.util.Objects;
@@ -25,9 +26,10 @@ import org.springframework.format.annotation.DateTimeFormat;
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
+ * @param <T>
  */
 @MappedSuperclass
-public class BaseEntity implements IBaseEntity {
+public abstract class BaseEntity<T extends Serializable> implements IBaseEntity<T> {
 
     @CreationTimestamp
     //@CreatedDate
@@ -116,26 +118,15 @@ public class BaseEntity implements IBaseEntity {
             return false;
         }
         final BaseEntity other = (BaseEntity) obj;
-        if (!Objects.equals(this.createdBy, other.createdBy)) {
-            return false;
-        }
-        if (!Objects.equals(this.modifiedBy, other.modifiedBy)) {
-            return false;
-        }
-        if (!Objects.equals(this.createdAt, other.createdAt)) {
-            return false;
-        }
-        return Objects.equals(this.modifiedAt, other.modifiedAt);
+        return Objects.equals(this.createdBy, other.createdBy)
+                && Objects.equals(this.modifiedBy, other.modifiedBy)
+                && Objects.equals(this.createdAt, other.createdAt)
+                && Objects.equals(this.modifiedAt, other.modifiedAt);
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 53 * hash + Objects.hashCode(this.createdAt);
-        hash = 53 * hash + Objects.hashCode(this.modifiedAt);
-        hash = 53 * hash + Objects.hashCode(this.createdBy);
-        hash = 53 * hash + Objects.hashCode(this.modifiedBy);
-        return hash;
+        return Objects.hash(this.createdAt, this.modifiedAt, this.createdBy, this.modifiedBy);
     }
 
     @Override

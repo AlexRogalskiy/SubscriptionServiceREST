@@ -95,22 +95,20 @@ public class UserSubOrderDTO extends BaseDTO {
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(Object obj) {
-        if (!super.equals(obj)) {
+        if (this == obj) {
+            return true;
+        }
+        if (null == obj || obj.getClass() != this.getClass()) {
             return false;
         }
         final UserSubOrderDTO other = (UserSubOrderDTO) obj;
-        if (!Objects.equals(this.subscribedAt, other.subscribedAt)) {
-            return false;
-        }
-        return Objects.equals(this.expiredAt, other.expiredAt);
+        return Objects.equals(this.subscribedAt, other.subscribedAt)
+                && Objects.equals(this.expiredAt, other.expiredAt);
     }
 
     @Override
     public int hashCode() {
-        int hash = super.hashCode();
-        hash = 23 * hash + Objects.hashCode(this.subscribedAt);
-        hash = 23 * hash + Objects.hashCode(this.expiredAt);
-        return hash;
+        return Objects.hash(this.subscribedAt, this.expiredAt);
     }
 
     @Override

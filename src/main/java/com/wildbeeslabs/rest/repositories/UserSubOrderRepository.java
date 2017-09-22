@@ -27,32 +27,32 @@ public interface UserSubOrderRepository<T extends UserSubOrder> extends BaseRepo
     /**
      * Default query to find order by id
      */
-    public final static String FIND_ORDER_BY_ID_QUERY = "SELECT o FROM UserSubOrder o WHERE o.pk = :userSubOrderId";
+    public final static String FIND_ORDER_BY_ID_QUERY = "SELECT o FROM UserSubOrder o WHERE o.id = :userSubOrderId";
 
     /**
      * Default query to delete order by id
      */
-    public final static String DELETE_ORDER_BY_ID_QUERY = "DELETE FROM UserSubOrder o WHERE o.pk = :userSubOrderId";
+    public final static String DELETE_ORDER_BY_ID_QUERY = "DELETE FROM UserSubOrder o WHERE o.id = :userSubOrderId";
 
     /**
      * Default query to find orders by user id
      */
-    public final static String FIND_ORDER_BY_USER_ID_QUERY = "SELECT o FROM UserSubOrder o WHERE o.pk.user.id = :userId";
+    public final static String FIND_ORDER_BY_USER_ID_QUERY = "SELECT o FROM UserSubOrder o WHERE o.id.user.id = :userId";
 
     /**
      * Default query to find orders by user entity
      */
-    public final static String FIND_ORDER_BY_USER_QUERY = "SELECT o FROM UserSubOrder o WHERE o.pk.user = :user";
+    public final static String FIND_ORDER_BY_USER_QUERY = "SELECT o FROM UserSubOrder o WHERE o.id.user = :user";
 
     /**
      * Default query to find orders by subscription id
      */
-    public final static String FIND_ORDER_BY_SUB_ID_QUERY = "SELECT o FROM UserSubOrder o WHERE o.pk.subscription.id = :subscriptionId";
+    public final static String FIND_ORDER_BY_SUB_ID_QUERY = "SELECT o FROM UserSubOrder o WHERE o.id.subscription.id = :subscriptionId";
 
     /**
      * Default query to find orders by subscription entity
      */
-    public final static String FIND_ORDER_BY_SUB_QUERY = "SELECT o FROM UserSubOrder o WHERE o.pk.subscription = :subscription";
+    public final static String FIND_ORDER_BY_SUB_QUERY = "SELECT o FROM UserSubOrder o WHERE o.id.subscription = :subscription";
 
     /**
      * Get list of subscription orders by user id

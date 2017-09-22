@@ -41,7 +41,7 @@ import org.springframework.format.annotation.DateTimeFormat;
     @UniqueConstraint(columnNames = "name", name = "name_unique_constraint")
 })
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Subscription extends BaseEntity implements Serializable {
+public class Subscription extends BaseEntity<Long> implements Serializable {
 
     @Id
     @Basic(optional = false)
@@ -63,7 +63,7 @@ public class Subscription extends BaseEntity implements Serializable {
     @JoinColumn(name = "subscription_status_id", referencedColumnName = "subscription_status_id")
     private SubscriptionStatusInfo statusInfo;
 
-    @OneToMany(mappedBy = "pk.subscription", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "id.subscription", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @Column(name = "users", nullable = true)
     private final Set<UserSubOrder> userOrders = new HashSet<>();
 
@@ -72,6 +72,7 @@ public class Subscription extends BaseEntity implements Serializable {
         return id;
     }
 
+    @Override
     public void setId(final Long id) {
         this.id = id;
     }
@@ -127,30 +128,22 @@ public class Subscription extends BaseEntity implements Serializable {
     @Override
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     public boolean equals(Object obj) {
-        if (!super.equals(obj)) {
+        if (this == obj) {
+            return true;
+        }
+        if (null == obj || obj.getClass() != this.getClass()) {
             return false;
         }
         final Subscription other = (Subscription) obj;
-        if (this.statusInfo != other.statusInfo) {
-            return false;
-        }
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        return Objects.equals(this.expireAt, other.expireAt);
+        return Objects.equals(this.statusInfo, other.statusInfo)
+                && Objects.equals(this.name, other.name)
+                && Objects.equals(this.id, other.id)
+                && Objects.equals(this.expireAt, other.expireAt);
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 79 * hash + Objects.hashCode(this.id);
-        hash = 79 * hash + Objects.hashCode(this.name);
-        hash = 79 * hash + Objects.hashCode(this.expireAt);
-        hash = 79 * hash + Objects.hashCode(this.statusInfo);
-        return hash;
+        return Objects.hash(this.id, this.name, this.expireAt, this.statusInfo);
     }
 
     @Override

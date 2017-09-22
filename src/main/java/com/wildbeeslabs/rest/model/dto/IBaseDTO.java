@@ -32,10 +32,13 @@ import java.io.Serializable;
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
+ * @param <T>
  */
-public interface IBaseDTO extends Serializable {
+public interface IBaseDTO<T extends Serializable> extends Serializable {
 
-    default Long getId() {
+    default T getId() {
         return null;
     }
+
+    //void setId(final T id);
 }

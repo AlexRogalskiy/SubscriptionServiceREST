@@ -24,10 +24,8 @@ public interface IBaseService<T extends Serializable> {
         ASC, DESC;
     }
 
-    default T findById(final Long id) {
-        return null;
-    }
-    
+    T findById(final Long id);
+
     void create(final T item);
 
     void save(final T item);
@@ -36,17 +34,14 @@ public interface IBaseService<T extends Serializable> {
 
     void merge(final T itemTo, final T itemFrom);
 
-    default void deleteById(final Long id) {
-    }
-
-    ;
+    void deleteById(final Long id);
 
     void delete(final T item);
 
     void delete(final List<? extends T> item);
 
     List<T> findAll();
-    
+
     Page<T> findAll(final Pageable pageable);
 
     void deleteAll();

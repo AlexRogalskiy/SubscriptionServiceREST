@@ -26,9 +26,7 @@ package com.wildbeeslabs.rest.controller.proxy;
 import com.wildbeeslabs.rest.exception.EmptyContentException;
 import com.wildbeeslabs.rest.exception.ResourceAlreadyExistException;
 import com.wildbeeslabs.rest.exception.ResourceNotFoundException;
-import com.wildbeeslabs.rest.model.BaseEntity;
 import com.wildbeeslabs.rest.model.IBaseEntity;
-import com.wildbeeslabs.rest.model.dto.BaseDTO;
 import com.wildbeeslabs.rest.model.dto.wrapper.BaseDTOListWrapper;
 import com.wildbeeslabs.rest.model.dto.converter.DTOConverter;
 import com.wildbeeslabs.rest.model.dto.IBaseDTO;
@@ -174,13 +172,16 @@ public abstract class ABaseProxyController<T extends IBaseEntity, E extends IBas
         return this.resourceUtils;
     }
 
-    protected Class<? extends T> getEntityClass() {
-        return (Class<? extends T>) BaseEntity.class;
-    }
+//    protected Class<? extends T> getEntityClass() {
+//        return (Class<? extends T>) BaseEntity.class;
+//    }
+//
+//    protected Class<? extends E> getDtoClass() {
+//        return (Class<? extends E>) BaseDTO.class;
+//    }
+    protected abstract Class<? extends T> getEntityClass();
 
-    protected Class<? extends E> getDtoClass() {
-        return (Class<? extends E>) BaseDTO.class;
-    }
+    protected abstract Class<? extends E> getDtoClass();
 
     protected Class<? extends IBaseDTOListWrapper> getDtoListClass() {
         return BaseDTOListWrapper.class;

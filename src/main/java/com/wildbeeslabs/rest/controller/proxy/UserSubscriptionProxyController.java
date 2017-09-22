@@ -94,14 +94,14 @@ public class UserSubscriptionProxyController<T extends UserSubOrder, E extends U
     }
 
     public E updateEntityItem(final T toItemEntity, final E fromItemDto) {
-        LOGGER.info("Updating item by id {}", toItemEntity.getPk());
+        LOGGER.info("Updating item by id {}", toItemEntity.getId());
         T fromItemEntity = getDTOConverter().convertToEntity(fromItemDto, getEntityClass());
         getService().merge(toItemEntity, fromItemEntity);
         return getDTOConverter().convertToDTO(toItemEntity, getDtoClass());
     }
 
     public E deleteEntityItem(final T itemEntity) {
-        LOGGER.info("Deleting item by id {}", itemEntity.getPk());
+        LOGGER.info("Deleting item by id {}", itemEntity.getId());
         getService().delete(itemEntity);
         return getDTOConverter().convertToDTO(itemEntity, getDtoClass());
     }

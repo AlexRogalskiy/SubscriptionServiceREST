@@ -32,10 +32,11 @@ import java.io.Serializable;
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
+ * @param <T>
  */
-public interface IBaseEntity extends Serializable {
+public interface IBaseEntity<T extends Serializable> extends Serializable {
 
-    default Long getId() {
-        return null;
-    }
+    T getId();
+
+    void setId(final T id);
 }
