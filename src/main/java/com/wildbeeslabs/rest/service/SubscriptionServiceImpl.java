@@ -1,8 +1,10 @@
 package com.wildbeeslabs.rest.service;
 
+//import com.wildbeeslabs.api.rest.common.service.JpaBaseServiceImpl;
+
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
-import com.wildbeeslabs.rest.repositories.SubscriptionRepository;
+import com.wildbeeslabs.rest.repository.SubscriptionRepository;
 import com.wildbeeslabs.rest.service.interfaces.ISubscriptionService;
 
 import java.util.List;
@@ -22,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service("subscriptionService")
 @Transactional
-public class SubscriptionServiceImpl<T extends Subscription> extends BaseServiceImpl<T, SubscriptionRepository<T>> implements ISubscriptionService<T> {
+public class SubscriptionServiceImpl<T extends Subscription> extends JpaBaseServiceImpl<T, Long, SubscriptionRepository<T>> implements ISubscriptionService<T> {
 
     @Override
     public boolean isExist(final T subscription) {

@@ -5,7 +5,7 @@ import static com.jayway.restassured.RestAssured.given;
 import com.jayway.restassured.http.ContentType;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.dto.UserDTO;
-import com.wildbeeslabs.rest.utils.DateUtils;
+import com.wildbeeslabs.api.rest.common.utils.DateUtils;
 
 import java.util.Objects;
 

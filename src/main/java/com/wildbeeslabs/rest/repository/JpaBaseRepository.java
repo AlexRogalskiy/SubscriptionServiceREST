@@ -21,39 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.rest.controller.proxy;
+package com.wildbeeslabs.rest.repository;
 
-import com.wildbeeslabs.rest.exception.EmptyContentException;
-import com.wildbeeslabs.rest.model.dto.wrapper.IBaseDTOListWrapper;
-
+import com.wildbeeslabs.api.rest.common.model.IBaseEntity;
 import java.io.Serializable;
-import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.NoRepositoryBean;
 
 /**
  *
- * Base Proxy REST Controller declaration
+ * JPA Base REST Application storage repository
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
  * @param <T>
- * @param <E>
+ * @param <ID>
  */
-public interface IBaseProxyController<T extends Serializable, E extends Serializable> {
+@NoRepositoryBean
+public interface JpaBaseRepository<T extends IBaseEntity, ID extends Serializable> extends JpaRepository<T, ID> {
 
-    IBaseDTOListWrapper<? extends E> getAllItems() throws EmptyContentException;
-
-    E getItemById(final Long id);
-
-    //T createItem(final E itemDto, Class<? extends T> entityClass);
-    E createItem(final E itemDto);
-
-    E updateItem(final Long id, final E itemDto);
-    //T updateItem(final Long id, final E itemDto, Class<? extends T> entityClass);
-
-    E deleteItem(final Long id);
-
-    void deleteItems(final List<? extends E> itemDtoList);
-
-    void deleteAllItems();
 }

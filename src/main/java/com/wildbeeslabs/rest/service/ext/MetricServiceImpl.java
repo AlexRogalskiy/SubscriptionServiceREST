@@ -23,8 +23,8 @@
  */
 package com.wildbeeslabs.rest.service.ext;
 
-import com.wildbeeslabs.rest.service.interfaces.ext.IMetricService;
-import com.wildbeeslabs.rest.utils.DateUtils;
+import com.wildbeeslabs.api.rest.common.service.interfaces.ext.IMetricService;
+import com.wildbeeslabs.api.rest.common.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +50,7 @@ import org.springframework.stereotype.Service;
  * @version 1.0.0
  * @since 2017-08-08
  */
-@Service("metricService")
+@Service("metricSubscriptionService")
 public class MetricServiceImpl implements IMetricService {
 
     /**

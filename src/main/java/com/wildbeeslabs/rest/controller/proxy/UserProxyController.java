@@ -23,10 +23,12 @@
  */
 package com.wildbeeslabs.rest.controller.proxy;
 
-import com.wildbeeslabs.rest.exception.EmptyContentException;
+import com.wildbeeslabs.api.rest.common.controller.proxy.ABaseProxyController;
+import com.wildbeeslabs.api.rest.common.model.dto.wrapper.IBaseDTOListWrapper;
+import com.wildbeeslabs.api.rest.common.exception.EmptyContentException;
+
 import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.model.User;
-import com.wildbeeslabs.rest.model.dto.wrapper.IBaseDTOListWrapper;
 import com.wildbeeslabs.rest.model.dto.UserDTO;
 import com.wildbeeslabs.rest.model.dto.wrapper.UserDTOListWrapper;
 import com.wildbeeslabs.rest.service.interfaces.IUserService;
@@ -49,7 +51,7 @@ import org.springframework.stereotype.Component;
  * @param <E>
  */
 @Component
-public class UserProxyController<T extends User, E extends UserDTO> extends ABaseProxyController<T, E, IUserService<T>> {
+public class UserProxyController<T extends User, E extends UserDTO> extends ABaseProxyController<T, E, Long, IUserService<T>> {
 
     public List<? extends T> findAllEntityBySubscriptionStatusAndDate(final Date subDate, final SubscriptionStatusInfo.SubscriptionStatusType subStatus, final Boolean subDateOrder) throws EmptyContentException {
         LOGGER.info("Fetching all users by subscription date {}, status {}, date order {} (1 - before, 0 - after)", subDate, subStatus, subDateOrder);

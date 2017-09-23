@@ -1,10 +1,12 @@
 package com.wildbeeslabs.rest.service;
 
+//import com.wildbeeslabs.api.rest.common.service.JpaBaseServiceImpl;
+
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.UserSubOrder;
 import com.wildbeeslabs.rest.model.UserSubOrderId;
-import com.wildbeeslabs.rest.repositories.UserSubOrderRepository;
+import com.wildbeeslabs.rest.repository.UserSubOrderRepository;
 import com.wildbeeslabs.rest.service.interfaces.IUserSubOrderService;
 
 import java.util.Date;
@@ -25,13 +27,12 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service("userSubOrderService")
 @Transactional
-public class UserSubOrderServiceImpl<T extends UserSubOrder> extends BaseServiceImpl<T, UserSubOrderRepository<T>> implements IUserSubOrderService<T> {
+public class UserSubOrderServiceImpl<T extends UserSubOrder> extends JpaBaseServiceImpl<T, UserSubOrderId, UserSubOrderRepository<T>> implements IUserSubOrderService<T> {
 
-    @Override
-    public T findById(final UserSubOrderId id) {
-        return getRepository().findById(id);
-    }
-
+//    @Override
+//    public T findById(final UserSubOrderId id) {
+//        return getRepository().findById(id);
+//    }
     //@Override
     //public void deleteById(final UserSubOrderId id) {
     //    userSubOrderRepository.deleteById(id);
@@ -51,12 +52,11 @@ public class UserSubOrderServiceImpl<T extends UserSubOrder> extends BaseService
         return getRepository().findBySubscription(subscription);
     }
 
-    @Override
-    public void merge(final T itemTo, final T itemFrom) {
-        itemFrom.setId(itemTo.getId());
-        update(itemFrom);
-    }
-
+//    @Override
+//    public void merge(final T itemTo, final T itemFrom) {
+//        itemFrom.setId(itemTo.getId());
+//        update(itemFrom);
+//    }
     @Override
     public List<T> findBySubscribedAtBetween(final Date dateFrom, final Date dateTo) {
         return getRepository().findBySubscribedAtBetween(dateFrom, dateTo);

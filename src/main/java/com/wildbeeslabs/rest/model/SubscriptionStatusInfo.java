@@ -23,6 +23,7 @@
  */
 package com.wildbeeslabs.rest.model;
 
+import com.wildbeeslabs.api.rest.common.model.IBaseEntity;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;

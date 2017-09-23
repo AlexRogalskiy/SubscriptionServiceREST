@@ -1,5 +1,7 @@
 package com.wildbeeslabs.rest.service.interfaces;
 
+import com.wildbeeslabs.api.rest.common.service.interfaces.IJpaBaseService;
+
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.UserSubOrder;
@@ -17,7 +19,7 @@ import java.util.List;
  * @since 2017-08-08
  * @param <T>
  */
-public interface IUserSubOrderService<T extends UserSubOrder> extends IBaseService<T> {
+public interface IUserSubOrderService<T extends UserSubOrder> extends IJpaBaseService<T, UserSubOrderId> {
 
     /**
      * Get subscription order by id (compound primary key)
@@ -25,8 +27,7 @@ public interface IUserSubOrderService<T extends UserSubOrder> extends IBaseServi
      * @param id - subscription order identifier
      * @return subscription order
      */
-    T findById(final UserSubOrderId id);
-
+//    T findById(final UserSubOrderId id);
     /**
      * Delete subscription order by id (compound primary key)
      *
@@ -39,7 +40,7 @@ public interface IUserSubOrderService<T extends UserSubOrder> extends IBaseServi
      * @param user - user entity
      * @return list of subscription orders
      */
-    List<T> findByUser(final User user);
+    List<? extends T> findByUser(final User user);
 
     /**
      * Get list of subscription orders by subscription entity
@@ -47,7 +48,7 @@ public interface IUserSubOrderService<T extends UserSubOrder> extends IBaseServi
      * @param subscription - subscription entity
      * @return list of subscription orders
      */
-    List<T> findBySubscription(final Subscription subscription);
+    List<? extends T> findBySubscription(final Subscription subscription);
 
     /**
      * Get list of subscription orders by user and subscription entity
@@ -65,5 +66,5 @@ public interface IUserSubOrderService<T extends UserSubOrder> extends IBaseServi
      * @param dateTo - end date of range
      * @return list of subscription orders
      */
-    List<T> findBySubscribedAtBetween(final Date dateFrom, final Date dateTo);
+    List<? extends T> findBySubscribedAtBetween(final Date dateFrom, final Date dateTo);
 }

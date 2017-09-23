@@ -1,7 +1,9 @@
 package com.wildbeeslabs.rest.controller;
 
+import com.wildbeeslabs.api.rest.common.controller.ABaseController;
+import com.wildbeeslabs.api.rest.common.exception.EmptyContentException;
+
 import com.wildbeeslabs.rest.controller.proxy.SubscriptionProxyController;
-import com.wildbeeslabs.rest.exception.EmptyContentException;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
@@ -32,7 +34,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 @RestController
 @RequestMapping("/api")
-public class SubscriptionController<T extends Subscription, E extends SubscriptionDTO> extends ABaseController<T, E, SubscriptionProxyController<T, E>> {
+public class SubscriptionController<T extends Subscription, E extends SubscriptionDTO> extends ABaseController<T, E, Long, SubscriptionProxyController<T, E>> {
 
     /**
      * Get list of subscription entities (by subscription type)

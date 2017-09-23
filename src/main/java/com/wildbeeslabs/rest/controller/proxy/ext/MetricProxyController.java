@@ -23,11 +23,13 @@
  */
 package com.wildbeeslabs.rest.controller.proxy.ext;
 
-import com.wildbeeslabs.rest.exception.EmptyContentException;
-import com.wildbeeslabs.rest.service.interfaces.ext.IMetricService;
-import com.wildbeeslabs.rest.utils.ResourceUtils;
+import com.wildbeeslabs.api.rest.common.exception.EmptyContentException;
+import com.wildbeeslabs.api.rest.common.service.interfaces.ext.IMetricService;
+import com.wildbeeslabs.api.rest.common.utils.ResourceUtils;
+
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -39,7 +41,7 @@ import org.springframework.stereotype.Component;
  * @version 1.0.0
  * @since 2017-08-08
  */
-@Component
+@Component("metricSubscriptionProxyController")
 public class MetricProxyController {
 
     @Autowired

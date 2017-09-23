@@ -5,7 +5,7 @@ import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.UserSubOrder;
 import com.wildbeeslabs.rest.service.HibernateSessionService;
-import com.wildbeeslabs.rest.utils.DateUtils;
+import com.wildbeeslabs.api.rest.common.utils.DateUtils;
 
 import java.math.BigDecimal;
 

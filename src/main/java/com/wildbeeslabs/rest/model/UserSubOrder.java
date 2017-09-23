@@ -1,6 +1,7 @@
 package com.wildbeeslabs.rest.model;
 
-import com.wildbeeslabs.rest.utils.DateUtils;
+import com.wildbeeslabs.api.rest.common.model.BaseEntity;
+import com.wildbeeslabs.api.rest.common.utils.DateUtils;
 
 import java.io.Serializable;
 import java.util.Date;

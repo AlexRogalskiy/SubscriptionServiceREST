@@ -47,7 +47,7 @@ import org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcesso
  * @since 2017-08-08
  */
 @Configuration
-@EnableJpaRepositories(basePackages = "com.wildbeeslabs.rest.repositories",
+@EnableJpaRepositories(basePackages = "com.wildbeeslabs.rest.repository",
         entityManagerFactoryRef = "entityManagerFactory",
         transactionManagerRef = "transactionManager")
 //@ImportResource("classpath:hibernate.cfg.xml")

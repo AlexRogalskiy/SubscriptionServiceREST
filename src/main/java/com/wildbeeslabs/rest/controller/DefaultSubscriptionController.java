@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @version 1.0.0
  * @since 2017-08-08
  */
-@Controller
-public class DefaultRestController {
+@Controller("defaultSubscriptionController")
+public class DefaultSubscriptionController {
 
     @Value("${spring.application.name}")
     private String appName;

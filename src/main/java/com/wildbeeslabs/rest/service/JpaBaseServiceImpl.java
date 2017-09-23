@@ -23,13 +23,14 @@
  */
 package com.wildbeeslabs.rest.service;
 
-import com.wildbeeslabs.rest.model.IBaseEntity;
-import com.wildbeeslabs.rest.repositories.BaseRepository;
-import com.wildbeeslabs.rest.service.interfaces.IBaseService;
+import com.wildbeeslabs.api.rest.common.model.IBaseEntity;
+import com.wildbeeslabs.api.rest.common.service.interfaces.IJpaBaseService;
+import com.wildbeeslabs.rest.repository.JpaBaseRepository;
 
+import java.io.Serializable;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,22 +39,23 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
- * User REST Application Service implementation
+ * JPA Base REST Application Service implementation
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
  * @param <T>
+ * @param <ID>
  * @param <R>
  */
 @Transactional
-public abstract class BaseServiceImpl<T extends IBaseEntity, R extends BaseRepository<T>> implements IBaseService<T> {
+public abstract class JpaBaseServiceImpl<T extends IBaseEntity, ID extends Serializable, R extends JpaBaseRepository<T, ID>> implements IJpaBaseService<T, ID> {
 
     @Autowired
     private R repository;
 
     @Override
-    public T findById(final Long id) {
+    public T findById(final ID id) {
         return getRepository().findOne(id);
     }
 
@@ -81,7 +83,7 @@ public abstract class BaseServiceImpl<T extends IBaseEntity, R extends BaseRepos
 
     @Override
     @PreAuthorize("hasRole('ADMIN') AND hasRole('DBA')")
-    public void deleteById(final Long id) {
+    public void deleteById(final ID id) {
         getRepository().delete(id);
     }
 
@@ -99,13 +101,13 @@ public abstract class BaseServiceImpl<T extends IBaseEntity, R extends BaseRepos
 
     @Override
     @Transactional(readOnly = true)
-    public List<T> findAll() {
+    public List<? extends T> findAll() {
         return getRepository().findAll();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<T> findAll(final Pageable pageable) {
+    public Page<? extends T> findAll(final Pageable pageable) {
         return getRepository().findAll(pageable);
     }
 
@@ -113,6 +115,11 @@ public abstract class BaseServiceImpl<T extends IBaseEntity, R extends BaseRepos
     @PreAuthorize("hasRole('ADMIN') AND hasRole('DBA')")
     public void deleteAll() {
         getRepository().deleteAll();
+    }
+
+    @Override
+    public boolean isExist(final ID id) {
+        return getRepository().exists(id);
     }
 
     @Override

@@ -1,8 +1,10 @@
 package com.wildbeeslabs.rest.service;
 
+//import com.wildbeeslabs.api.rest.common.service.JpaBaseServiceImpl;
+
 import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.model.User;
-import com.wildbeeslabs.rest.repositories.UserRepository;
+import com.wildbeeslabs.rest.repository.UserRepository;
 import com.wildbeeslabs.rest.service.interfaces.IUserService;
 
 import java.util.Date;
@@ -23,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service("userService")
 @Transactional
-public class UserServiceImpl<T extends User> extends BaseServiceImpl<T, UserRepository<T>> implements IUserService<T> {
+public class UserServiceImpl<T extends User> extends JpaBaseServiceImpl<T, Long, UserRepository<T>> implements IUserService<T> {
 
     @Override
     public T findByLogin(final String name) {
@@ -36,7 +38,7 @@ public class UserServiceImpl<T extends User> extends BaseServiceImpl<T, UserRepo
     }
 
     @Override
-    public List<T> findAllBySubscriptionStatusAndDate(final Date subDate, final SubscriptionStatusInfo.SubscriptionStatusType subStatus, final DateTypeOrder dateTypeOrder) {
+    public List<? extends T> findAllBySubscriptionStatusAndDate(final Date subDate, final SubscriptionStatusInfo.SubscriptionStatusType subStatus, final DateTypeOrder dateTypeOrder) {
         if (Objects.nonNull(subDate)) {
             return getRepository().findByOptionalSubscriptionStatusAndDate(subDate, subStatus, dateTypeOrder.name());
         } else if (Objects.nonNull(subStatus)) {

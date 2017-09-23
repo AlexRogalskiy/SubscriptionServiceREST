@@ -1,9 +1,7 @@
 package com.wildbeeslabs.rest.configuration;
 
-//import com.wildbeeslabs.rest.handler.CustomAccessDeniedHandler;
-//import org.springframework.beans.factory.annotation.Autowired;
-import com.wildbeeslabs.rest.handler.CustomAccessDeniedHandler;
-import com.wildbeeslabs.rest.handler.CustomAuthenticationSuccessHandler;
+import com.wildbeeslabs.api.rest.common.handler.CustomAccessDeniedHandler;
+import com.wildbeeslabs.api.rest.common.handler.CustomAuthenticationSuccessHandler;
 import com.wildbeeslabs.rest.security.CustomAuthenticationEntryPoint;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +32,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 @Configuration
 @EnableAutoConfiguration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 //@ImportResource({ "classpath:spring-security.config.xml" })
 @Order(SecurityProperties.BASIC_AUTH_ORDER)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {

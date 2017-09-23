@@ -24,7 +24,7 @@
 package com.wildbeeslabs.rest.controller.ext;
 
 import com.wildbeeslabs.rest.controller.proxy.ext.MetricProxyController;
-import com.wildbeeslabs.rest.exception.EmptyContentException;
+import com.wildbeeslabs.api.rest.common.exception.EmptyContentException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,8 +43,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @version 1.0.0
  * @since 2017-08-08
  */
-@RestController
-@RequestMapping("/api")
+@RestController("metricSubscriptionController")
+@RequestMapping("/api/subscription")
 public class MetricController {
 
     @Autowired

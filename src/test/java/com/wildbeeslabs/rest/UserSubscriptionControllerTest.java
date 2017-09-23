@@ -7,7 +7,7 @@ import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
 import com.wildbeeslabs.rest.model.dto.UserDTO;
 import com.wildbeeslabs.rest.model.dto.UserSubOrderDTO;
-import com.wildbeeslabs.rest.utils.DateUtils;
+import com.wildbeeslabs.api.rest.common.utils.DateUtils;
 
 import java.util.Objects;
 

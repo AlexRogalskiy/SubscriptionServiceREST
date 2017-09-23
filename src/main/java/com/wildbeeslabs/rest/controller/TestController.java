@@ -23,10 +23,12 @@
  */
 package com.wildbeeslabs.rest.controller;
 
+import com.wildbeeslabs.api.rest.common.controller.IBaseController;
+import com.wildbeeslabs.api.rest.common.exception.EmptyContentException;
+
 import com.wildbeeslabs.rest.controller.proxy.SubscriptionProxyController;
-import com.wildbeeslabs.rest.exception.EmptyContentException;
 import com.wildbeeslabs.rest.model.Subscription;
-import com.wildbeeslabs.rest.model.dto.converter.DTOConverter;
+import com.wildbeeslabs.api.rest.common.model.dto.converter.DTOConverter;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
 import com.wildbeeslabs.rest.model.dto.wrapper.SubscriptionDTOListWrapper;
 
@@ -56,7 +58,7 @@ import javax.validation.Valid;
  */
 //@RestController
 //@RequestMapping("/api")
-public class TestController<T extends Subscription, E extends SubscriptionDTO> implements IBaseController<T, E> {
+public class TestController<T extends Subscription, E extends SubscriptionDTO> implements IBaseController<T, E, Long> {
 
     @Autowired
     private HttpServletRequest request;

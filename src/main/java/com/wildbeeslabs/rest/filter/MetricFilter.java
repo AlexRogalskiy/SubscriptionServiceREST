@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.rest.filter;
 
-import com.wildbeeslabs.rest.service.interfaces.ext.IMetricService;
+import com.wildbeeslabs.api.rest.common.service.interfaces.ext.IMetricService;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -45,7 +45,7 @@ import org.springframework.stereotype.Component;
  * @version 1.0.0
  * @since 2017-08-08
  */
-@Component
+@Component("metricSubscriptionFilter")
 public class MetricFilter implements Filter {
 
     @Autowired

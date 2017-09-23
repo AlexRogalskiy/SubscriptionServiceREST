@@ -1,7 +1,9 @@
 package com.wildbeeslabs.rest.model.dto;
 
+import com.wildbeeslabs.api.rest.common.utils.DateUtils;
+import com.wildbeeslabs.api.rest.common.model.dto.BaseDTO;
+
 import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
-import com.wildbeeslabs.rest.utils.DateUtils;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;

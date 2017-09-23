@@ -24,6 +24,7 @@
 package com.wildbeeslabs.rest.endpoint;
 
 import com.wildbeeslabs.rest.configuration.PropertiesConfiguration;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

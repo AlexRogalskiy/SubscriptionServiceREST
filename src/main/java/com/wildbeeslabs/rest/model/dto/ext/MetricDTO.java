@@ -23,11 +23,13 @@
  */
 package com.wildbeeslabs.rest.model.dto.ext;
 
+import com.wildbeeslabs.api.rest.common.utils.DateUtils;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import com.wildbeeslabs.rest.utils.DateUtils;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -49,6 +51,7 @@ public class MetricDTO<T extends Number> extends Metric<T> implements Serializab
 
     @JacksonXmlProperty(localName = "timestamp")
     @JsonProperty("timestamp")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.DEFAULT_DATE_FORMAT_PATTERN_EXT, locale = DateUtils.DEFAULT_DATE_FORMAT_LOCALE)
     private Date timestamp;
 
     @JacksonXmlProperty(localName = "request")

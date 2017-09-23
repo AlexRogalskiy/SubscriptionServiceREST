@@ -23,12 +23,15 @@
  */
 package com.wildbeeslabs.rest.controller.proxy;
 
-import com.wildbeeslabs.rest.exception.EmptyContentException;
-import com.wildbeeslabs.rest.exception.ResourceNotFoundException;
+import com.wildbeeslabs.api.rest.common.controller.proxy.ABaseProxyController;
+import com.wildbeeslabs.api.rest.common.exception.EmptyContentException;
+import com.wildbeeslabs.api.rest.common.exception.ResourceNotFoundException;
+import com.wildbeeslabs.api.rest.common.model.dto.wrapper.IBaseDTOListWrapper;
+
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.UserSubOrder;
-import com.wildbeeslabs.rest.model.dto.wrapper.IBaseDTOListWrapper;
+import com.wildbeeslabs.rest.model.UserSubOrderId;
 import com.wildbeeslabs.rest.model.dto.UserSubOrderDTO;
 import com.wildbeeslabs.rest.model.dto.wrapper.UserSubOrderDTOListWrapper;
 import com.wildbeeslabs.rest.service.interfaces.IUserSubOrderService;
@@ -49,7 +52,7 @@ import org.springframework.stereotype.Component;
  * @param <E>
  */
 @Component
-public class UserSubscriptionProxyController<T extends UserSubOrder, E extends UserSubOrderDTO> extends ABaseProxyController<T, E, IUserSubOrderService<T>> {
+public class UserSubscriptionProxyController<T extends UserSubOrder, E extends UserSubOrderDTO> extends ABaseProxyController<T, E, UserSubOrderId, IUserSubOrderService<T>> {
 
     public E findByUserAndSubscription(final User userItem, final Subscription subscriptionItem) {
         T item = this.findAllEntityByUserAndSubscription(userItem, subscriptionItem);

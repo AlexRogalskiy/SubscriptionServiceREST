@@ -1,7 +1,9 @@
 package com.wildbeeslabs.rest.controller;
 
+import com.wildbeeslabs.api.rest.common.controller.ABaseController;
+import com.wildbeeslabs.api.rest.common.exception.EmptyContentException;
+
 import com.wildbeeslabs.rest.controller.proxy.UserProxyController;
-import com.wildbeeslabs.rest.exception.EmptyContentException;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.model.dto.UserDTO;
@@ -36,7 +38,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 @RestController
 @RequestMapping("/api")
-public class UserController<T extends User, E extends UserDTO> extends ABaseController<T, E, UserProxyController<T, E>> {
+public class UserController<T extends User, E extends UserDTO> extends ABaseController<T, E, Long, UserProxyController<T, E>> {
 
     @InitBinder
     public void initBinder(final WebDataBinder dataBinder) {

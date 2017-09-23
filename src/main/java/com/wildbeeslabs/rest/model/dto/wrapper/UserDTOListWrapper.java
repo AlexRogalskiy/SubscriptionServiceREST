@@ -23,6 +23,8 @@
  */
 package com.wildbeeslabs.rest.model.dto.wrapper;
 
+import com.wildbeeslabs.api.rest.common.model.dto.wrapper.BaseDTOListWrapper;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;

@@ -1,12 +1,15 @@
 package com.wildbeeslabs.rest.controller;
 
+import com.wildbeeslabs.api.rest.common.controller.ABaseController;
+import com.wildbeeslabs.api.rest.common.exception.EmptyContentException;
+
 import com.wildbeeslabs.rest.controller.proxy.SubscriptionProxyController;
 import com.wildbeeslabs.rest.controller.proxy.UserProxyController;
 import com.wildbeeslabs.rest.controller.proxy.UserSubscriptionProxyController;
-import com.wildbeeslabs.rest.exception.EmptyContentException;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.UserSubOrder;
+import com.wildbeeslabs.rest.model.UserSubOrderId;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
 import com.wildbeeslabs.rest.model.dto.UserDTO;
 import com.wildbeeslabs.rest.model.dto.UserSubOrderDTO;
@@ -38,7 +41,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  */
 @RestController
 @RequestMapping("/api")
-public class UserSubscriptionController<T extends UserSubOrder, E extends UserSubOrderDTO> extends ABaseController<T, E, UserSubscriptionProxyController<T, E>> {
+public class UserSubscriptionController<T extends UserSubOrder, E extends UserSubOrderDTO> extends ABaseController<T, E, UserSubOrderId, UserSubscriptionProxyController<T, E>> {
 
     @Autowired
     private SubscriptionProxyController<Subscription, SubscriptionDTO> subscriptionProxyController;

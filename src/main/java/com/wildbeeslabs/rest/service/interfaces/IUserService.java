@@ -1,5 +1,7 @@
 package com.wildbeeslabs.rest.service.interfaces;
 
+import com.wildbeeslabs.api.rest.common.service.interfaces.IJpaBaseService;
+
 import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.model.User;
 
@@ -15,7 +17,7 @@ import java.util.List;
  * @since 2017-08-08
  * @param <T>
  */
-public interface IUserService<T extends User> extends IBaseService<T> {
+public interface IUserService<T extends User> extends IJpaBaseService<T, Long> {
 
     /**
      * Get user entity by login
@@ -34,7 +36,7 @@ public interface IUserService<T extends User> extends IBaseService<T> {
      * @param dateTypeOrder - date type order (before / after)
      * @return list of user entities
      */
-    List<T> findAllBySubscriptionStatusAndDate(final Date subDate, final SubscriptionStatusInfo.SubscriptionStatusType subStatus, final DateTypeOrder dateTypeOrder);
+    List<? extends T> findAllBySubscriptionStatusAndDate(final Date subDate, final SubscriptionStatusInfo.SubscriptionStatusType subStatus, final DateTypeOrder dateTypeOrder);
 
     /**
      * Get list of user entities by subscription date (after - excluding /
@@ -44,7 +46,7 @@ public interface IUserService<T extends User> extends IBaseService<T> {
      * @param dateTypeOrder - date type order (before / after)
      * @return - list of user entities
      */
-    List<T> findAllBySubscriptionDate(final Date subDate, final DateTypeOrder dateTypeOrder);
+    List<? extends T> findAllBySubscriptionDate(final Date subDate, final DateTypeOrder dateTypeOrder);
 
     /**
      * Get list of user entities by subscription date between request period
@@ -54,7 +56,7 @@ public interface IUserService<T extends User> extends IBaseService<T> {
      * @param endSubDate - end date of period
      * @return - list of user entities
      */
-    List<T> findAllBySubscriptionDateBetween(final Date startSubDate, final Date endSubDate);
+    List<? extends T> findAllBySubscriptionDateBetween(final Date startSubDate, final Date endSubDate);
 
     /**
      * Get list of user entities by subscription status
@@ -62,7 +64,7 @@ public interface IUserService<T extends User> extends IBaseService<T> {
      * @param subStatus - subscription type
      * @return list of user entities
      */
-    List<T> findAllBySubscriptionStatus(final SubscriptionStatusInfo.SubscriptionStatusType subStatus);
+    List<? extends T> findAllBySubscriptionStatus(final SubscriptionStatusInfo.SubscriptionStatusType subStatus);
 
     /**
      * Get list of user entities by subscription ID
@@ -70,7 +72,7 @@ public interface IUserService<T extends User> extends IBaseService<T> {
      * @param subscriptionId - subscription identifier
      * @return list of user entities
      */
-    List<T> findBySubscriptionId(final Long subscriptionId);
+    List<? extends T> findBySubscriptionId(final Long subscriptionId);
 
     /**
      * Get list of user entities by status
@@ -78,5 +80,5 @@ public interface IUserService<T extends User> extends IBaseService<T> {
      * @param status - user status
      * @return list of user entities
      */
-    List<T> findByStatus(final User.UserStatusType status);
+    List<? extends T> findByStatus(final User.UserStatusType status);
 }

@@ -1,4 +1,7 @@
-package com.wildbeeslabs.rest.repositories;
+package com.wildbeeslabs.rest.repository;
+
+import com.wildbeeslabs.api.rest.common.repository.BaseRepository;
+//import com.wildbeeslabs.api.rest.common.repository.JpaBaseRepository;
 
 import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.model.User;
@@ -20,7 +23,7 @@ import org.springframework.stereotype.Repository;
  * @param <T>
  */
 @Repository
-public interface UserRepository<T extends User> extends BaseRepository<T> {
+public interface UserRepository<T extends User> extends JpaBaseRepository<T, Long>, BaseRepository<T> {
 
     /**
      * Default query to find users by subscription id

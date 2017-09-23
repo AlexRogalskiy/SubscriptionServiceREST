@@ -1,5 +1,7 @@
 package com.wildbeeslabs.rest.service.interfaces;
 
+import com.wildbeeslabs.api.rest.common.service.interfaces.IJpaBaseService;
+
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 
@@ -14,7 +16,7 @@ import java.util.List;
  * @since 2017-08-08
  * @param <T>
  */
-public interface ISubscriptionService<T extends Subscription> extends IBaseService<T> {
+public interface ISubscriptionService<T extends Subscription> extends IJpaBaseService<T, Long> {
 
     /**
      * Get subscription entity by name
@@ -30,7 +32,7 @@ public interface ISubscriptionService<T extends Subscription> extends IBaseServi
      * @param pattern - subscription name pattern
      * @return list of subscription entities
      */
-    List<T> findByPatternName(final String pattern);
+    List<? extends T> findByPatternName(final String pattern);
 
     /**
      * Get list of subscription entities by type
@@ -38,7 +40,7 @@ public interface ISubscriptionService<T extends Subscription> extends IBaseServi
      * @param status - subscription type
      * @return list of subscription entities
      */
-    List<T> findByStatus(final SubscriptionStatusInfo.SubscriptionStatusType status);
+    List<? extends T> findByStatus(final SubscriptionStatusInfo.SubscriptionStatusType status);
 
     /**
      * Get list of subscription entities by user ID
@@ -46,5 +48,5 @@ public interface ISubscriptionService<T extends Subscription> extends IBaseServi
      * @param userId - user identifier
      * @return list of subscription entities
      */
-    List<T> findByUserId(final Long userId);
+    List<? extends T> findByUserId(final Long userId);
 }

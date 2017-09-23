@@ -1,4 +1,7 @@
-package com.wildbeeslabs.rest.repositories;
+package com.wildbeeslabs.rest.repository;
+
+import com.wildbeeslabs.api.rest.common.repository.BaseRepository;
+//import com.wildbeeslabs.api.rest.common.repository.JpaBaseRepository;
 
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.User;
@@ -22,7 +25,7 @@ import org.springframework.stereotype.Repository;
  * @param <T>
  */
 @Repository
-public interface UserSubOrderRepository<T extends UserSubOrder> extends BaseRepository<T> {
+public interface UserSubOrderRepository<T extends UserSubOrder> extends JpaBaseRepository<T, UserSubOrderId>, BaseRepository<T> {
 
     /**
      * Default query to find order by id

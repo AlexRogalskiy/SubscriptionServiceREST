@@ -1,9 +1,10 @@
 package com.wildbeeslabs.rest.model;
 
-import com.wildbeeslabs.rest.utils.DateUtils;
-import com.wildbeeslabs.rest.model.validation.Phone;
-import com.wildbeeslabs.rest.model.validation.BigDecimalRange;
-import com.wildbeeslabs.rest.model.validation.UID;
+import com.wildbeeslabs.api.rest.common.model.BaseEntity;
+import com.wildbeeslabs.api.rest.common.utils.DateUtils;
+import com.wildbeeslabs.api.rest.common.model.validation.Phone;
+import com.wildbeeslabs.api.rest.common.model.validation.BigDecimalRange;
+import com.wildbeeslabs.api.rest.common.model.validation.UID;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -33,8 +34,8 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
-import org.hibernate.annotations.Type;
 
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;

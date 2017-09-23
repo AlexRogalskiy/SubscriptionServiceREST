@@ -23,10 +23,12 @@
  */
 package com.wildbeeslabs.rest.controller.proxy;
 
-import com.wildbeeslabs.rest.exception.EmptyContentException;
+import com.wildbeeslabs.api.rest.common.controller.proxy.ABaseProxyController;
+import com.wildbeeslabs.api.rest.common.exception.EmptyContentException;
+import com.wildbeeslabs.api.rest.common.model.dto.wrapper.IBaseDTOListWrapper;
+
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
-import com.wildbeeslabs.rest.model.dto.wrapper.IBaseDTOListWrapper;
 import com.wildbeeslabs.rest.model.dto.SubscriptionDTO;
 import com.wildbeeslabs.rest.model.dto.wrapper.SubscriptionDTOListWrapper;
 import com.wildbeeslabs.rest.service.interfaces.ISubscriptionService;
@@ -47,7 +49,7 @@ import org.springframework.stereotype.Component;
  * @param <E>
  */
 @Component
-public class SubscriptionProxyController<T extends Subscription, E extends SubscriptionDTO> extends ABaseProxyController<T, E, ISubscriptionService<T>> {
+public class SubscriptionProxyController<T extends Subscription, E extends SubscriptionDTO> extends ABaseProxyController<T, E, Long, ISubscriptionService<T>> {
 
     public IBaseDTOListWrapper<? extends E> findByUserId(final Long userId) throws EmptyContentException {
         LOGGER.info("Fetching all subscriptions by user id {}", userId);

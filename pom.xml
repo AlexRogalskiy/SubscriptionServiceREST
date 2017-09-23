@@ -247,5 +247,12 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
         </dependency>
+        
+        <dependency>
+            <groupId>com.wildbeeslabs.api.rest</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0.0-RELEASE</version>
+            <!--<type>jar</type>-->
+        </dependency>
     </dependencies>
 </project>
