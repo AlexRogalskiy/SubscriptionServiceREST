@@ -1,7 +1,5 @@
 package com.wildbeeslabs.rest.service;
 
-//import com.wildbeeslabs.api.rest.common.service.JpaBaseServiceImpl;
-
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.repository.SubscriptionRepository;
@@ -37,17 +35,17 @@ public class SubscriptionServiceImpl<T extends Subscription> extends JpaBaseServ
     }
 
     @Override
-    public List<T> findByPatternName(final String pattern) {
+    public List<? extends T> findByPatternName(final String pattern) {
         return getRepository().findByNameLike(pattern);
     }
 
     @Override
-    public List<T> findByStatus(final SubscriptionStatusInfo.SubscriptionStatusType status) {
+    public List<? extends T> findByStatus(final SubscriptionStatusInfo.SubscriptionStatusType status) {
         return getRepository().findByStatus(status);
     }
 
     @Override
-    public List<T> findByUserId(Long userId) {
+    public List<? extends T> findByUserId(final Long userId) {
         return getRepository().findByUserId(userId);
     }
 }

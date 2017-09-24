@@ -1,7 +1,6 @@
 package com.wildbeeslabs.rest.service.interfaces;
 
-import com.wildbeeslabs.api.rest.common.service.interfaces.IJpaBaseService;
-
+import com.wildbeeslabs.api.rest.common.service.interfaces.IBaseService;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.UserSubOrder;
@@ -19,7 +18,7 @@ import java.util.List;
  * @since 2017-08-08
  * @param <T>
  */
-public interface IUserSubOrderService<T extends UserSubOrder> extends IJpaBaseService<T, UserSubOrderId> {
+public interface IUserSubOrderService<T extends UserSubOrder> extends IBaseService<T, UserSubOrderId> {
 
     /**
      * Get subscription order by id (compound primary key)

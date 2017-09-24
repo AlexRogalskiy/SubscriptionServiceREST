@@ -1,7 +1,5 @@
 package com.wildbeeslabs.rest.service;
 
-//import com.wildbeeslabs.api.rest.common.service.JpaBaseServiceImpl;
-
 import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.repository.UserRepository;
@@ -48,27 +46,27 @@ public class UserServiceImpl<T extends User> extends JpaBaseServiceImpl<T, Long,
     }
 
     @Override
-    public List<T> findAllBySubscriptionDateBetween(final Date startSubDate, final Date endSubDate) {
+    public List<? extends T> findAllBySubscriptionDateBetween(final Date startSubDate, final Date endSubDate) {
         return getRepository().findByDateBetween(startSubDate, endSubDate);
     }
 
     @Override
-    public List<T> findAllBySubscriptionDate(final Date subDate, final DateTypeOrder dateTypeOrder) {
+    public List<? extends T> findAllBySubscriptionDate(final Date subDate, final DateTypeOrder dateTypeOrder) {
         return getRepository().findByDate(subDate, dateTypeOrder.name());
     }
 
     @Override
-    public List<T> findAllBySubscriptionStatus(final SubscriptionStatusInfo.SubscriptionStatusType subStatus) {
+    public List<? extends T> findAllBySubscriptionStatus(final SubscriptionStatusInfo.SubscriptionStatusType subStatus) {
         return getRepository().findBySubscriptionStatus(subStatus);
     }
 
     @Override
-    public List<T> findBySubscriptionId(final Long subscriptionId) {
+    public List<? extends T> findBySubscriptionId(final Long subscriptionId) {
         return getRepository().findBySubscriptionId(subscriptionId);
     }
 
     @Override
-    public List<T> findByStatus(final User.UserStatusType status) {
+    public List<? extends T> findByStatus(final User.UserStatusType status) {
         return getRepository().findByStatus(status);
     }
 }

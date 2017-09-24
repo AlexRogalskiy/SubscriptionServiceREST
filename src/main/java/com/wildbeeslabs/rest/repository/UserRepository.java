@@ -1,8 +1,6 @@
 package com.wildbeeslabs.rest.repository;
 
 import com.wildbeeslabs.api.rest.common.repository.BaseRepository;
-//import com.wildbeeslabs.api.rest.common.repository.JpaBaseRepository;
-
 import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.model.User;
 
@@ -87,7 +85,7 @@ public interface UserRepository<T extends User> extends JpaBaseRepository<T, Lon
      * @param status - user status
      * @return list of user entities
      */
-    List<T> findByStatus(final User.UserStatusType status);
+    List<? extends T> findByStatus(final User.UserStatusType status);
 
     /**
      * Get list of user entities by subscription status (optional) and date
@@ -98,7 +96,7 @@ public interface UserRepository<T extends User> extends JpaBaseRepository<T, Lon
      * @return list of user entities
      */
     @Query(FIND_USER_BY_OPT_SUB_STATUS_AND_SUB_DATE_BEFORE_QUERY)
-    List<T> findByOptionalSubscriptionStatusAndDateBefore(@Param("subDate") final Date subDate, @Param("subStatus") final SubscriptionStatusInfo.SubscriptionStatusType subStatus);
+    List<? extends T> findByOptionalSubscriptionStatusAndDateBefore(@Param("subDate") final Date subDate, @Param("subStatus") final SubscriptionStatusInfo.SubscriptionStatusType subStatus);
 
     /**
      * Get list of user entities by subscription status (optional) and date
@@ -109,7 +107,7 @@ public interface UserRepository<T extends User> extends JpaBaseRepository<T, Lon
      * @return list of user entities
      */
     @Query(FIND_USER_BY_OPT_SUB_STATUS_AND_SUB_DATE_AFTER_QUERY)
-    List<T> findByOptionalSubscriptionStatusAndDateAfter(@Param("subDate") final Date subDate, @Param("subStatus") final SubscriptionStatusInfo.SubscriptionStatusType subStatus);
+    List<? extends T> findByOptionalSubscriptionStatusAndDateAfter(@Param("subDate") final Date subDate, @Param("subStatus") final SubscriptionStatusInfo.SubscriptionStatusType subStatus);
 
     /**
      * Get list of user entities by subscription status (optional) and date
@@ -120,7 +118,7 @@ public interface UserRepository<T extends User> extends JpaBaseRepository<T, Lon
      * @return list of user entities
      */
     @Query(FIND_USER_BY_OPT_SUB_STATUS_AND_SUB_DATE_QUERY)
-    List<T> findByOptionalSubscriptionStatusAndDate(@Param("subDate") final Date subDate, @Param("subStatus") final SubscriptionStatusInfo.SubscriptionStatusType subStatus, @Param("order") final String order);
+    List<? extends T> findByOptionalSubscriptionStatusAndDate(@Param("subDate") final Date subDate, @Param("subStatus") final SubscriptionStatusInfo.SubscriptionStatusType subStatus, @Param("order") final String order);
 
     /**
      * Get list of user entities by date before (including)
@@ -129,7 +127,7 @@ public interface UserRepository<T extends User> extends JpaBaseRepository<T, Lon
      * @return list of user entities
      */
     @Query(FIND_USER_BY_SUB_DATE_BEFORE_QUERY)
-    List<T> findByDateBefore(@Param("subDate") final Date subDate);
+    List<? extends T> findByDateBefore(@Param("subDate") final Date subDate);
 
     /**
      * Get list of user entities by date after (excluding)
@@ -138,7 +136,7 @@ public interface UserRepository<T extends User> extends JpaBaseRepository<T, Lon
      * @return list of user entities
      */
     @Query(FIND_USER_BY_SUB_DATE_AFTER_QUERY)
-    List<T> findByDateAfter(@Param("subDate") final Date subDate);
+    List<? extends T> findByDateAfter(@Param("subDate") final Date subDate);
 
     /**
      * Get list of user entities by date
@@ -148,7 +146,7 @@ public interface UserRepository<T extends User> extends JpaBaseRepository<T, Lon
      * @return list of user entities
      */
     @Query(FIND_USER_BY_SUB_DATE_QUERY)
-    List<T> findByDate(@Param("subDate") final Date subDate, @Param("order") final String order);
+    List<? extends T> findByDate(@Param("subDate") final Date subDate, @Param("order") final String order);
 
     /**
      * Get list of user entities by subscription type
@@ -157,7 +155,7 @@ public interface UserRepository<T extends User> extends JpaBaseRepository<T, Lon
      * @return list of user entities
      */
     @Query(FIND_USER_BY_SUB_STATUS_QUERY)
-    List<T> findBySubscriptionStatus(@Param("subStatus") final SubscriptionStatusInfo.SubscriptionStatusType subStatus);
+    List<? extends T> findBySubscriptionStatus(@Param("subStatus") final SubscriptionStatusInfo.SubscriptionStatusType subStatus);
 
     /**
      * Get list of user entities by subscription ID
@@ -166,7 +164,7 @@ public interface UserRepository<T extends User> extends JpaBaseRepository<T, Lon
      * @return list of user entities
      */
     @Query(FIND_USER_BY_SUB_ID_QUERY)
-    List<T> findBySubscriptionId(@Param("subscriptionId") final Long subscriptionId);
+    List<? extends T> findBySubscriptionId(@Param("subscriptionId") final Long subscriptionId);
 
     /**
      * Get list of user entities by subscription date between (including)
@@ -176,5 +174,5 @@ public interface UserRepository<T extends User> extends JpaBaseRepository<T, Lon
      * @return list of user entities
      */
     @Query(FIND_USER_BY_SUB_DATE_BETWEEN_QUERY)
-    List<T> findByDateBetween(@Param("startSubDate") final Date startSubDate, @Param("endSubDate") final Date endSubDate);
+    List<? extends T> findByDateBetween(@Param("startSubDate") final Date startSubDate, @Param("endSubDate") final Date endSubDate);
 }

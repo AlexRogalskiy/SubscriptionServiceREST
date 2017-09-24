@@ -1,8 +1,6 @@
 package com.wildbeeslabs.rest.repository;
 
 import com.wildbeeslabs.api.rest.common.repository.BaseRepository;
-//import com.wildbeeslabs.rest.common.repository.JpaBaseRepository;
-
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 
@@ -48,7 +46,7 @@ public interface SubscriptionRepository<T extends Subscription> extends JpaBaseR
      * @param name - subscription name pattern
      * @return list of subscription entities
      */
-    List<T> findByNameLike(final String name);
+    List<? extends T> findByNameLike(final String name);
 
     /**
      * Get list of subscription entities by type
@@ -57,7 +55,7 @@ public interface SubscriptionRepository<T extends Subscription> extends JpaBaseR
      * @return list of subscription entities
      */
     @Query(FIND_SUB_BY_STATUS_QUERY)
-    List<T> findByStatus(@Param("status") final SubscriptionStatusInfo.SubscriptionStatusType status);
+    List<? extends T> findByStatus(@Param("status") final SubscriptionStatusInfo.SubscriptionStatusType status);
 
     /**
      * Get list of subscription entities by user ID
@@ -66,5 +64,5 @@ public interface SubscriptionRepository<T extends Subscription> extends JpaBaseR
      * @return list of subscription orders
      */
     @Query(FIND_SUB_BY_USER_ID_QUERY)
-    List<T> findByUserId(@Param("userId") final Long userId);
+    List<? extends T> findByUserId(@Param("userId") final Long userId);
 }

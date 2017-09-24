@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.springframework.stereotype.Component;
+import org.thymeleaf.util.StringUtils;
 
 /**
  *
@@ -110,7 +111,7 @@ public class UserSubscriptionProxyController<T extends UserSubOrder, E extends U
     }
 
     public void deleteEntityItems(final List<? extends T> itemEntityList) {
-        LOGGER.info("Deleting items");
+        LOGGER.info("Deleting items {}", StringUtils.join(itemEntityList, ", "));
         getService().delete(itemEntityList);
     }
 

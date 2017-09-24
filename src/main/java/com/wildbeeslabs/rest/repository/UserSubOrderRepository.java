@@ -1,8 +1,6 @@
 package com.wildbeeslabs.rest.repository;
 
 import com.wildbeeslabs.api.rest.common.repository.BaseRepository;
-//import com.wildbeeslabs.api.rest.common.repository.JpaBaseRepository;
-
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.UserSubOrder;
@@ -64,7 +62,7 @@ public interface UserSubOrderRepository<T extends UserSubOrder> extends JpaBaseR
      * @return list of subscription orders
      */
     @Query(FIND_ORDER_BY_USER_ID_QUERY)
-    List<T> findByUserId(@Param("userId") final Long userId);
+    List<? extends T> findByUserId(@Param("userId") final Long userId);
 
     /**
      * Get list of subscription orders by user entity
@@ -73,7 +71,7 @@ public interface UserSubOrderRepository<T extends UserSubOrder> extends JpaBaseR
      * @return list of subscription orders
      */
     @Query(FIND_ORDER_BY_USER_QUERY)
-    List<T> findByUser(@Param("user") final User user);
+    List<? extends T> findByUser(@Param("user") final User user);
 
     /**
      * Get list of subscription orders by subscription id
@@ -82,7 +80,7 @@ public interface UserSubOrderRepository<T extends UserSubOrder> extends JpaBaseR
      * @return list of subscription orders
      */
     @Query(FIND_ORDER_BY_SUB_ID_QUERY)
-    List<T> findBySubscriptionId(@Param("subscriptionId") final Long subscriptionId);
+    List<? extends T> findBySubscriptionId(@Param("subscriptionId") final Long subscriptionId);
 
     /**
      * Get list of subscription orders by subscription entity
@@ -91,7 +89,7 @@ public interface UserSubOrderRepository<T extends UserSubOrder> extends JpaBaseR
      * @return list of subscription orders
      */
     @Query(FIND_ORDER_BY_SUB_QUERY)
-    List<T> findBySubscription(@Param("subscription") final Subscription subscription);
+    List<? extends T> findBySubscription(@Param("subscription") final Subscription subscription);
 
     /**
      * Get subscription order by id
@@ -117,7 +115,7 @@ public interface UserSubOrderRepository<T extends UserSubOrder> extends JpaBaseR
      * @param dateTo - end date of period
      * @return list of subscription orders
      */
-    List<T> findBySubscribedAtBetween(final Date dateFrom, final Date dateTo);
+    List<? extends T> findBySubscribedAtBetween(final Date dateFrom, final Date dateTo);
 
     /**
      * Get list of subscription orders by subscribed date before
@@ -125,7 +123,7 @@ public interface UserSubOrderRepository<T extends UserSubOrder> extends JpaBaseR
      * @param date - request date (including)
      * @return list of subscription orders
      */
-    List<T> findBySubscribedAtLessThanEqual(final Date date);
+    List<? extends T> findBySubscribedAtLessThanEqual(final Date date);
 
     /**
      * Get list of subscription orders by subscribed date after
@@ -133,5 +131,5 @@ public interface UserSubOrderRepository<T extends UserSubOrder> extends JpaBaseR
      * @param date - request date (excluding)
      * @return list of subscription orders
      */
-    List<T> findBySubscribedAtGreaterThan(final Date date);
+    List<? extends T> findBySubscribedAtGreaterThan(final Date date);
 }

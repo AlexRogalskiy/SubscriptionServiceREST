@@ -1,7 +1,6 @@
 package com.wildbeeslabs.rest.service.interfaces;
 
-import com.wildbeeslabs.api.rest.common.service.interfaces.IJpaBaseService;
-
+import com.wildbeeslabs.api.rest.common.service.interfaces.IBaseService;
 import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 import com.wildbeeslabs.rest.model.User;
 
@@ -17,7 +16,7 @@ import java.util.List;
  * @since 2017-08-08
  * @param <T>
  */
-public interface IUserService<T extends User> extends IJpaBaseService<T, Long> {
+public interface IUserService<T extends User> extends IBaseService<T, Long> {
 
     /**
      * Get user entity by login

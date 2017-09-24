@@ -24,6 +24,7 @@
 package com.wildbeeslabs.rest.repository;
 
 import com.wildbeeslabs.api.rest.common.model.IBaseEntity;
+
 import java.io.Serializable;
 
 import org.springframework.data.jpa.repository.JpaRepository;

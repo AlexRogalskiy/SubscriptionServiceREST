@@ -24,7 +24,6 @@
 package com.wildbeeslabs.rest.service;
 
 import com.wildbeeslabs.api.rest.common.model.IBaseEntity;
-import com.wildbeeslabs.api.rest.common.service.interfaces.IJpaBaseService;
 import com.wildbeeslabs.rest.repository.JpaBaseRepository;
 
 import java.io.Serializable;
@@ -36,6 +35,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
+import com.wildbeeslabs.api.rest.common.service.interfaces.IBaseService;
 
 /**
  *
@@ -49,7 +49,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @param <R>
  */
 @Transactional
-public abstract class JpaBaseServiceImpl<T extends IBaseEntity, ID extends Serializable, R extends JpaBaseRepository<T, ID>> implements IJpaBaseService<T, ID> {
+public abstract class JpaBaseServiceImpl<T extends IBaseEntity, ID extends Serializable, R extends JpaBaseRepository<T, ID>> implements IBaseService<T, ID> {
 
     @Autowired
     private R repository;

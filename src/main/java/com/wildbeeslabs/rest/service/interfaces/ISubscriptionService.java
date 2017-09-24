@@ -1,7 +1,6 @@
 package com.wildbeeslabs.rest.service.interfaces;
 
-import com.wildbeeslabs.api.rest.common.service.interfaces.IJpaBaseService;
-
+import com.wildbeeslabs.api.rest.common.service.interfaces.IBaseService;
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 
@@ -16,7 +15,7 @@ import java.util.List;
  * @since 2017-08-08
  * @param <T>
  */
-public interface ISubscriptionService<T extends Subscription> extends IJpaBaseService<T, Long> {
+public interface ISubscriptionService<T extends Subscription> extends IBaseService<T, Long> {
 
     /**
      * Get subscription entity by name

@@ -1,6 +1,6 @@
 server:
   port: 8080
-  contextPath: /subscription
+  contextPath: /v1
   endPointPath: endpoints
   basePath: http://localhost
   error:

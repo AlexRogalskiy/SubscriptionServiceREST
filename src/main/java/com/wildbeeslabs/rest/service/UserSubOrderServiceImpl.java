@@ -1,7 +1,5 @@
 package com.wildbeeslabs.rest.service;
 
-//import com.wildbeeslabs.api.rest.common.service.JpaBaseServiceImpl;
-
 import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.User;
 import com.wildbeeslabs.rest.model.UserSubOrder;
@@ -43,12 +41,12 @@ public class UserSubOrderServiceImpl<T extends UserSubOrder> extends JpaBaseServ
     }
 
     @Override
-    public List<T> findByUser(final User user) {
+    public List<? extends T> findByUser(final User user) {
         return getRepository().findByUser(user);
     }
 
     @Override
-    public List<T> findBySubscription(final Subscription subscription) {
+    public List<? extends T> findBySubscription(final Subscription subscription) {
         return getRepository().findBySubscription(subscription);
     }
 
@@ -58,7 +56,7 @@ public class UserSubOrderServiceImpl<T extends UserSubOrder> extends JpaBaseServ
 //        update(itemFrom);
 //    }
     @Override
-    public List<T> findBySubscribedAtBetween(final Date dateFrom, final Date dateTo) {
+    public List<? extends T> findBySubscribedAtBetween(final Date dateFrom, final Date dateTo) {
         return getRepository().findBySubscribedAtBetween(dateFrom, dateTo);
     }
 
