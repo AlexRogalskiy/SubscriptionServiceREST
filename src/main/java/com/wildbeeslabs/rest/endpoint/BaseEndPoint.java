@@ -23,7 +23,7 @@
  */
 package com.wildbeeslabs.rest.endpoint;
 
-import com.wildbeeslabs.rest.configuration.PropertiesConfiguration;
+import com.wildbeeslabs.rest.configuration.PropertyConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +48,7 @@ public class BaseEndPoint extends AbstractEndpoint<List<Endpoint>> {
     private final List<Endpoint> endPointList = new ArrayList<>();
 
     @Autowired
-    public BaseEndPoint(final PropertiesConfiguration config, final List<Endpoint> endPointList) {
+    public BaseEndPoint(final PropertyConfiguration config, final List<Endpoint> endPointList) {
         super(config.getEndPointURI());
         if (Objects.nonNull(endPointList)) {
             this.endPointList.addAll(endPointList);

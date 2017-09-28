@@ -35,7 +35,7 @@ import org.springframework.stereotype.Component;
  * @since 2017-08-08
  */
 @Component
-public final class PropertiesConfiguration {
+public final class PropertyConfiguration {
 
     //@Value("${server.endPointPath}")
     private static String endPointURI;
@@ -43,31 +43,41 @@ public final class PropertiesConfiguration {
     private static int maxPoolSize;
     //@Value("#{'${server.basePath}'.concat(':').concat('${server.port}').concat('${server.contextPath}')}")
     private static String restServiceURI;
+    //@Value("${spring.application.name}")
+    private static String appName;
 
     @Value("${server.endPointPath}")
     public void setEndPointURI(final String endPointURI) {
-        PropertiesConfiguration.endPointURI = endPointURI;
+        PropertyConfiguration.endPointURI = endPointURI;
     }
 
     public String getEndPointURI() {
-        return PropertiesConfiguration.endPointURI;
+        return PropertyConfiguration.endPointURI;
     }
 
     @Value("${datasource.subscriptionapp.maxPoolSize:10}")
     public void setMaxPoolSize(final int maxPoolSize) {
-        PropertiesConfiguration.maxPoolSize = maxPoolSize;
+        PropertyConfiguration.maxPoolSize = maxPoolSize;
     }
 
     public int getMaxPoolSize() {
-        return PropertiesConfiguration.maxPoolSize;
+        return PropertyConfiguration.maxPoolSize;
     }
 
     @Value("#{'${server.basePath}'.concat(':').concat('${server.port}').concat('${server.contextPath}')}")
     public void setRestServiceURI(final String restServiceURI) {
-        PropertiesConfiguration.restServiceURI = restServiceURI;
+        PropertyConfiguration.restServiceURI = restServiceURI;
     }
 
     public String getRestServiceURI() {
-        return PropertiesConfiguration.restServiceURI;
+        return PropertyConfiguration.restServiceURI;
+    }
+
+    public static String getAppName() {
+        return PropertyConfiguration.appName;
+    }
+
+    public static void setAppName(final String appName) {
+        PropertyConfiguration.appName = appName;
     }
 }

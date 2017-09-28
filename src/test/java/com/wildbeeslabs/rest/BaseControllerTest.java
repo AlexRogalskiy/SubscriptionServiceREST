@@ -2,7 +2,7 @@ package com.wildbeeslabs.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wildbeeslabs.rest.configuration.PropertiesConfiguration;
+import com.wildbeeslabs.rest.configuration.PropertyConfiguration;
 import com.wildbeeslabs.rest.controller.SubscriptionController;
 import com.wildbeeslabs.rest.controller.UserController;
 import com.wildbeeslabs.rest.controller.UserSubscriptionController;
@@ -34,7 +34,7 @@ abstract public class BaseControllerTest {
     protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    protected PropertiesConfiguration propsConfiguration;
+    protected PropertyConfiguration propsConfiguration;
 
     protected String getObjectAsString(final Object obj) {
         ObjectMapper mapper = new ObjectMapper();

@@ -60,7 +60,7 @@ public class JpaConfiguration {
     @Autowired
     private Environment environment;
     @Autowired
-    private PropertiesConfiguration propsConfiguration;
+    private PropertyConfiguration propsConfiguration;
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
