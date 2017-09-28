@@ -37,7 +37,7 @@ import com.wildbeeslabs.rest.model.dto.wrapper.UserSubOrderDTOListWrapper;
 import com.wildbeeslabs.rest.service.interfaces.IUserSubOrderService;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 import org.thymeleaf.util.StringUtils;
@@ -62,11 +62,11 @@ public class UserSubscriptionProxyController<T extends UserSubOrder, E extends U
 
     public T findAllEntityByUserAndSubscription(final User userItem, final Subscription subscriptionItem) {
         LOGGER.info("Fetching subscription order by user id {} and subscription id {}", userItem.getId(), subscriptionItem.getId());
-        T currentOrder = getService().findByUserAndSubscription(userItem, subscriptionItem);
-        if (Objects.isNull(currentOrder)) {
+        final Optional<T> currentOrder = getService().findByUserAndSubscription(userItem, subscriptionItem);
+        if (!currentOrder.isPresent()) {
             throw new ResourceNotFoundException(getResource().formatMessage("error.no.order.item.user.subscription.id", userItem.getId(), subscriptionItem.getId()));
         }
-        return currentOrder;
+        return currentOrder.get();
     }
 
     public List<? extends T> findAllEntityByUser(final User userItem) throws EmptyContentException {

@@ -8,6 +8,7 @@ import com.wildbeeslabs.rest.model.UserSubOrderId;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -20,19 +21,6 @@ import java.util.List;
  */
 public interface IUserSubOrderService<T extends UserSubOrder> extends IBaseService<T, UserSubOrderId> {
 
-    /**
-     * Get subscription order by id (compound primary key)
-     *
-     * @param id - subscription order identifier
-     * @return subscription order
-     */
-//    T findById(final UserSubOrderId id);
-    /**
-     * Delete subscription order by id (compound primary key)
-     *
-     * @param id - subscription order identifier
-     */
-    //void deleteById(final UserSubOrderId id);
     /**
      * Get list of subscription orders by user entity
      *
@@ -56,7 +44,7 @@ public interface IUserSubOrderService<T extends UserSubOrder> extends IBaseServi
      * @param subscription - subscription entity
      * @return subscription order
      */
-    T findByUserAndSubscription(final User user, final Subscription subscription);
+    Optional<T> findByUserAndSubscription(final User user, final Subscription subscription);
 
     /**
      * Get list of subscription orders by date range (start date / end date)

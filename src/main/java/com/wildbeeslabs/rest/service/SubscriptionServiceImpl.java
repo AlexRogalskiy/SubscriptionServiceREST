@@ -6,7 +6,7 @@ import com.wildbeeslabs.rest.repository.SubscriptionRepository;
 import com.wildbeeslabs.rest.service.interfaces.ISubscriptionService;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,11 +26,11 @@ public class SubscriptionServiceImpl<T extends Subscription> extends JpaBaseServ
 
     @Override
     public boolean isExist(final T subscription) {
-        return Objects.nonNull(findByName(subscription.getName()));
+        return findByName(subscription.getName()).isPresent();
     }
 
     @Override
-    public T findByName(final String name) {
+    public Optional<T> findByName(final String name) {
         return getRepository().findByNameIgnoreCase(name);
     }
 

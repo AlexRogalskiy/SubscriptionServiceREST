@@ -21,38 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wildbeeslabs.rest.repository;
+package com.wildbeeslabs.rest.configuration;
 
-import com.wildbeeslabs.api.rest.common.model.IBaseEntity;
-
-import java.io.Serializable;
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Stream;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.NoRepositoryBean;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  *
- * JPA Base REST Application storage repository
+ * Redis Configuration
  *
  * @author Alex
  * @version 1.0.0
  * @since 2017-08-08
- * @param <T>
- * @param <ID>
  */
-@NoRepositoryBean
-public interface JpaBaseRepository<T extends IBaseEntity, ID extends Serializable> extends JpaRepository<T, ID> {
+//@Configuration
+//@EnableAutoConfiguration
+//@EnableRedisRepositories
+//public class RedisCongifuration {
+//
+//    @Bean
+//    public StringRedisTemplate redisTemplate() {
+//
+//        StringRedisTemplate template = new StringRedisTemplate(redisConnectionFactory());
+//        template.setEnableTransactionSupport(true);
+//        return template;
+//    }
+//}
+/*
+// Executed on thread bound connection
+template.opsForValue().set("foo", "bar");
 
-    /**
-     * Get list of item entities as stream
-     *
-     * @return list of item entities as stream
-     */
-    @Async
-    @Query("SELECT e FROM #{#entityName}")
-    CompletableFuture<Stream<T>> streamAll();
-}
+// Read operation executed on separate connection
+template.keys("*");
+
+// Returns null as values set within transaction are not visible
+// prior to transaction flush
+template.opsForValue().get("foo");
+ */

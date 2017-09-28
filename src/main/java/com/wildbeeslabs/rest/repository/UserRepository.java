@@ -6,6 +6,7 @@ import com.wildbeeslabs.rest.model.User;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -77,7 +78,7 @@ public interface UserRepository<T extends User> extends JpaBaseRepository<T, Lon
      * @param name - user login
      * @return user entity
      */
-    T findByLoginIgnoreCase(final String name);
+    Optional<T> findByLoginIgnoreCase(final String name);
 
     /**
      * Get list of user entities by status

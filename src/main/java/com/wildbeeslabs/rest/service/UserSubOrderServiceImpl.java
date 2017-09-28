@@ -10,6 +10,7 @@ import com.wildbeeslabs.rest.service.interfaces.IUserSubOrderService;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,7 +62,7 @@ public class UserSubOrderServiceImpl<T extends UserSubOrder> extends JpaBaseServ
     }
 
     @Override
-    public T findByUserAndSubscription(final User user, final Subscription subscription) {
+    public Optional<T> findByUserAndSubscription(final User user, final Subscription subscription) {
         final UserSubOrder order = new UserSubOrder();
         order.setSubscription(subscription);
         order.setUser(user);

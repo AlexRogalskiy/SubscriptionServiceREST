@@ -6,6 +6,7 @@ import com.wildbeeslabs.rest.model.User;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -24,7 +25,7 @@ public interface IUserService<T extends User> extends IBaseService<T, Long> {
      * @param login - user login
      * @return user entity
      */
-    T findByLogin(final String login);
+    Optional<T> findByLogin(final String login);
 
     /**
      * Get list of user entities by subscription status and subscription date

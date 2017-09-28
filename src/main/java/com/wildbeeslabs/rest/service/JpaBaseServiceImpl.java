@@ -28,6 +28,7 @@ import com.wildbeeslabs.rest.repository.JpaBaseRepository;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -55,8 +56,8 @@ public abstract class JpaBaseServiceImpl<T extends IBaseEntity, ID extends Seria
     private R repository;
 
     @Override
-    public T findById(final ID id) {
-        return getRepository().findOne(id);
+    public Optional<T> findById(final ID id) {
+        return Optional.of(getRepository().findOne(id));
     }
 
     @Override

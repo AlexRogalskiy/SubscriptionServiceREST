@@ -28,13 +28,11 @@ public interface UserSubOrderRepository<T extends UserSubOrder> extends JpaBaseR
     /**
      * Default query to find order by id
      */
-    public final static String FIND_ORDER_BY_ID_QUERY = "SELECT o FROM UserSubOrder o WHERE o.id = :userSubOrderId";
-
+    //public final static String FIND_ORDER_BY_ID_QUERY = "SELECT o FROM UserSubOrder o WHERE o.id = :userSubOrderId";
     /**
      * Default query to delete order by id
      */
-    public final static String DELETE_ORDER_BY_ID_QUERY = "DELETE FROM UserSubOrder o WHERE o.id = :userSubOrderId";
-
+    //public final static String DELETE_ORDER_BY_ID_QUERY = "DELETE FROM UserSubOrder o WHERE o.id = :userSubOrderId";
     /**
      * Default query to find orders by user id
      */
@@ -97,9 +95,8 @@ public interface UserSubOrderRepository<T extends UserSubOrder> extends JpaBaseR
      * @param userSubOrderId - subscription order identifier
      * @return subscription order
      */
-    @Query(FIND_ORDER_BY_ID_QUERY)
-    T findById(@Param("userSubOrderId") final UserSubOrderId userSubOrderId);
-
+    //@Query(FIND_ORDER_BY_ID_QUERY)
+    //Optional<T> findById(@Param("userSubOrderId") final UserSubOrderId userSubOrderId);
     /**
      * Delete subscription order by id
      *

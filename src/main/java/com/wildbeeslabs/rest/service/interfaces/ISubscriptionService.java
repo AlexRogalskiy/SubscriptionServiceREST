@@ -5,6 +5,7 @@ import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -23,7 +24,7 @@ public interface ISubscriptionService<T extends Subscription> extends IBaseServi
      * @param name - subscription name pattern
      * @return list of subscription entities
      */
-    T findByName(final String name);
+    Optional<T> findByName(final String name);
 
     /**
      * Get list of subscription entities by name pattern

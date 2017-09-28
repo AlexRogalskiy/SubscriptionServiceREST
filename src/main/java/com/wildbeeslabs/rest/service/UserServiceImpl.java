@@ -8,6 +8,7 @@ import com.wildbeeslabs.rest.service.interfaces.IUserService;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,13 +27,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl<T extends User> extends JpaBaseServiceImpl<T, Long, UserRepository<T>> implements IUserService<T> {
 
     @Override
-    public T findByLogin(final String name) {
+    public Optional<T> findByLogin(final String name) {
         return getRepository().findByLoginIgnoreCase(name);
     }
 
     @Override
     public boolean isExist(final T user) {
-        return Objects.nonNull(findByLogin(user.getLogin()));
+        return findByLogin(user.getLogin()).isPresent();
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.wildbeeslabs.rest.model.Subscription;
 import com.wildbeeslabs.rest.model.SubscriptionStatusInfo;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
@@ -38,7 +39,7 @@ public interface SubscriptionRepository<T extends Subscription> extends JpaBaseR
      * @param name - subscription name
      * @return subscription entity
      */
-    T findByNameIgnoreCase(final String name);
+    Optional<T> findByNameIgnoreCase(final String name);
 
     /**
      * Get list of subscription entities by name pattern
